@@ -1,6 +1,10 @@
+import Revise
 import Documenter: Remotes, HTML, makedocs, deploydocs
 import Changelog
 import ImGuiTestEngine
+
+# Explicitly call Revise to update changes to the docstrings
+Revise.revise()
 
 # Build the changelog
 Changelog.generate(

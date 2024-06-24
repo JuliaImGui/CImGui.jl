@@ -5,11 +5,15 @@ import CxxWrap: CxxPtr, CxxRef
 import DocStringExtensions: TYPEDEF, TYPEDSIGNATURES
 
 
-@compat public (Engine, EngineIO, ImGuiTest, TestRef, TestContextPtr,
-                TestVerboseLevel,
-                @register_test,
-                CreateContext, DestroyContext, Start, Stop,
-                SetRef, ItemClick)
+export @register_test, @imcheck, @imcheck_noret,
+    SetRef, GetRef, GetWindowByRef,
+    ItemClick, ItemDoubleClick, ItemCheck, MenuClick,
+    Yield
+
+@compat public (Engine, EngineIO, ImGuiTest, TestRef, TestContext,
+                TestGroup, TestRunFlags, TestVerboseLevel, RunSpeed,
+                CreateContext, DestroyContext, Start, Stop, PostSwap, GetResult,
+                QueueTest, QueueTests)
 
 
 #=
@@ -30,13 +34,39 @@ end
 
 end # lib
 
-
 include("coroutine.jl")
 
+import Test
+import LibCImGui as libig
+import Base.ScopedValues: ScopedValue, @with
 include("context.jl")
 
 import CImGui as ig
 include("engine.jl")
 
+"""
+$(TYPEDSIGNATURES)
+
+The main test engine window, which lets you run the tests individually. It needs
+to be called within the render loop.
+
+# Examples
+```julia
+ctx = ig.CreateContext()
+engine = te.CreateContext()
+te.Start(engine, ctx)
+
+# This is the important bit
+ig.render(ctx) do
+    te.ShowTestEngineWindows(engine)
+end
+
+te.Stop(engine)
+te.DestroyContext(engine)
+```
+"""
+function ShowTestEngineWindows(engine::Engine)
+    lib.ImGuiTestEngine_ShowTestEngineWindows(engine.ptr, C_NULL)
+end
 
 end # ImGuiTestEngine

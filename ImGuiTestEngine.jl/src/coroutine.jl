@@ -17,6 +17,9 @@ a task will stay on the same thread.
 =#
 module _Coroutine
 
+import Test
+
+
 # This is a copy of the upstream ImGuiTestCoroutineInterface, basically just a
 # struct of function pointers that we give to the test engine.
 mutable struct CoroutineInterface
@@ -35,7 +38,13 @@ mutable struct CoroutineData
 
     function CoroutineData(func::Ptr{Cvoid}, name::Cstring, ctx::Ptr{Cvoid})
         self = new(Threads.Condition(), false, false)
-        self.task = errormonitor(Threads.@spawn run_coroutine(self, func, ctx))
+
+        # We sneakily pass a magic variable from the current TLS into the new
+        # task. It's used by the Test stdlib to hold a list of the current
+        # testsets, so we need it to be able to record the tests from the new
+        # task in the original testset that we're currently running under.
+        parent_testsets = get(task_local_storage(), :__BASETESTNEXT__, [])
+        self.task = errormonitor(Threads.@spawn run_coroutine(self, func, ctx, parent_testsets))
         self.name = unsafe_string(name)
 
         return self
@@ -43,10 +52,12 @@ mutable struct CoroutineData
 end
 
 # Global variables
-const interface = CoroutineInterface(C_NULL, C_NULL, C_NULL, C_NULL)
+interface::Union{CoroutineInterface, Nothing} = nothing
 data::Union{CoroutineData, Nothing} = nothing
 
-function run_coroutine(data::CoroutineData, func::Ptr{Cvoid}, ctx::Ptr{Cvoid})
+function run_coroutine(data::CoroutineData, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}, parent_testsets)
+    task_local_storage(:__BASETESTNEXT__, parent_testsets)
+
     # Wait for the program to request the coroutine to start
     while true
         @lock data.StateChange begin
@@ -146,6 +157,7 @@ end
 
 
 function __init__()
+    global interface = CoroutineInterface(C_NULL, C_NULL, C_NULL, C_NULL)
     interface.CreateFunc  = @cfunction(CreateFunc, Ptr{Cvoid}, (Ptr{Cvoid}, Cstring, Ptr{Cvoid}))
     interface.DestroyFunc = @cfunction(DestroyFunc, Cvoid, (Ptr{Cvoid},))
     interface.RunFunc     = @cfunction(RunFunc, Bool, (Ptr{Cvoid},))
