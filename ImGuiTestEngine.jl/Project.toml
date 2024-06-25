@@ -13,7 +13,11 @@ LibCImGui = "9be01004-c4f5-478b-abeb-cb32b114cf5e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
+CImGui = "2"
+CImGuiPack_jll = "0.3"
 Compat = "4.15.0"
 CxxWrap = "0.16.0"
 DocStringExtensions = "0.9.3"
+LibCImGui = "1.90.8"
 Test = "1.11.0"
+julia = "1.11"

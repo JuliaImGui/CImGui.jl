@@ -1,6 +1,7 @@
 import Test
 import Test: @testset, @test, @test_throws
 
+import Aqua
 using ImGuiTestEngine
 import ImGuiTestEngine as te
 import ImGuiTestEngine.lib as lib
@@ -299,5 +300,15 @@ end
 
             ig.render(ctx; engine) do ; end
         end
+    end
+end
+
+# We only run the Aqua tests in CI because they're kinda slow
+if haskey(ENV, "CI")
+    @testset "Aqua.jl" begin
+        # We skip the ambiguity tests because we currently have a bazillion
+        # ambiguities from the C++ wrappers.
+        # TODO: fix the ambiguities.
+        Aqua.test_all(te; ambiguities=false)
     end
 end
