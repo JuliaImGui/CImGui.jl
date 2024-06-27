@@ -37,7 +37,7 @@ end # lib
 include("coroutine.jl")
 
 import Test
-import LibCImGui as libig
+import CImGui.lib as libig
 import Base.ScopedValues: ScopedValue, @with
 include("context.jl")
 

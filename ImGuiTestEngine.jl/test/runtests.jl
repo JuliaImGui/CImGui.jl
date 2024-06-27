@@ -10,7 +10,7 @@ import CImGui as ig
 
 import GLFW
 import ModernGL
-ig.backend = :GlfwOpenGL
+ig.set_backend(:GlfwOpenGL3)
 
 
 function do_engine(f::Function; kwargs...)
