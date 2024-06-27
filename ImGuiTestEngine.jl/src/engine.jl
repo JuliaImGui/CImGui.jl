@@ -405,7 +405,6 @@ end
 
 function Base.show(io::IO, test::ImGuiTest)
     status = x -> isnothing(x) ? "✗" : "🗸"
-    # status(test._gui_func)), TestFunc $(status(test._test_func))
     print(io, ImGuiTest, "(Category=$(test.Category), Name=$(test.Name))")
 end
 
