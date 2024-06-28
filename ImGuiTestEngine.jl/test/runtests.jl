@@ -309,6 +309,10 @@ if haskey(ENV, "CI")
         # We skip the ambiguity tests because we currently have a bazillion
         # ambiguities from the C++ wrappers.
         # TODO: fix the ambiguities.
-        Aqua.test_all(te; ambiguities=false)
+        Aqua.test_all(te;
+                      ambiguities=false,
+                      # And we ignore ScopedValues because it won't be loaded on
+                      # 1.11+ since it'll be loaded from Base.
+                      stale_deps=(; ignore=[:ScopedValues]))
     end
 end
