@@ -38,7 +38,12 @@ include("coroutine.jl")
 
 import Test
 import CImGui.lib as libig
-import Base.ScopedValues: ScopedValue, @with
+
+if !isdefined(Base, :ScopedValues)
+    import ScopedValues: ScopedValue, @with
+else
+    import Base.ScopedValues: ScopedValue, @with
+end
 include("context.jl")
 
 import CImGui as ig

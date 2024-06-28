@@ -16,11 +16,6 @@ Known issues:
 - Many functions don't have Julia bindings yet (though adding them is fairly
   straightforward).
 
-!!! compat
-    The package currently requires a minimum of Julia 1.11, but that's mostly
-    due to laziness. If you really want it for earlier versions, open an issue
-    and we'll see what we can do.
-
 Here's a quick example:
 ```julia
 # Imports that we'll be using
