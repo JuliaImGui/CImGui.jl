@@ -105,8 +105,14 @@ the current scope. e.g. `SetRef(ctx, "My window")` is fine, but it'll do the
 same thing as `SetRef("My window")`.
 
 !!! note
-    Loads of methods are missing bindings, feel free to open an issue or
-    contribute them yourself if you're missing one.
+    Loads of test context methods are missing Julia wrappers, feel free to open
+    an issue or contribute them yourself if you're missing one.
+
+    If you want to try calling the wrapped C++ functions directly, it'll
+    probably boil down to something like:
+    ```julia
+    te.lib.Thing(ctx, te.lib.ImGuiTestRef("my ref"))
+    ```
 
 ```@docs
 TestContext
