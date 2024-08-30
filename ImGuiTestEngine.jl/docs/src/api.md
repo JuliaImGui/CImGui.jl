@@ -124,6 +124,8 @@ ItemClick
 ItemDoubleClick
 ItemCheck
 MenuClick
+ComboClick
+ComboClickAll
 GetWindowByRef
 Yield
 ```

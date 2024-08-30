@@ -254,6 +254,40 @@ end
 """
 $(TYPEDSIGNATURES)
 
+Click on a combo box item.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    ComboClick("My combo/Item 1")
+end
+```
+"""
+function ComboClick(test_ref::TestRef, ctx=nothing)
+    @_default_ctx
+    lib.ComboClick(ctx, lib.ImGuiTestRef(test_ref))
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Click on all items in a combo box.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    ComboClickAll("My combo")
+end
+```
+"""
+function ComboClickAll(test_ref::TestRef, ctx=nothing)
+    @_default_ctx
+    lib.ComboClickAll(ctx, lib.ImGuiTestRef(test_ref))
+end
+
+"""
+$(TYPEDSIGNATURES)
+
 Retrieve a `ImGuiWindow` by reference. This will return `nothing` if the window
 was not found.
 
