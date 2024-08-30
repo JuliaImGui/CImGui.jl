@@ -270,6 +270,36 @@ end
                 @imcheck menu_item_selected
             end
 
+            current_combo_item = Ref{Cint}(-1)
+            selected_combo_items = Int[]
+            t = @register_test(engine, "Context", "ComboClick/ComboClickAll")
+            t.GuiFunc = ctx -> begin
+                ig.Begin("Window")
+                ig.Combo("Combo1", current_combo_item, "One\0Two\0")
+
+                if ig.BeginCombo("Combo2", "")
+                    if ig.Selectable("One")
+                        push!(selected_combo_items, 1)
+                    end
+                    if ig.Selectable("Two")
+                        push!(selected_combo_items, 2)
+                    end
+
+                    ig.EndCombo()
+                end
+                ig.End()
+            end
+            t.TestFunc = ctx -> begin
+                SetRef("Window")
+                ComboClick("Combo1/One")
+                @imcheck current_combo_item[] == 0
+                ComboClick("Combo1/Two")
+                @imcheck current_combo_item[] == 1
+
+                ComboClickAll("Combo2")
+                @imcheck selected_combo_items == [1, 2]
+            end
+
             item_checked = Ref(false)
             t = @register_test(engine, "Context", "ItemCheck")
             t.GuiFunc = ctx -> begin

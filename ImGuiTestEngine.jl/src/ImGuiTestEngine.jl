@@ -8,6 +8,7 @@ import DocStringExtensions: TYPEDEF, TYPEDSIGNATURES
 export @register_test, @imcheck, @imcheck_noret,
     SetRef, GetRef, GetWindowByRef,
     ItemClick, ItemDoubleClick, ItemCheck, MenuClick,
+    ComboClick, ComboClickAll,
     Yield
 
 @compat public (Engine, EngineIO, ImGuiTest, TestRef, TestContext,
