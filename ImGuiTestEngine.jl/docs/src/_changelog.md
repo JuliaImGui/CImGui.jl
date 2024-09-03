@@ -7,7 +7,7 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
-## [v1.0.0] - 2024-09-03
+## [v0.1.1] - 2024-09-03
 
 This release is compatible with CImGui.jl v2 and v3.
 
