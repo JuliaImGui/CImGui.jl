@@ -328,6 +328,80 @@ end
                 @imcheck double_clicked
             end
 
+            tree1_open = nothing
+            tree2_opened = false
+            t = @register_test(engine, "Context", "Item opening/closing")
+            t.GuiFunc = ctx -> begin
+                ig.Begin("Window")
+                if ig.TreeNode("Tree1")
+                    tree1_open = true
+                    ig.TreePop()
+                else
+                    tree1_open = false
+                end
+
+                if ig.TreeNode("Tree2")
+                    tree2_opened = true
+                    ig.TreePop()
+                end
+
+                ig.End()
+            end
+            t.TestFunc = ctx -> begin
+                SetRef("Window")
+
+                @imcheck !tree1_open
+                ItemOpen("Tree1")
+                @imcheck tree1_open
+                ItemClose("Tree1")
+                @imcheck !tree1_open
+
+                @imcheck !tree2_opened
+                OpenAndClose("Tree2")
+                @imcheck tree2_opened
+            end
+
+            mouse_clicked = false
+            mouse_rightclicked = false
+            t = @register_test(engine, "Context", "MouseClick")
+            t.GuiFunc = ctx -> begin
+                ig.Begin("Window")
+
+                if ig.IsMouseClicked(ig.ImGuiMouseButton_Left)
+                    mouse_clicked = true
+                end
+                if ig.IsMouseClicked(ig.ImGuiMouseButton_Right)
+                    mouse_rightclicked = true
+                end
+
+                ig.End()
+            end
+            t.TestFunc = ctx -> begin
+                @imcheck !mouse_clicked
+                @imcheck !mouse_rightclicked
+
+                MouseClick()
+                @imcheck mouse_clicked
+                MouseClick(ig.ImGuiMouseButton_Right)
+                @imcheck mouse_rightclicked
+            end
+
+            is_hovered = false
+            t = @register_test(engine, "Context", "MouseMove")
+            t.GuiFunc = ctx -> begin
+                ig.Begin("Window")
+                ig.Button("Button")
+                is_hovered = ig.IsItemHovered()
+                ig.End()
+            end
+            t.TestFunc = ctx -> begin
+                SetRef("Window")
+
+                @imcheck !is_hovered
+                MouseMove("Button")
+                @imcheck is_hovered
+            end
+
             ig.render(ctx; engine) do ; end
         end
     end

@@ -120,6 +120,11 @@ TestContext
 @imcheck_noret
 SetRef
 GetRef
+MouseClick
+MouseMove
+ItemOpen
+ItemClose
+OpenAndClose
 ItemClick
 ItemDoubleClick
 ItemCheck
