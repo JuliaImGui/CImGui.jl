@@ -7,9 +7,12 @@ import DocStringExtensions: TYPEDEF, TYPEDSIGNATURES
 
 export @register_test, @imcheck, @imcheck_noret,
     SetRef, GetRef, GetWindowByRef,
-    ItemClick, ItemDoubleClick, ItemCheck, MenuClick,
+    ItemClick, ItemDoubleClick, ItemCheck, ItemOpen, ItemClose,
+    MenuClick,
     ComboClick, ComboClickAll,
-    Yield
+    MouseClick, MouseMove,
+    Yield,
+    OpenAndClose
 
 @compat public (Engine, EngineIO, ImGuiTest, TestRef, TestContext,
                 TestGroup, TestRunFlags, TestVerboseLevel, RunSpeed,
@@ -45,9 +48,9 @@ if !isdefined(Base, :ScopedValues)
 else
     import Base.ScopedValues: ScopedValue, @with
 end
+import CImGui as ig
 include("context.jl")
 
-import CImGui as ig
 include("engine.jl")
 
 """

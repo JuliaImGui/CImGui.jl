@@ -11,6 +11,13 @@ This documents notable changes in ImGuiTestEngine.jl. The format is based on
 
 ### Added
 - Bindings for [`ComboClick()`](@ref) and [`ComboClickAll()`](@ref) ([#4]).
+- Bindings for [`MouseClick()`](@ref), [`MouseMove()`](@ref),
+  [`ItemOpen()`](@ref), [`ItemClose()`](@ref), and a helper
+  [`OpenAndClose()`](@ref) ([#5]).
+
+### Changed
+- [`ItemClick()`](@ref) now supports passing a `button` argument to select which
+  button to click ([#5]).
 
 ## [v0.1.0] - 2024-06-27
 

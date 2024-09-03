@@ -195,10 +195,45 @@ Simulate a click on the reference.
 end
 ```
 """
-function ItemClick(test_ref::TestRef, ctx=nothing)
+function ItemClick(test_ref::TestRef, button::ig.ImGuiMouseButton_ = ig.ImGuiMouseButton_Left, ctx=nothing)
     @_default_ctx
-    lib.ItemClick(ctx, lib.ImGuiTestRef(test_ref))
+    lib.ItemClick(ctx, lib.ImGuiTestRef(test_ref), Int(button))
 end
+
+"""
+$(TYPEDSIGNATURES)
+
+Ensure an item is opened.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    ItemOpen("My menu")
+end
+```
+"""
+function ItemOpen(test_ref::TestRef, flags=0, ctx=nothing)
+    @_default_ctx
+    lib.ItemOpen(ctx, lib.ImGuiTestRef(test_ref), Int(flags))
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Ensure an item is closed.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    ItemClose("My menu")
+end
+```
+"""
+function ItemClose(test_ref::TestRef, flags=0, ctx=nothing)
+    @_default_ctx
+    lib.ItemClose(ctx, lib.ImGuiTestRef(test_ref), Int(flags))
+end
+
 
 """
 $(TYPEDSIGNATURES)
@@ -288,6 +323,41 @@ end
 """
 $(TYPEDSIGNATURES)
 
+Move the mouse to `test_ref`.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    MouseMove("My button")
+end
+```
+"""
+function MouseMove(test_ref::TestRef, ctx=nothing)
+    @_default_ctx
+    lib.MouseMove(ctx, lib.ImGuiTestRef(test_ref))
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Register a click of `button`.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    MouseClick()                          # LMB
+    MouseClick(ig.ImGuiMouseButton_Right) # RMB
+end
+```
+"""
+function MouseClick(button::ig.ImGuiMouseButton_ = ig.ImGuiMouseButton_Left, ctx=nothing)
+    @_default_ctx
+    lib.MouseClick(ctx, Int(button))
+end
+
+"""
+$(TYPEDSIGNATURES)
+
 Retrieve a `ImGuiWindow` by reference. This will return `nothing` if the window
 was not found.
 
@@ -317,3 +387,40 @@ function Yield(count::Int=1, ctx=nothing)
     @_default_ctx
     lib.Yield(ctx, count)
 end
+
+"""
+$(TYPEDSIGNATURES)
+
+A helper function that will ensure `test_ref` is open, execute `f()`, and close
+`test_ref` again. A typical use would be to open a section, run some tests, and
+then close the section again (handy for re-runnable tests).
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    OpenAndClose("My section") do
+        # ...
+    end
+end
+```
+"""
+function OpenAndClose(f, test_ref::TestRef, ctx=nothing)
+    @_default_ctx
+    ItemOpen(test_ref)
+    f()
+    ItemClose(test_ref)
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Open and then close `test_ref`.
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    OpenAndClose("My section")
+end
+```
+"""
+OpenAndClose(test_ref::TestRef, ctx=nothing) = OpenAndClose(Returns(nothing), test_ref, ctx)
