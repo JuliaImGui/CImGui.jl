@@ -149,16 +149,7 @@ end
                 ran_test_func = true
             end
 
-            te.QueueTests(engine)
-            te.Start(engine, ctx)
-
-            ig.render(ctx) do
-                # te.ShowTestEngineWindows(engine)
-
-                if !engine_io.IsRunningTests
-                    return :imgui_exit_loop
-                end
-            end
+            ig.render(ctx; engine) do ; end
 
             @test ran_gui_func
             @test ran_test_func
@@ -196,14 +187,7 @@ end
                 noret_exited_at_end = true
             end
 
-            te.Start(engine, ctx)
-            te.QueueTests(engine)
-
-            ig.render(ctx) do
-                if !te.GetIO(engine).IsRunningTests
-                    return :imgui_exit_loop
-                end
-            end
+            ig.render(ctx; engine) do ; end
 
             @test imcheck_entered_test
             @test !imcheck_exited_at_end
