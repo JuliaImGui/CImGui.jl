@@ -516,7 +516,7 @@ macro register_test(f, engine::Symbol, category::AbstractString, name::AbstractS
 end
 
 
-ig._test_engine_is_running(engine::Engine) = GetIO(engine).IsRunningTests
+ig._test_engine_is_running(engine::Engine) = !lib.ImGuiTestEngine_IsTestQueueEmpty(engine.ptr)
 
 function ig._start_test_engine(engine::Engine, ctx::Ptr{libig.ImGuiContext})
     Start(engine, ctx)
