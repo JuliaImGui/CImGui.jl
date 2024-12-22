@@ -54,6 +54,7 @@ function create_docstring(func_name, overload)
 
     comment = get(overload, :comment, "")
     if !isempty(comment)
+        comment = replace(comment, "\\0" => "\\\\0")
         formatted_comment = chopprefix(comment, "//") |> strip |> uppercasefirst
         if !isempty(formatted_comment) && formatted_comment[end] ∉ ('.', '!', '?')
             formatted_comment *= "."
@@ -561,10 +562,10 @@ function generate()
             for w in wrappers
                 write(io,
                       """
-                          \"\"\"
-                          $(w.docstring)
-                          \"\"\"
-                          """)
+                      \"\"\"
+                      $(w.docstring)
+                      \"\"\"
+                      """)
                 write(io, string(w.expr), "\n\n")
             end
 

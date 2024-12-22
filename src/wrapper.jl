@@ -1420,7 +1420,7 @@ Combo(
 """
 $(TYPEDSIGNATURES)
 
-Separate items with \0 within a string, end item-list with \0\0. e.g. "One\0Two\0Three\0".
+Separate items with \\0 within a string, end item-list with \\0\\0. e.g. "One\\0Two\\0Three\\0".
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.91.6-docking/imgui.h#L585).
 """
