@@ -98,4 +98,4 @@ high-level package. [`Redux.jl`](https://github.com/Gnimuc/Redux.jl) might be of
 interest to you if you're looking for state management frameworks.
 
 For writing tests you can use
-[ImGuiTestEngine.jl](https://juliaimgui.github.io/ImGuiTestEngine.jl).
+[ImGuiTestEngine.jl](https://juliaimgui.github.io/ImGuiDocs.jl/imguitestengine).
