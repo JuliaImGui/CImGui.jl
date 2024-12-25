@@ -8,7 +8,7 @@ This package provides Julia bindings for the
 [Dear ImGui test engine](https://github.com/ocornut/imgui_test_engine), a
 testing and automation library for [Dear
 ImGui](https://github.com/ocornut/imgui). It's designed to be used with programs
-written with [CImGui.jl](https://github.com/Gnimuc/CImGui.jl).
+written with [CImGui.jl](https://juliaimgui.github.io/ImGuiDocs.jl/cimgui).
 
 Known issues:
 - Some parts of the integration with [`@imcheck`](@ref) and the stdlib `Test`
@@ -26,7 +26,7 @@ import CImGui as ig
 # Set up the backend for CImGui
 import GLFW
 import ModernGL
-ig.backend = :GlfwOpenGL
+ig.set_backend(:GlfwOpenGL3)
 
 # Create the ImGui context and test engine instance
 ctx = ig.CreateContext()
@@ -59,6 +59,5 @@ end
 
 # Note that we don't need to explictly destroy `ctx` because `ig.render()` will
 # do it for us.
-te.Stop(engine)
 te.DestroyContext(engine)
 ```
