@@ -38,7 +38,6 @@ jobs:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
       - uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
 
       # We add ModernGL and GLFW so that the backend extensions will be loaded too
       - run: |
@@ -71,7 +70,6 @@ jobs:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
       - uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
       - name: Set the number of threads for the tests
         run: |
           echo "JULIA_NUM_THREADS=5,5" >> "$GITHUB_ENV"
@@ -90,6 +88,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
+      - uses: julia-actions/cache@v2
       - run: |
           julia --project=docs -e '
             using Pkg
