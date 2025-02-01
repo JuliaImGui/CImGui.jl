@@ -61,6 +61,9 @@ function _generate_imcheck(expr, source, with_return, kwargs...)
     end
 end
 
+# Helper function to create a C++-wrapped ImVec2
+mkImVec2(x, y) = lib.mkImVec2(convert(Float32, x), convert(Float32, y))
+
 """
     @imcheck expr
 
@@ -336,6 +339,33 @@ function MouseMove(test_ref::TestRef, ctx=nothing)
     @_default_ctx
     lib.MouseMove(ctx, lib.ImGuiTestRef(test_ref))
 end
+
+"""
+$(TYPEDSIGNATURES)
+
+Move the mouse to the given position in absolute coordinates (e.g. matching
+[`ig.GetMousePos()`](@extref `CImGui.GetMousePos`) and
+[`ig.GetCursorScreenPos()`](@extref `CImGui.GetCursorScreenPos`)).
+
+# Examples
+```julia
+@register_test(engine, "foo", "bar") do ctx
+    MouseMoveToPos(100, 100)
+    MouseMoveToPos((100, 100))
+    MouseMoveToPos(ig.ImVec2(100, 100))
+end
+```
+"""
+function MouseMoveToPos(x, y, ctx=nothing)
+    @_default_ctx
+    lib.MouseMoveToPos(ctx, mkImVec2(x, y))
+end
+
+"$(TYPEDSIGNATURES)"
+MouseMoveToPos(pos::ig.ImVec2, ctx=nothing) = MouseMoveToPos(pos.x, pos.y, ctx)
+
+"$(TYPEDSIGNATURES)"
+MouseMoveToPos(pos::NTuple{2, Real}, ctx=nothing) = MouseMoveToPos(pos[1], pos[2], ctx)
 
 """
 $(TYPEDSIGNATURES)

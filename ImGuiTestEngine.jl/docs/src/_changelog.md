@@ -7,6 +7,11 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [v0.1.6] - 2025-02-01
+
+### Added
+- Bindings for [`MouseMoveToPos()`](@ref) ([#12]).
+
 ## [v0.1.5] - 2024-12-19
 
 Patch release to actually add compat for CImGui v4 ([#9]).

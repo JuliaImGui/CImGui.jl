@@ -386,6 +386,26 @@ end
                 @imcheck is_hovered
             end
 
+            mouse_pos = nothing
+            t = @register_test(engine, "Context", "MouseMoveToPos")
+            t.GuiFunc = ctx -> begin
+                ig.Begin("Window")
+
+                mouse_pos = ig.GetMousePos()
+                ig.Text("Cursor position: ($(mouse_pos.x), $(mouse_pos.y))")
+                ig.End()
+            end
+            t.TestFunc = ctx -> begin
+                SetRef("Window")
+
+                MouseMoveToPos(100, 100)
+                @imcheck mouse_pos.x == mouse_pos.y == 100
+                MouseMoveToPos(ig.ImVec2(200, 200))
+                @imcheck mouse_pos.x == mouse_pos.y == 200
+                MouseMoveToPos((300, 300))
+                @imcheck mouse_pos.x == mouse_pos.y == 300
+            end
+
             ig.render(ctx; engine) do ; end
         end
     end
