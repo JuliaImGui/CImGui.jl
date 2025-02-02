@@ -2,6 +2,8 @@ import Revise
 import Documenter: Remotes, HTML, makedocs, deploydocs
 import Changelog
 import ImGuiTestEngine
+import DocumenterInterLinks: InterLinks
+
 
 # Explicitly call Revise to update changes to the docstrings
 Revise.revise()
@@ -14,6 +16,10 @@ Changelog.generate(
     repo="JuliaImGui/ImGuiTestEngine.jl"
 )
 
+links = InterLinks(
+    "CImGui" => "https://juliaimgui.github.io/ImGuiDocs.jl/cimgui/stable/"
+)
+
 makedocs(;
          repo = Remotes.GitHub("JuliaImGui", "ImGuiTestEngine.jl"),
          sitename = "ImGuiTestEngine",
@@ -23,7 +29,8 @@ makedocs(;
              "api.md",
              "changelog.md"
          ],
-         modules = [ImGuiTestEngine]
+         modules = [ImGuiTestEngine],
+         plugins = [links]
          )
 
 deploydocs(; repo="github.com/JuliaImGui/ImGuiTestEngine.jl.git")

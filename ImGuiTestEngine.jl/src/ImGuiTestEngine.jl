@@ -10,7 +10,7 @@ export @register_test, @imcheck, @imcheck_noret,
     ItemClick, ItemDoubleClick, ItemCheck, ItemOpen, ItemClose,
     MenuClick,
     ComboClick, ComboClickAll,
-    MouseClick, MouseMove,
+    MouseClick, MouseMove, MouseMoveToPos,
     Yield,
     OpenAndClose
 

@@ -114,6 +114,13 @@ same thing as `SetRef("My window")`.
     te.lib.Thing(ctx, te.lib.ImGuiTestRef("my ref"))
     ```
 
+    For functions that take an `ImVec2` argument, create one that can be passed
+    to the C++ functions with the un-exported `mkImVec2()` helper function like
+    so:
+    ```julia
+    te.lib.Thing(ctx, te.mkImVec2(x, y))
+    ```
+
 ```@docs
 TestContext
 @imcheck
@@ -122,6 +129,7 @@ SetRef
 GetRef
 MouseClick
 MouseMove
+MouseMoveToPos
 ItemOpen
 ItemClose
 OpenAndClose
