@@ -6,6 +6,16 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v5.0.0] - 2025-02-05
+
+### Changed
+- **Breaking**: We updated to [Dear ImGui
+  1.91.8](https://github.com/ocornut/imgui/releases/tag/v1.91.8) ([#163]). All the
+  changes from 1.91.7 and 1.91.8 apply to this release.
+
+### Fixed
+- Fixed compatibility with the Makie v0.22 ([#163]).
+
 ## [v4.0.0] - 2024-12-21
 
 ### Changed

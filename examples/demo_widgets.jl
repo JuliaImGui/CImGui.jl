@@ -612,8 +612,8 @@ function ShowDemoWindowWidgets()
     end
 
     if CImGui.TreeNode("Color/Picker Widgets")
-        @cstatic color=Cfloat[114/255, 144/255, 154/255, 200/255] backup_color=Cfloat[0,0,0,0] saved_palette_init=true saved_palette=fill(ImVec4(0,0,0,0), 32) alpha_preview=true alpha_half_preview=false drag_and_drop=true options_menu=true hdr=false begin
-            @c CImGui.Checkbox("With Alpha Preview", &alpha_preview)
+        @cstatic color=Cfloat[114/255, 144/255, 154/255, 200/255] backup_color=Cfloat[0,0,0,0] saved_palette_init=true saved_palette=fill(ImVec4(0,0,0,0), 32) alpha_opaque=true alpha_half_preview=false drag_and_drop=true options_menu=true hdr=false begin
+            @c CImGui.Checkbox("With Alpha Opage", &alpha_opaque)
             @c CImGui.Checkbox("With Half Alpha Preview", &alpha_half_preview)
             @c CImGui.Checkbox("With Drag and Drop", &drag_and_drop)
             @c CImGui.Checkbox("With Options Menu", &options_menu)
@@ -622,7 +622,7 @@ function ShowDemoWindowWidgets()
             @c CImGui.Checkbox("With HDR", &hdr)
             CImGui.SameLine()
             CImGui.HelpMarker("Currently all this does is to lift the 0..1 limits on dragging widgets.")
-            misc_flags = (hdr ? CImGui.ImGuiColorEditFlags_HDR : 0) | (drag_and_drop ? 0 : CImGui.ImGuiColorEditFlags_NoDragDrop) | (alpha_half_preview ? CImGui.ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? CImGui.ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : CImGui.ImGuiColorEditFlags_NoOptions)
+            misc_flags = (hdr ? CImGui.ImGuiColorEditFlags_HDR : 0) | (drag_and_drop ? 0 : CImGui.ImGuiColorEditFlags_NoDragDrop) | (alpha_half_preview ? CImGui.ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_opaque ? CImGui.ImGuiColorEditFlags_AlphaOpaque : 0)) | (options_menu ? 0 : CImGui.ImGuiColorEditFlags_NoOptions)
 
             CImGui.Text("Color widget:")
             CImGui.SameLine()
