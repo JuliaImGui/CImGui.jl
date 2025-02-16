@@ -143,7 +143,7 @@ function _update_image_texture end
 function _destroy_image_texture end
 function _current_window end
 
-const _backend = Ref{Symbol}()
+_backend::Union{Symbol, Nothing} = nothing
 
 """
     set_backend(backend::Symbol)
@@ -156,11 +156,11 @@ function set_backend(backend::Symbol)
         throw(ArgumentError("Unrecognized backend: $(backend)"))
     end
 
-    global _backend[] = backend
+    global _backend = backend
 end
 
 function _check_backend()
-    if !isassigned(_backend)
+    if isnothing(_backend)
         error("You must call `CImGui.set_backend()` to the backend you want before calling this function, e.g. `CImGui.set_backend(:GlfwOpenGL3)` for the GLFW/OpenGL3 backend.")
     end
 end
@@ -227,27 +227,27 @@ Keyword arguments:
 """
 function render(args...; kwargs...)
     _check_backend()
-    _render(args..., Val(_backend[]); kwargs...)
+    _render(args..., Val(_backend); kwargs...)
 end
 
 function current_window()
     _check_backend()
-    _current_window(Val(_backend[]))
+    _current_window(Val(_backend))
 end
 
 function create_image_texture(args...; kwargs...)
     _check_backend()
-    _create_image_texture(Val(_backend[]), args...; kwargs...)
+    _create_image_texture(Val(_backend), args...; kwargs...)
 end
 
 function update_image_texture(args...; kwargs...)
     _check_backend()
-    _update_image_texture(Val(_backend[]), args...; kwargs...)
+    _update_image_texture(Val(_backend), args...; kwargs...)
 end
 
 function destroy_image_texture(args...; kwargs...)
     _check_backend()
-    _destroy_image_texture(Val(_backend[]), args...; kwargs...)
+    _destroy_image_texture(Val(_backend), args...; kwargs...)
 end
 
 ## Test engine

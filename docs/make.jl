@@ -24,7 +24,7 @@ makedocs(;
         canonical="https://juliaimgui.github.io/CImGui.jl",
         assets=String[],
         size_threshold=2_000_000,
-        size_threshold_warn=1_500_000
+        size_threshold_warn=2_000_000
     ),
     pages=["index.md", "api.md", "backends.md", "makie.md", "changelog.md"]
 )

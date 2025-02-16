@@ -9,6 +9,9 @@ import GLFW
 import GLMakie
 import GLMakie.Makie as Makie
 
+using PrecompileTools: @setup_workload, @compile_workload
+
+
 # Represents a single Figure to be shown as an ImGui image texture
 struct ImMakieWindow
     glfw_window::GLFW.Window # Only needed for supporting GLMakie requirements
@@ -267,6 +270,27 @@ end
 function __init__()
     ig.atrenderexit(destroy_context)
     Makie.set_theme!(theme_imgui())
+end
+
+@setup_workload begin
+    f = GLMakie.Figure()
+    GLMakie.lines(f[1, 1], rand(10))
+
+    @compile_workload begin
+        ig.set_backend(:GlfwOpenGL3)
+        ctx = ig.CreateContext()
+
+        ig.render(ctx; window_title="CImGui/Makie precompilation workload", opengl_version=v"3.3") do
+            ig.Begin("Foo")
+            ig.MakieFigure("plot", f)
+            ig.End()
+
+            return :imgui_exit_loop
+        end
+
+        destroy_context()
+        ig._backend = nothing
+    end
 end
 
 end
