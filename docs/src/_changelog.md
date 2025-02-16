@@ -6,6 +6,19 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v5.0.1] - 2025-02-17
+
+### Changed
+- Added precompilation workloads for the GLFW/OpenGL backend and the Makie
+  extension ([#165]). This reduced the execution time of some tests involving the
+  GLFW/OpenGL backend from ~2.5s to ~1.8s, and the execution time of the Makie
+  integration tests from ~15s to ~5s.
+
+  It is possible that the workloads are not portable: if you get a
+  precompilation error please report it as a bug with the error message. The
+  precompilation workloads can be disabled completely [using the PrecompileTools
+  preferences](https://julialang.github.io/PrecompileTools.jl/stable/#Package-developers:-reducing-the-cost-of-precompilation-during-development).
+
 ## [v5.0.0] - 2025-02-05
 
 ### Changed

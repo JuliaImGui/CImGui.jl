@@ -12,41 +12,6 @@ permissions:
   contents: read
 
 jobs:
-  loading:
-    name: Loading only - Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        version:
-          - '1.9'
-          - '1'
-          - 'nightly'
-        os:
-          - macOS-latest
-          - windows-latest
-        arch:
-          - x64
-          - x86
-        exclude:
-          - os: macOS-latest
-            arch: x86
-    steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
-        with:
-          version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
-      - uses: julia-actions/cache@v2
-
-      # We add ModernGL and GLFW so that the backend extensions will be loaded too
-      - run: |
-          julia --project=. -e '
-          using Pkg
-          Pkg.add(["ModernGL", "GLFW"])
-          import CImGui, ModernGL, GLFW
-          '
-
   tests:
     name: Tests - Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}

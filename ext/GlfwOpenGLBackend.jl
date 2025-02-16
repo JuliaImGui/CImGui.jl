@@ -6,6 +6,8 @@ import CImGui.lib as lib
 import GLFW
 import ModernGL as GL
 
+using PrecompileTools: @compile_workload
+
 
 # Helper function to get the GLSL version
 function get_glsl_version(gl_version)
@@ -144,7 +146,7 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
             yield()
         end
     catch e
-        @error "Error in CImGui $(ig._backend[]) renderloop!" exception=(e, catch_backtrace())
+        @error "Error in CImGui $(ig._backend) renderloop!" exception=(e, catch_backtrace())
     finally
         for func in vcat(ig._exit_handlers, isnothing(on_exit) ? [] : [on_exit])
             try
@@ -192,6 +194,20 @@ function ig._render(args...; spawn::Union{Bool, Integer, Symbol}=1, wait::Bool=t
     schedule(t)
     monitor_task = errormonitor(t)
     return wait ? Base.wait(monitor_task) : monitor_task
+end
+
+@compile_workload begin
+    ctx = ig.CreateContext()
+    ig.set_backend(:GlfwOpenGL3)
+    ig.render(ctx; window_title="CImGui precompile workload") do
+        ig.Begin("Foo")
+        ig.Text("foo")
+        ig.End()
+
+        return :imgui_exit_loop
+    end
+
+    ig._backend = nothing
 end
 
 end
