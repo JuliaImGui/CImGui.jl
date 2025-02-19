@@ -8,7 +8,7 @@ Changelog](https://keepachangelog.com).
 
 ## [v5.1.0] - 2025-02-19
 
-### Changed
+### Added
 - Added an option to call WaitEvents() instead of PollEvents() in render loop ([#166]).
   You can use it by passing keyword argument `wait_events=true` in function [`render()`](@ref)
 
