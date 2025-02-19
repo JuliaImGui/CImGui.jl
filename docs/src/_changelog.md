@@ -7,10 +7,10 @@ This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
 ## [v5.1.0] - 2025-02-19
-- Added an option to call WaitEvents() instead of PollEvents() in render loop ([#164]).
-  You can use it by passing keyword argument `wait_events=true` in function [`render()`](@ref)
 
 ### Changed
+- Added an option to call WaitEvents() instead of PollEvents() in render loop ([#164]).
+  You can use it by passing keyword argument `wait_events=true` in function [`render()`](@ref)
 
 ## [v5.0.1] - 2025-02-17
 
