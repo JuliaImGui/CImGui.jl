@@ -197,6 +197,7 @@ Keyword arguments:
   any tests registered with the test engine they will be queued and run
   automatically.
 - `opengl_version::VersionNumber=v"3.2"`: The OpenGL version to use.
+- `wait_events=false`: Disable calling `WaitEvents()` instead of `PollEvents()`.
 - `spawn::Union{Bool, Integer, Symbol}=1`: How/where to spawn the
   renderloop. It defaults to thread 1 for safety, but note that currently Julia
   also uses thread 1 to run the libuv event loop:
