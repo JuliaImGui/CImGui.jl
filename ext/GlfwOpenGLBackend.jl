@@ -60,7 +60,8 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     window_size=(1280, 720),
                     window_title="CImGui",
                     engine=nothing,
-                    opengl_version=v"3.2")
+                    opengl_version=v"3.2",
+                    wait_events=false)
     # Validate arguments
     if clear_color isa Ref && !isassigned(clear_color)
         throw(ArgumentError("'clear_color' is a unassigned reference, it must be initialized properly."))
@@ -98,7 +99,7 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
 
     try
         while !GLFW.WindowShouldClose(window)
-            GLFW.PollEvents()
+            wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
 
             # Start the Dear ImGui frame
             lib.ImGui_ImplOpenGL3_NewFrame()
