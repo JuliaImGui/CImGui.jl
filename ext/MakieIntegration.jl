@@ -45,6 +45,7 @@ GLMakie.framebuffer_size(window::ImMakieWindow) = GLMakie.framebuffer_size(windo
 GLMakie.scale_factor(window::ImMakieWindow) = GLMakie.scale_factor(window.glfw_window)
 GLMakie.was_destroyed(window::ImMakieWindow) = GLMakie.was_destroyed(window.glfw_window)
 GLMakie.reopen!(x::GLMakie.Screen{ImMakieWindow}) = x
+GLMakie.destroy!(::ImMakieWindow) = nothing
 GLMakie.set_screen_visibility!(::GLMakie.Screen{ImMakieWindow}, ::Bool) = nothing
 
 # ShaderAbstractions support
