@@ -74,7 +74,13 @@ function makie_demo(; engine=nothing, spawn=1)
         @c ig.Checkbox("Stream data", &stream_data)
 
         if stream_data && isnothing(data_task)
-            data_task = errormonitor(Threads.@spawn live_data(data))
+            # We have to launch the task on the same thread because it modifies
+            # observables, which will end up modifying thread-unsafe OpenGL
+            # things. Hence we use @async instead of Threads.@spawn. If you're
+            # plotting live data being read from a different thread, consider
+            # putting all the updates into a channel that your render function
+            # empties within the render loop.
+            data_task = errormonitor(@async live_data(data))
         end
 
         ig.MakieFigure("plot", f; auto_resize_x, auto_resize_y, tooltip, stats)
