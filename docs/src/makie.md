@@ -39,4 +39,5 @@ None of this is thread-safe. Here's what you can and can't do:
 
 ```@docs
 MakieFigure
+delete_figure!
 ```
