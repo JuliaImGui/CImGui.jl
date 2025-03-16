@@ -17,5 +17,5 @@ imgui_version
 ```@autodocs
 Modules = [CImGui]
 Order   = [:constant, :function, :type]
-Filter  = t -> nameof(t) ∉ (:imgui_version, :render, :set_backend, :MakieFigure)
+Filter  = t -> nameof(t) ∉ (:imgui_version, :render, :set_backend, :MakieFigure, :delete_figure!)
 ```
