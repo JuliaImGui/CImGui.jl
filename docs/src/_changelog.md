@@ -6,6 +6,14 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## Unreleased
+
+### Changed
+- Modified [`MakieFigure`](@ref) to not rely on the `id` for its internal state
+  so that it's safe to call it on different figures with the same ID (not at
+  the same time of course). Also implemented [`delete_figure!()`](@ref) to allow
+  for cleaning up the internal state.
+
 ## [v6.2.0] - 2025-09-27
 
 ### Fixed

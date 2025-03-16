@@ -31,11 +31,11 @@ mutable struct ImMakieFigure
     end
 end
 
-const makie_context = Dict{ig.ImGuiID, ImMakieFigure}()
+const makie_context = IdDict{GLMakie.Figure, ImMakieFigure}()
 
 function destroy_context()
-    for imfigure in values(makie_context)
-        empty!(imfigure.figure)
+    for f in keys(makie_context)
+        empty!(f)
     end
 
     empty!(makie_context)
@@ -130,24 +130,29 @@ function draw_popup(axis)
     end
 end
 
+function ig.delete_figure!(f::GLMakie.Figure)
+    delete!(makie_context, f)
+    return nothing
+end
+
 function ig.MakieFigure(title_id::String, f::GLMakie.Figure;
                         auto_resize_x=true, auto_resize_y=false,
                         tooltip=true, stats=false)
     ig.PushID(title_id)
     id = ig.GetID(title_id)
 
-    if !haskey(makie_context, id)
+    if !haskey(makie_context, f)
         window = ig.current_window()
         makie_window = ImMakieWindow(window)
         screen = GLMakie.Screen(; window=makie_window, start_renderloop=false)
 
-        makie_context[id] = ImMakieFigure(f, screen)
+        makie_context[f] = ImMakieFigure(f, screen)
         scene = Makie.get_scene(f)
         scene.events.window_open[] = true
         display(screen, f)
     end
 
-    imfigure = makie_context[id]
+    imfigure = makie_context[f]
     scene = Makie.get_scene(f)
 
     region_avail = ig.GetContentRegionAvail()
