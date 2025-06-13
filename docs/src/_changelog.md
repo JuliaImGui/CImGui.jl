@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v5.1.2] - 2025-06-13
+
+### Fixed
+- Fixed compatibility with the latest GLFW/GLMakie ([#174]).
+
 ## [v5.1.1] - 2025-03-10
 
 ### Fixed

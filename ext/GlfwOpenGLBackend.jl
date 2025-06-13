@@ -62,6 +62,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     engine=nothing,
                     opengl_version=v"3.2",
                     wait_events=false)
+    if pkgversion(GLFW) >= v"3.4.4"
+        # We leave thread-safety to the user
+        GLFW.ENABLE_THREAD_ASSERTIONS[] = false
+    end
+
     # Validate arguments
     if clear_color isa Ref && !isassigned(clear_color)
         throw(ArgumentError("'clear_color' is a unassigned reference, it must be initialized properly."))
