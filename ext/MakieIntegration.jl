@@ -57,6 +57,17 @@ GLMakie.ShaderAbstractions.native_context_alive(x::ImMakieWindow) = GLFW.is_init
 # events in an immediate-mode fashion within MakieFigure().
 GLMakie.connect_screen(::GLMakie.Scene, ::GLMakie.Screen{ImMakieWindow}) = nothing
 
+# Also disable the corresponding disconnection methods
+for f in (Makie.window_area, Makie.window_open,
+          Makie.mouse_buttons, Makie.mouse_position,
+          Makie.scroll,
+          Makie.keyboard_buttons, Makie.unicode_input,
+          Makie.dropped_files,
+          Makie.hasfocus, Makie.entered_window,
+          Makie.frame_tick)
+    GLMakie.disconnect!(::GLMakie.Screen{ImMakieWindow}, ::typeof(f)) = nothing
+end
+
 function draw_figure_tooltip(cursor_pos, image_size)
     help_str = "(?)"
     text_size = ig.CalcTextSize(help_str)

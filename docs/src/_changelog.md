@@ -6,6 +6,17 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v5.1.2] - 2025-06-13
+
+### Changed
+- When possible the GLFW/OpenGL backend will now enter GC-safe regions in the
+  eventloop to avoid blocking the GC ([#174]). This should improve performance
+  in some situations since the GC will be able to run concurrently with GLFW
+  during certain blocking calls.
+
+### Fixed
+- Fixed compatibility with the latest GLFW/GLMakie ([#174]).
+
 ## [v5.1.1] - 2025-03-10
 
 ### Fixed

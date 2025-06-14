@@ -62,6 +62,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     engine=nothing,
                     opengl_version=v"3.2",
                     wait_events=false)
+    if pkgversion(GLFW) >= v"3.4.4"
+        # We leave thread-safety to the user
+        GLFW.ENABLE_THREAD_ASSERTIONS[] = false
+    end
+
     # Validate arguments
     if clear_color isa Ref && !isassigned(clear_color)
         throw(ArgumentError("'clear_color' is a unassigned reference, it must be initialized properly."))
@@ -99,7 +104,22 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
 
     try
         while !GLFW.WindowShouldClose(window)
-            wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
+            # Polling/waiting for events blocks the whole thread and there's
+            # nothing we can do about it. But, if there are no callbacks
+            # registered on the window we can safely enter a GC-safe region to
+            # allow the GC to run in parallel, which will help prevent GC pauses
+            # that cause the GUI to stutter.
+            have_callbacks = any(!isnothing, GLFW.callbacks(window))
+            if have_callbacks
+                wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
+            else
+                try
+                    @ccall jl_gc_safe_enter()::Int8
+                    wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
+                finally
+                    @ccall jl_gc_safe_leave()::Int8
+                end
+            end
 
             # Start the Dear ImGui frame
             lib.ImGui_ImplOpenGL3_NewFrame()
@@ -135,7 +155,20 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
             lib.ImGui_ImplOpenGL3_RenderDrawData(Ptr{Cint}(ig.GetDrawData()))
 
             GLFW.MakeContextCurrent(window)
-            GLFW.SwapBuffers(window)
+
+            # This is when what we've just rendered actually gets
+            # displayed. With the swap interval set to 1 it will synchronize
+            # with the display refresh rate to prevent screen tearing, which
+            # means this may block for a non-negligible amount of time. Hence we
+            # again enter a GC-safe region so as not to block the
+            # GC. SwapBuffers() does not call any callbacks so this should
+            # always be safe.
+            try
+                @ccall jl_gc_safe_enter()::Int8
+                GLFW.SwapBuffers(window)
+            finally
+                @ccall jl_gc_safe_leave()::Int8
+            end
 
             if (unsafe_load(lib.igGetIO().ConfigFlags) & lib.ImGuiConfigFlags_ViewportsEnable) == lib.ImGuiConfigFlags_ViewportsEnable
                 backup_current_context = GLFW.GetCurrentContext()
