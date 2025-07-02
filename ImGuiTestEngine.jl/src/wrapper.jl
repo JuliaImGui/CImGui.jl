@@ -1016,6 +1016,9 @@ $(TYPEDSIGNATURES)
 
 Render a window picker that captures picked window to file specified in file_name.
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_capture_tool.h#L175).
 """
 _CaptureWindowPicker(self::Ptr{lib.ImGuiCaptureToolUI}, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
@@ -1025,6 +1028,9 @@ _CaptureWindowPicker(self::Ptr{lib.ImGuiCaptureToolUI}, args::VoidablePtrOrRef{l
 $(TYPEDSIGNATURES)
 
 Render a selector for selecting multiple windows for capture.
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_capture_tool.h#L176).
 """
@@ -1039,6 +1045,9 @@ $(TYPEDSIGNATURES)
 
 Snap edges of all visible windows to a virtual grid.
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_capture_tool.h#L177).
 """
 _SnapWindowsToGrid(self::Ptr{lib.ImGuiCaptureToolUI}, cell_size) =
@@ -1049,12 +1058,18 @@ $(TYPEDSIGNATURES)
 
 Format output file template into capture args struct and ensure target directory exists.
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_capture_tool.h#L178).
 """
 _InitializeOutputFile(self::Ptr{lib.ImGuiCaptureToolUI}) = lib.ImGuiCaptureToolUI__InitializeOutputFile(self)
 
 """
 $(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_capture_tool.h#L179).
 """
@@ -1362,13 +1377,8 @@ Set test status and stop running. Usually called when running test logic from Gu
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L266).
 """
-function Finish(
-    status::lib.ImGuiTestStatus = lib.ImGuiTestStatus_Success,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function Finish(status::lib.ImGuiTestStatus = lib.ImGuiTestStatus_Success)
+    self = _current_test_context[]
     lib.ImGuiTestContext_Finish(self, status)
 end
 
@@ -1379,10 +1389,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L267).
 """
-function RunChildTest(test_name, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function RunChildTest(test_name, flags = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_RunChildTest(self, test_name, flags)
 end
 
@@ -1391,10 +1399,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L271).
 """
-function IsError(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function IsError()
+    self = _current_test_context[]
     lib.ImGuiTestContext_IsError(self)
 end
 
@@ -1405,10 +1411,8 @@ Unless test->Flags has ImGuiTestFlags_NoGuiWarmUp, we run GuiFunc() twice before
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L272).
 """
-function IsWarmUpGuiFrame(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function IsWarmUpGuiFrame()
+    self = _current_test_context[]
     lib.ImGuiTestContext_IsWarmUpGuiFrame(self)
 end
 
@@ -1417,10 +1421,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L273).
 """
-function IsFirstGuiFrame(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function IsFirstGuiFrame()
+    self = _current_test_context[]
     lib.ImGuiTestContext_IsFirstGuiFrame(self)
 end
 
@@ -1431,10 +1433,8 @@ First frame where TestFunc is running (after warm-up frame).
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L274).
 """
-function IsFirstTestFrame(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function IsFirstTestFrame()
+    self = _current_test_context[]
     lib.ImGuiTestContext_IsFirstTestFrame(self)
 end
 
@@ -1443,10 +1443,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L275).
 """
-function IsGuiFuncOnly(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function IsGuiFuncOnly()
+    self = _current_test_context[]
     lib.ImGuiTestContext_IsGuiFuncOnly(self)
 end
 
@@ -1457,10 +1455,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L278).
 """
-function SuspendTestFunc(file = C_NULL, line = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SuspendTestFunc(file = C_NULL, line = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_SuspendTestFunc(self, file, line)
 end
 
@@ -1469,10 +1465,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L281).
 """
-function LogEx(level::lib.ImGuiTestVerboseLevel, flags, fmt, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogEx(level::lib.ImGuiTestVerboseLevel, flags, fmt)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogEx(self, level, flags, fmt)
 end
 
@@ -1481,15 +1475,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L283).
 """
-function LogToTTY(
-    level::lib.ImGuiTestVerboseLevel,
-    message,
-    message_end = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogToTTY(level::lib.ImGuiTestVerboseLevel, message, message_end = C_NULL)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogToTTY(self, level, message, message_end)
 end
 
@@ -1498,14 +1485,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L284).
 """
-function LogToDebugger(
-    level::lib.ImGuiTestVerboseLevel,
-    message,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogToDebugger(level::lib.ImGuiTestVerboseLevel, message)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogToDebugger(self, level, message)
 end
 
@@ -1516,10 +1497,8 @@ ImGuiTestVerboseLevel_Debug or ImGuiTestVerboseLevel_Trace depending on context 
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L285).
 """
-function LogDebug(fmt, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogDebug(fmt)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogDebug(self, fmt)
 end
 
@@ -1530,10 +1509,8 @@ ImGuiTestVerboseLevel_Info.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L286).
 """
-function LogInfo(fmt, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogInfo(fmt)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogInfo(self, fmt)
 end
 
@@ -1544,10 +1521,8 @@ ImGuiTestVerboseLevel_Warning.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L287).
 """
-function LogWarning(fmt, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogWarning(fmt)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogWarning(self, fmt)
 end
 
@@ -1558,10 +1533,8 @@ ImGuiTestVerboseLevel_Error.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L288).
 """
-function LogError(fmt, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogError(fmt)
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogError(self, fmt)
 end
 
@@ -1570,10 +1543,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L289).
 """
-function LogBasicUiState(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogBasicUiState()
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogBasicUiState(self)
 end
 
@@ -1582,13 +1553,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L290).
 """
-function LogItemList(
-    list::VoidablePtrOrRef{lib.ImGuiTestItemList},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function LogItemList(list::VoidablePtrOrRef{lib.ImGuiTestItemList})
+    self = _current_test_context[]
     lib.ImGuiTestContext_LogItemList(self, list)
 end
 
@@ -1597,10 +1563,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L293).
 """
-function Yield(count = 1, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function Yield(count = 1)
+    self = _current_test_context[]
     lib.ImGuiTestContext_Yield(self, count)
 end
 
@@ -1611,10 +1575,8 @@ Sleep for a given simulation time, unless in Fast mode.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L294).
 """
-function Sleep(time_in_second, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function Sleep(time_in_second)
+    self = _current_test_context[]
     lib.ImGuiTestContext_Sleep(self, time_in_second)
 end
 
@@ -1625,10 +1587,8 @@ Standard short delay of io.ActionDelayShort (~0.15f), unless in Fast mode.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L295).
 """
-function SleepShort(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SleepShort()
+    self = _current_test_context[]
     lib.ImGuiTestContext_SleepShort(self)
 end
 
@@ -1639,10 +1599,8 @@ Standard regular delay of io.ActionDelayStandard (~0.40f), unless in Fast mode.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L296).
 """
-function SleepStandard(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SleepStandard()
+    self = _current_test_context[]
     lib.ImGuiTestContext_SleepStandard(self)
 end
 
@@ -1651,10 +1609,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L297).
 """
-function SleepNoSkip(time_in_second, framestep_in_second, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SleepNoSkip(time_in_second, framestep_in_second)
+    self = _current_test_context[]
     lib.ImGuiTestContext_SleepNoSkip(self, time_in_second, framestep_in_second)
 end
 
@@ -1663,10 +1619,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L308).
 """
-function SetRef(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SetRef(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_SetRef_TestRef(self, lib.ImGuiTestRef(ref))
 end
 
@@ -1677,10 +1631,8 @@ Shortcut to SetRef(window->Name) which works for ChildWindow (see code).
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L309).
 """
-function SetRef(window::PtrOrRef{libig.ImGuiWindow}, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SetRef(window::PtrOrRef{libig.ImGuiWindow})
+    self = _current_test_context[]
     lib.ImGuiTestContext_SetRef_WindowPtr(self, window)
 end
 
@@ -1689,10 +1641,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L310).
 """
-function GetRef(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetRef()
+    self = _current_test_context[]
     pOut = Ref{ImGuiTestRef}()
     lib.ImGuiTestContext_GetRef(pOut, self)
     return pOut[]
@@ -1703,14 +1653,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L315).
 """
-function WindowInfo(
-    window_ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowInfo(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     pOut = Ref{ImGuiTestItemInfo}()
     GC.@preserve window_ref lib.ImGuiTestContext_WindowInfo(pOut, self, lib.ImGuiTestRef(window_ref), flags)
     return pOut[]
@@ -1721,10 +1665,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L316).
 """
-function WindowClose(window_ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowClose(window_ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowClose(self, lib.ImGuiTestRef(window_ref))
 end
 
@@ -1733,10 +1675,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L317).
 """
-function WindowCollapse(window_ref::TestRef, collapsed, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowCollapse(window_ref::TestRef, collapsed)
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowCollapse(self, lib.ImGuiTestRef(window_ref), collapsed)
 end
 
@@ -1745,14 +1685,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L318).
 """
-function WindowFocus(
-    window_ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowFocus(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowFocus(self, lib.ImGuiTestRef(window_ref), flags)
 end
 
@@ -1761,14 +1695,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L319).
 """
-function WindowBringToFront(
-    window_ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowBringToFront(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowBringToFront(self, lib.ImGuiTestRef(window_ref), flags)
 end
 
@@ -1782,11 +1710,8 @@ function WindowMove(
     pos::Union{libig.ImVec2,NTuple{2}},
     pivot::Union{libig.ImVec2,NTuple{2}} = libig.ImVec2(0.0f0, 0.0f0),
     flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowMove(self, lib.ImGuiTestRef(window_ref), pos, pivot, flags)
 end
 
@@ -1795,14 +1720,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L321).
 """
-function WindowResize(
-    window_ref::TestRef,
-    sz::Union{libig.ImVec2,NTuple{2}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowResize(window_ref::TestRef, sz::Union{libig.ImVec2,NTuple{2}})
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowResize(self, lib.ImGuiTestRef(window_ref), sz)
 end
 
@@ -1811,14 +1730,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L322).
 """
-function WindowTeleportToMakePosVisible(
-    window_ref::TestRef,
-    pos_in_window::Union{libig.ImVec2,NTuple{2}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowTeleportToMakePosVisible(window_ref::TestRef, pos_in_window::Union{libig.ImVec2,NTuple{2}})
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_WindowTeleportToMakePosVisible(
         self,
         lib.ImGuiTestRef(window_ref),
@@ -1831,10 +1744,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L323).
 """
-function GetWindowByRef(window_ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetWindowByRef(window_ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve window_ref lib.ImGuiTestContext_GetWindowByRef(self, lib.ImGuiTestRef(window_ref))
 end
 
@@ -1843,10 +1754,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L326).
 """
-function PopupCloseOne(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function PopupCloseOne()
+    self = _current_test_context[]
     lib.ImGuiTestContext_PopupCloseOne(self)
 end
 
@@ -1855,10 +1764,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L327).
 """
-function PopupCloseAll(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function PopupCloseAll()
+    self = _current_test_context[]
     lib.ImGuiTestContext_PopupCloseAll(self)
 end
 
@@ -1867,10 +1774,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L328).
 """
-function PopupGetWindowID(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function PopupGetWindowID(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_PopupGetWindowID(self, lib.ImGuiTestRef(ref))
 end
 
@@ -1879,10 +1784,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L332).
 """
-function GetID(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetID(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_GetID_TestRef(self, lib.ImGuiTestRef(ref))
 end
 
@@ -1891,10 +1794,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L333).
 """
-function GetID(ref::TestRef, seed_ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetID(ref::TestRef, seed_ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref seed_ref lib.ImGuiTestContext_GetID_TestRefTestRef(
         self,
         lib.ImGuiTestRef(ref),
@@ -1909,13 +1810,8 @@ Find a point that has no windows // FIXME: This needs error return and flag to e
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L336).
 """
-function GetPosOnVoid(
-    viewport::VoidablePtrOrRef{libig.ImGuiViewport},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetPosOnVoid(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
+    self = _current_test_context[]
     pOut = Ref{ImVec2}()
     lib.ImGuiTestContext_GetPosOnVoid(pOut, self, viewport)
     return pOut[]
@@ -1928,10 +1824,8 @@ Return a clickable point on window title-bar (window tab for docked windows).
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L337).
 """
-function GetWindowTitlebarPoint(window_ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetWindowTitlebarPoint(window_ref::TestRef)
+    self = _current_test_context[]
     pOut = Ref{ImVec2}()
     GC.@preserve window_ref lib.ImGuiTestContext_GetWindowTitlebarPoint(pOut, self, lib.ImGuiTestRef(window_ref))
     return pOut[]
@@ -1944,10 +1838,8 @@ Work pos and size of main viewport when viewports are disabled, or work pos and 
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L338).
 """
-function GetMainMonitorWorkPos(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetMainMonitorWorkPos()
+    self = _current_test_context[]
     pOut = Ref{ImVec2}()
     lib.ImGuiTestContext_GetMainMonitorWorkPos(pOut, self)
     return pOut[]
@@ -1958,10 +1850,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L339).
 """
-function GetMainMonitorWorkSize(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GetMainMonitorWorkSize()
+    self = _current_test_context[]
     pOut = Ref{ImVec2}()
     lib.ImGuiTestContext_GetMainMonitorWorkSize(pOut, self)
     return pOut[]
@@ -1974,10 +1864,8 @@ Reset state (use when doing multiple captures).
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L342).
 """
-function CaptureReset(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureReset()
+    self = _current_test_context[]
     lib.ImGuiTestContext_CaptureReset(self)
 end
 
@@ -1988,10 +1876,8 @@ Set capture file format (otherwise for video this default to EngineIO->VideoCapt
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L343).
 """
-function CaptureSetExtension(ext, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureSetExtension(ext)
+    self = _current_test_context[]
     lib.ImGuiTestContext_CaptureSetExtension(self, ext)
 end
 
@@ -2002,10 +1888,8 @@ Add window to be captured (default to capture everything).
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L344).
 """
-function CaptureAddWindow(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureAddWindow(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_CaptureAddWindow(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2016,14 +1900,8 @@ Trigger a screen capture of a single window (== CaptureAddWindow() + CaptureScre
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L345).
 """
-function CaptureScreenshotWindow(
-    ref::TestRef,
-    capture_flags = 0,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureScreenshotWindow(ref::TestRef, capture_flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_CaptureScreenshotWindow(self, lib.ImGuiTestRef(ref), capture_flags)
 end
 
@@ -2034,10 +1912,8 @@ Trigger a screen capture.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L346).
 """
-function CaptureScreenshot(capture_flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureScreenshot(capture_flags = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_CaptureScreenshot(self, capture_flags)
 end
 
@@ -2048,10 +1924,8 @@ Start a video capture.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L347).
 """
-function CaptureBeginVideo(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureBeginVideo()
+    self = _current_test_context[]
     lib.ImGuiTestContext_CaptureBeginVideo(self)
 end
 
@@ -2060,10 +1934,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L348).
 """
-function CaptureEndVideo(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function CaptureEndVideo()
+    self = _current_test_context[]
     lib.ImGuiTestContext_CaptureEndVideo(self)
 end
 
@@ -2072,14 +1944,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L351).
 """
-function MouseMove(
-    ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseMove(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_MouseMove(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2088,10 +1954,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L352).
 """
-function MouseMoveToPos(pos::Union{libig.ImVec2,NTuple{2}}, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseMoveToPos(pos::Union{libig.ImVec2,NTuple{2}})
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseMoveToPos(self, pos)
 end
 
@@ -2100,14 +1964,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L353).
 """
-function MouseTeleportToPos(
-    pos::Union{libig.ImVec2,NTuple{2}},
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseTeleportToPos(pos::Union{libig.ImVec2,NTuple{2}}, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseTeleportToPos(self, pos, flags)
 end
 
@@ -2116,10 +1974,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L354).
 """
-function MouseClick(button = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseClick(button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseClick(self, button)
 end
 
@@ -2128,10 +1984,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L355).
 """
-function MouseClickMulti(button, count, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseClickMulti(button, count)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseClickMulti(self, button, count)
 end
 
@@ -2140,10 +1994,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L356).
 """
-function MouseDoubleClick(button = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseDoubleClick(button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseDoubleClick(self, button)
 end
 
@@ -2152,10 +2004,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L357).
 """
-function MouseDown(button = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseDown(button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseDown(self, button)
 end
 
@@ -2164,10 +2014,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L358).
 """
-function MouseUp(button = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseUp(button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseUp(self, button)
 end
 
@@ -2176,10 +2024,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L359).
 """
-function MouseLiftDragThreshold(button = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseLiftDragThreshold(button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseLiftDragThreshold(self, button)
 end
 
@@ -2188,14 +2034,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L360).
 """
-function MouseDragWithDelta(
-    delta::Union{libig.ImVec2,NTuple{2}},
-    button = 0,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseDragWithDelta(delta::Union{libig.ImVec2,NTuple{2}}, button = 0)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseDragWithDelta(self, delta, button)
 end
 
@@ -2204,10 +2044,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L361).
 """
-function MouseWheel(delta::Union{libig.ImVec2,NTuple{2}}, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseWheel(delta::Union{libig.ImVec2,NTuple{2}})
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseWheel(self, delta)
 end
 
@@ -2216,10 +2054,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L362).
 """
-function MouseWheelX(dx, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseWheelX(dx)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseWheelX(self, dx)
 end
 
@@ -2228,10 +2064,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L363).
 """
-function MouseWheelY(dy, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseWheelY(dy)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseWheelY(self, dy)
 end
 
@@ -2240,13 +2074,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L364).
 """
-function MouseMoveToVoid(
-    viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseMoveToVoid(viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseMoveToVoid(self, viewport)
 end
 
@@ -2255,14 +2084,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L365).
 """
-function MouseClickOnVoid(
-    button = 0,
-    viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseClickOnVoid(button = 0, viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseClickOnVoid(self, button, viewport)
 end
 
@@ -2271,13 +2094,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L366).
 """
-function FindHoveredWindowAtPos(
-    pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function FindHoveredWindowAtPos(pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}})
+    self = _current_test_context[]
     lib.ImGuiTestContext_FindHoveredWindowAtPos(self, pos)
 end
 
@@ -2289,11 +2107,8 @@ $(TYPEDSIGNATURES)
 function FindExistingVoidPosOnViewport(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
     out::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     lib.ImGuiTestContext_FindExistingVoidPosOnViewport(self, viewport, out)
 end
 
@@ -2302,13 +2117,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L372).
 """
-function MouseSetViewport(
-    window::VoidablePtrOrRef{libig.ImGuiWindow},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseSetViewport(window::VoidablePtrOrRef{libig.ImGuiWindow})
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseSetViewport(self, window)
 end
 
@@ -2317,10 +2127,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L373).
 """
-function MouseSetViewportID(viewport_id, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MouseSetViewportID(viewport_id)
+    self = _current_test_context[]
     lib.ImGuiTestContext_MouseSetViewportID(self, viewport_id)
 end
 
@@ -2329,10 +2137,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L376).
 """
-function KeyDown(key_chord, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyDown(key_chord)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyDown(self, key_chord)
 end
 
@@ -2341,10 +2147,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L377).
 """
-function KeyUp(key_chord, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyUp(key_chord)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyUp(self, key_chord)
 end
 
@@ -2353,10 +2157,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L378).
 """
-function KeyPress(key_chord, count = 1, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyPress(key_chord, count = 1)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyPress(self, key_chord, count)
 end
 
@@ -2365,10 +2167,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L379).
 """
-function KeyHold(key_chord, time, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyHold(key_chord, time)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyHold(self, key_chord, time)
 end
 
@@ -2377,10 +2177,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L380).
 """
-function KeySetEx(key_chord, is_down, time, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeySetEx(key_chord, is_down, time)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeySetEx(self, key_chord, is_down, time)
 end
 
@@ -2391,10 +2189,8 @@ Input characters.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L381).
 """
-function KeyChars(chars, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyChars(chars)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyChars(self, chars)
 end
 
@@ -2405,10 +2201,8 @@ Input characters at end of field.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L382).
 """
-function KeyCharsAppend(chars, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyCharsAppend(chars)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyCharsAppend(self, chars)
 end
 
@@ -2419,10 +2213,8 @@ Input characters at end of field, press Enter.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L383).
 """
-function KeyCharsAppendEnter(chars, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyCharsAppendEnter(chars)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyCharsAppendEnter(self, chars)
 end
 
@@ -2433,10 +2225,8 @@ Delete existing field then input characters.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L384).
 """
-function KeyCharsReplace(chars, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyCharsReplace(chars)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyCharsReplace(self, chars)
 end
 
@@ -2447,10 +2237,8 @@ Delete existing field then input characters, press Enter.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L385).
 """
-function KeyCharsReplaceEnter(chars, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function KeyCharsReplaceEnter(chars)
+    self = _current_test_context[]
     lib.ImGuiTestContext_KeyCharsReplaceEnter(self, chars)
 end
 
@@ -2461,10 +2249,8 @@ Mouse or Keyboard or Gamepad. In Keyboard or Gamepad mode, actions such as ItemC
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L392).
 """
-function SetInputMode(input_mode::libig.ImGuiInputSource, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function SetInputMode(input_mode::libig.ImGuiInputSource)
+    self = _current_test_context[]
     lib.ImGuiTestContext_SetInputMode(self, input_mode)
 end
 
@@ -2473,10 +2259,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L393).
 """
-function NavMoveTo(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function NavMoveTo(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_NavMoveTo(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2487,10 +2271,8 @@ Activate current selected item: activate button, tweak sliders/drags. Equivalent
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L394).
 """
-function NavActivate(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function NavActivate()
+    self = _current_test_context[]
     lib.ImGuiTestContext_NavActivate(self)
 end
 
@@ -2501,10 +2283,8 @@ Input into select item: input sliders/drags. Equivalent of pressing Enter on key
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L395).
 """
-function NavInput(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function NavInput()
+    self = _current_test_context[]
     lib.ImGuiTestContext_NavInput(self)
 end
 
@@ -2513,16 +2293,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L398).
 """
-function ScrollTo(
-    ref::TestRef,
-    axis::libig.ImGuiAxis,
-    scroll_v,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollTo(ref::TestRef, axis::libig.ImGuiAxis, scroll_v, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollTo(self, lib.ImGuiTestRef(ref), axis, scroll_v, flags)
 end
 
@@ -2531,10 +2303,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L399).
 """
-function ScrollToX(ref::TestRef, scroll_x, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToX(ref::TestRef, scroll_x)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToX(self, lib.ImGuiTestRef(ref), scroll_x)
 end
 
@@ -2543,10 +2313,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L400).
 """
-function ScrollToY(ref::TestRef, scroll_y, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToY(ref::TestRef, scroll_y)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToY(self, lib.ImGuiTestRef(ref), scroll_y)
 end
 
@@ -2555,10 +2323,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L401).
 """
-function ScrollToTop(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToTop(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToTop(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2567,10 +2333,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L402).
 """
-function ScrollToBottom(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToBottom(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToBottom(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2579,15 +2343,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L403).
 """
-function ScrollToItem(
-    ref::TestRef,
-    axis::libig.ImGuiAxis,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToItem(ref::TestRef, axis::libig.ImGuiAxis, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToItem(self, lib.ImGuiTestRef(ref), axis, flags)
 end
 
@@ -2596,10 +2353,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L404).
 """
-function ScrollToItemX(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToItemX(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToItemX(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2608,10 +2363,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L405).
 """
-function ScrollToItemY(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToItemY(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollToItemY(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2620,14 +2373,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L406).
 """
-function ScrollToTabItem(
-    tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar},
-    tab_id,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollToTabItem(tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar}, tab_id)
+    self = _current_test_context[]
     lib.ImGuiTestContext_ScrollToTabItem(self, tab_bar, tab_id)
 end
 
@@ -2636,16 +2383,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L407).
 """
-function ScrollErrorCheck(
-    axis::libig.ImGuiAxis,
-    expected,
-    actual,
-    remaining_attempts,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollErrorCheck(axis::libig.ImGuiAxis, expected, actual, remaining_attempts)
+    self = _current_test_context[]
     lib.ImGuiTestContext_ScrollErrorCheck(self, axis, expected, actual, remaining_attempts)
 end
 
@@ -2654,10 +2393,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L408).
 """
-function ScrollVerifyScrollMax(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ScrollVerifyScrollMax(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ScrollVerifyScrollMax(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2666,14 +2403,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L413).
 """
-function ItemInfo(
-    ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInfo(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     pOut = Ref{ImGuiTestItemInfo}()
     GC.@preserve ref lib.ImGuiTestContext_ItemInfo(pOut, self, lib.ImGuiTestRef(ref), flags)
     return pOut[]
@@ -2684,14 +2415,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L414).
 """
-function ItemInfoOpenFullPath(
-    ref::TestRef,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInfoOpenFullPath(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     pOut = Ref{ImGuiTestItemInfo}()
     GC.@preserve ref lib.ImGuiTestContext_ItemInfoOpenFullPath(pOut, self, lib.ImGuiTestRef(ref), flags)
     return pOut[]
@@ -2702,15 +2427,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L415).
 """
-function ItemInfoHandleWildcardSearch(
-    wildcard_prefix_start,
-    wildcard_prefix_end,
-    wildcard_suffix_start,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInfoHandleWildcardSearch(wildcard_prefix_start, wildcard_prefix_end, wildcard_suffix_start)
+    self = _current_test_context[]
     lib.ImGuiTestContext_ItemInfoHandleWildcardSearch(
         self,
         wildcard_prefix_start,
@@ -2724,10 +2442,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L416).
 """
-function ItemInfoNull(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInfoNull()
+    self = _current_test_context[]
     pOut = Ref{ImGuiTestItemInfo}()
     lib.ImGuiTestContext_ItemInfoNull(pOut, self)
     return pOut[]
@@ -2738,15 +2454,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L417).
 """
-function GatherItems(
-    out_list::VoidablePtrOrRef{lib.ImGuiTestItemList},
-    parent::TestRef,
-    depth = -1,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function GatherItems(out_list::VoidablePtrOrRef{lib.ImGuiTestItemList}, parent::TestRef, depth = -1)
+    self = _current_test_context[]
     GC.@preserve parent lib.ImGuiTestContext_GatherItems(self, out_list, lib.ImGuiTestRef(parent), depth)
 end
 
@@ -2755,16 +2464,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L420).
 """
-function ItemAction(
-    action::lib.ImGuiTestAction,
-    ref::TestRef,
-    flags = 0,
-    action_arg = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemAction(action::lib.ImGuiTestAction, ref::TestRef, flags = 0, action_arg = C_NULL)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemAction(self, action, lib.ImGuiTestRef(ref), flags, action_arg)
 end
 
@@ -2773,10 +2474,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L421).
 """
-function ItemClick(ref::TestRef, button = 0, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemClick(ref::TestRef, button = 0, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemClick(self, lib.ImGuiTestRef(ref), button, flags)
 end
 
@@ -2785,10 +2484,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L422).
 """
-function ItemDoubleClick(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemDoubleClick(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemDoubleClick(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2797,10 +2494,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L423).
 """
-function ItemCheck(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemCheck(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemCheck(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2809,10 +2504,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L424).
 """
-function ItemUncheck(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemUncheck(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemUncheck(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2821,10 +2514,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L425).
 """
-function ItemOpen(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemOpen(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemOpen(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2833,10 +2524,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L426).
 """
-function ItemClose(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemClose(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemClose(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2845,10 +2534,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L427).
 """
-function ItemInput(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInput(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemInput(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2857,10 +2544,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L428).
 """
-function ItemNavActivate(ref::TestRef, flags = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemNavActivate(ref::TestRef, flags = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemNavActivate(self, lib.ImGuiTestRef(ref), flags)
 end
 
@@ -2873,11 +2558,8 @@ function ItemActionAll(
     action::lib.ImGuiTestAction,
     ref_parent::TestRef,
     filter::VoidablePtrOrRef{lib.ImGuiTestActionFilter} = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_ItemActionAll(self, action, lib.ImGuiTestRef(ref_parent), filter)
 end
 
@@ -2886,15 +2568,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L432).
 """
-function ItemOpenAll(
-    ref_parent::TestRef,
-    depth = -1,
-    passes = -1,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemOpenAll(ref_parent::TestRef, depth = -1, passes = -1)
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_ItemOpenAll(self, lib.ImGuiTestRef(ref_parent), depth, passes)
 end
 
@@ -2903,15 +2578,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L433).
 """
-function ItemCloseAll(
-    ref_parent::TestRef,
-    depth = -1,
-    passes = -1,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemCloseAll(ref_parent::TestRef, depth = -1, passes = -1)
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_ItemCloseAll(self, lib.ImGuiTestRef(ref_parent), depth, passes)
 end
 
@@ -2920,10 +2588,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L436).
 """
-function ItemInputValue(ref::TestRef, v::Integer, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInputValue(ref::TestRef, v::Integer)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemInputValue_int(self, lib.ImGuiTestRef(ref), v)
 end
 
@@ -2932,10 +2598,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L437).
 """
-function ItemInputValue(ref::TestRef, f::Real, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInputValue(ref::TestRef, f::Real)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemInputValue_float(self, lib.ImGuiTestRef(ref), f)
 end
 
@@ -2944,14 +2608,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L438).
 """
-function ItemInputValue(
-    ref::TestRef,
-    str::Union{String,Ptr{Cchar},Ptr{Cvoid}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemInputValue(ref::TestRef, str::Union{String,Ptr{Cchar},Ptr{Cvoid}})
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemInputValue_Str(self, lib.ImGuiTestRef(ref), str)
 end
 
@@ -2960,10 +2618,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L444).
 """
-function ItemReadAsInt(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemReadAsInt(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemReadAsInt(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2972,10 +2628,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L445).
 """
-function ItemReadAsFloat(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemReadAsFloat(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemReadAsFloat(self, lib.ImGuiTestRef(ref))
 end
 
@@ -2984,16 +2638,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L446).
 """
-function ItemReadAsScalar(
-    ref::TestRef,
-    data_type,
-    out_data,
-    flags = lib.ImGuiTestOpFlags_None,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemReadAsScalar(ref::TestRef, data_type, out_data, flags = lib.ImGuiTestOpFlags_None)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemReadAsScalar(self, lib.ImGuiTestRef(ref), data_type, out_data, flags)
 end
 
@@ -3002,10 +2648,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L447).
 """
-function ItemReadAsString(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemReadAsString(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemReadAsString_TestRef(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3014,15 +2658,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L448).
 """
-function ItemReadAsString(
-    ref::TestRef,
-    out_buf::Union{String,Ptr{Cchar},Ptr{Cvoid}},
-    out_buf_size::Real,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemReadAsString(ref::TestRef, out_buf::Union{String,Ptr{Cchar},Ptr{Cvoid}}, out_buf_size::Real)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemReadAsString_TestRefStr(
         self,
         lib.ImGuiTestRef(ref),
@@ -3036,10 +2673,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L451).
 """
-function ItemExists(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemExists(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemExists(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3048,10 +2683,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L452).
 """
-function ItemIsChecked(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemIsChecked(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemIsChecked(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3060,10 +2693,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L453).
 """
-function ItemIsOpened(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemIsOpened(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemIsOpened(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3072,10 +2703,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L454).
 """
-function ItemVerifyCheckedIfAlive(ref::TestRef, checked, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemVerifyCheckedIfAlive(ref::TestRef, checked)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemVerifyCheckedIfAlive(self, lib.ImGuiTestRef(ref), checked)
 end
 
@@ -3084,10 +2713,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L457).
 """
-function ItemHold(ref::TestRef, time, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemHold(ref::TestRef, time)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemHold(self, lib.ImGuiTestRef(ref), time)
 end
 
@@ -3096,10 +2723,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L458).
 """
-function ItemHoldForFrames(ref::TestRef, frames, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemHoldForFrames(ref::TestRef, frames)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ItemHoldForFrames(self, lib.ImGuiTestRef(ref), frames)
 end
 
@@ -3108,14 +2733,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L459).
 """
-function ItemDragOverAndHold(
-    ref_src::TestRef,
-    ref_dst::TestRef,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemDragOverAndHold(ref_src::TestRef, ref_dst::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref_src ref_dst lib.ImGuiTestContext_ItemDragOverAndHold(
         self,
         lib.ImGuiTestRef(ref_src),
@@ -3128,15 +2747,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L460).
 """
-function ItemDragAndDrop(
-    ref_src::TestRef,
-    ref_dst::TestRef,
-    button = 0,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemDragAndDrop(ref_src::TestRef, ref_dst::TestRef, button = 0)
+    self = _current_test_context[]
     GC.@preserve ref_src ref_dst lib.ImGuiTestContext_ItemDragAndDrop(
         self,
         lib.ImGuiTestRef(ref_src),
@@ -3150,14 +2762,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L461).
 """
-function ItemDragWithDelta(
-    ref_src::TestRef,
-    pos_delta::Union{libig.ImVec2,NTuple{2}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ItemDragWithDelta(ref_src::TestRef, pos_delta::Union{libig.ImVec2,NTuple{2}})
+    self = _current_test_context[]
     GC.@preserve ref_src lib.ImGuiTestContext_ItemDragWithDelta(self, lib.ImGuiTestRef(ref_src), pos_delta)
 end
 
@@ -3166,10 +2772,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L464).
 """
-function TabClose(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TabClose(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TabClose(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3178,14 +2782,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L465).
 """
-function TabBarCompareOrder(
-    tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar},
-    tab_order,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TabBarCompareOrder(tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar}, tab_order)
+    self = _current_test_context[]
     lib.ImGuiTestContext_TabBarCompareOrder(self, tab_bar, tab_order)
 end
 
@@ -3194,10 +2792,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L470).
 """
-function MenuAction(action::lib.ImGuiTestAction, ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuAction(action::lib.ImGuiTestAction, ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_MenuAction(self, action, lib.ImGuiTestRef(ref))
 end
 
@@ -3206,14 +2802,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L471).
 """
-function MenuActionAll(
-    action::lib.ImGuiTestAction,
-    ref_parent::TestRef,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuActionAll(action::lib.ImGuiTestAction, ref_parent::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_MenuActionAll(self, action, lib.ImGuiTestRef(ref_parent))
 end
 
@@ -3222,10 +2812,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L472).
 """
-function MenuClick(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuClick(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_MenuClick(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3234,10 +2822,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L473).
 """
-function MenuCheck(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuCheck(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_MenuCheck(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3246,10 +2832,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L474).
 """
-function MenuUncheck(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuUncheck(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_MenuUncheck(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3258,10 +2842,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L475).
 """
-function MenuCheckAll(ref_parent::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuCheckAll(ref_parent::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_MenuCheckAll(self, lib.ImGuiTestRef(ref_parent))
 end
 
@@ -3270,10 +2852,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L476).
 """
-function MenuUncheckAll(ref_parent::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function MenuUncheckAll(ref_parent::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref_parent lib.ImGuiTestContext_MenuUncheckAll(self, lib.ImGuiTestRef(ref_parent))
 end
 
@@ -3282,10 +2862,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L479).
 """
-function ComboClick(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ComboClick(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ComboClick(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3294,10 +2872,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L480).
 """
-function ComboClickAll(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ComboClickAll(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_ComboClickAll(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3306,10 +2882,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L483).
 """
-function TableOpenContextMenu(ref::TestRef, column_n = -1, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TableOpenContextMenu(ref::TestRef, column_n = -1)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TableOpenContextMenu(self, lib.ImGuiTestRef(ref), column_n)
 end
 
@@ -3318,10 +2892,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L484).
 """
-function TableClickHeader(ref::TestRef, label, key_mods = 0, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TableClickHeader(ref::TestRef, label, key_mods = 0)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TableClickHeader(self, lib.ImGuiTestRef(ref), label, key_mods)
 end
 
@@ -3330,10 +2902,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L485).
 """
-function TableSetColumnEnabled(ref::TestRef, label, enabled, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TableSetColumnEnabled(ref::TestRef, label, enabled)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TableSetColumnEnabled(self, lib.ImGuiTestRef(ref), label, enabled)
 end
 
@@ -3342,10 +2912,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L486).
 """
-function TableResizeColumn(ref::TestRef, column_n, width, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TableResizeColumn(ref::TestRef, column_n, width)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TableResizeColumn(self, lib.ImGuiTestRef(ref), column_n, width)
 end
 
@@ -3354,10 +2922,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L487).
 """
-function TableGetSortSpecs(ref::TestRef, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function TableGetSortSpecs(ref::TestRef)
+    self = _current_test_context[]
     GC.@preserve ref lib.ImGuiTestContext_TableGetSortSpecs(self, lib.ImGuiTestRef(ref))
 end
 
@@ -3369,11 +2935,8 @@ $(TYPEDSIGNATURES)
 function ViewportPlatform_SetWindowPos(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
     pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     lib.ImGuiTestContext_ViewportPlatform_SetWindowPos(self, viewport, pos)
 end
 
@@ -3385,11 +2948,8 @@ $(TYPEDSIGNATURES)
 function ViewportPlatform_SetWindowSize(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
     size::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     lib.ImGuiTestContext_ViewportPlatform_SetWindowSize(self, viewport, size)
 end
 
@@ -3398,13 +2958,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L495).
 """
-function ViewportPlatform_SetWindowFocus(
-    viewport::VoidablePtrOrRef{libig.ImGuiViewport},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ViewportPlatform_SetWindowFocus(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
+    self = _current_test_context[]
     lib.ImGuiTestContext_ViewportPlatform_SetWindowFocus(self, viewport)
 end
 
@@ -3413,13 +2968,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L496).
 """
-function ViewportPlatform_CloseWindow(
-    viewport::VoidablePtrOrRef{libig.ImGuiViewport},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function ViewportPlatform_CloseWindow(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
+    self = _current_test_context[]
     lib.ImGuiTestContext_ViewportPlatform_CloseWindow(self, viewport)
 end
 
@@ -3428,10 +2978,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L501).
 """
-function DockClear(window_name, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function DockClear(window_name)
+    self = _current_test_context[]
     lib.ImGuiTestContext_DockClear(self, window_name)
 end
 
@@ -3446,11 +2994,8 @@ function DockInto(
     split_dir::libig.ImGuiDir = libig.ImGuiDir_None,
     is_outer_docking = false,
     flags = 0,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     GC.@preserve src_id dst_id lib.ImGuiTestContext_DockInto(
         self,
         lib.ImGuiTestRef(src_id),
@@ -3466,10 +3011,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L503).
 """
-function UndockNode(dock_id, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function UndockNode(dock_id)
+    self = _current_test_context[]
     lib.ImGuiTestContext_UndockNode(self, dock_id)
 end
 
@@ -3478,10 +3021,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L504).
 """
-function UndockWindow(window_name, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function UndockWindow(window_name)
+    self = _current_test_context[]
     lib.ImGuiTestContext_UndockWindow(self, window_name)
 end
 
@@ -3490,13 +3031,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L505).
 """
-function WindowIsUndockedOrStandalone(
-    window::VoidablePtrOrRef{libig.ImGuiWindow},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function WindowIsUndockedOrStandalone(window::VoidablePtrOrRef{libig.ImGuiWindow})
+    self = _current_test_context[]
     lib.ImGuiTestContext_WindowIsUndockedOrStandalone(self, window)
 end
 
@@ -3505,10 +3041,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L506).
 """
-function DockIdIsUndockedOrStandalone(dock_id, self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function DockIdIsUndockedOrStandalone(dock_id)
+    self = _current_test_context[]
     lib.ImGuiTestContext_DockIdIsUndockedOrStandalone(self, dock_id)
 end
 
@@ -3517,14 +3051,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L507).
 """
-function DockNodeHideTabBar(
-    node::VoidablePtrOrRef{libig.ImGuiDockNode},
-    hidden,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function DockNodeHideTabBar(node::VoidablePtrOrRef{libig.ImGuiDockNode}, hidden)
+    self = _current_test_context[]
     lib.ImGuiTestContext_DockNodeHideTabBar(self, node, hidden)
 end
 
@@ -3533,10 +3061,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L511).
 """
-function PerfCalcRef(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function PerfCalcRef()
+    self = _current_test_context[]
     lib.ImGuiTestContext_PerfCalcRef(self)
 end
 
@@ -3545,15 +3071,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L512).
 """
-function PerfCapture(
-    category = C_NULL,
-    test_name = C_NULL,
-    csv_file = C_NULL,
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
-)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function PerfCapture(category = C_NULL, test_name = C_NULL, csv_file = C_NULL)
+    self = _current_test_context[]
     lib.ImGuiTestContext_PerfCapture(self, category, test_name, csv_file)
 end
 
@@ -3562,17 +3081,17 @@ $(TYPEDSIGNATURES)
 
 Move windows covering 'window' at pos.
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L534).
 """
 function _MakeAimingSpaceOverPos(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
     over_window::VoidablePtrOrRef{libig.ImGuiWindow},
     over_pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     lib.ImGuiTestContext__MakeAimingSpaceOverPos(self, viewport, over_window, over_pos)
 end
 
@@ -3581,16 +3100,16 @@ $(TYPEDSIGNATURES)
 
 FIXME: Aim to remove this system...
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L535).
 """
 function _ForeignWindowsHideOverPos(
     pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
     ignore_list::VoidablePtrOrRef{Ptr{Ptr{libig.ImGuiWindow}}},
-    self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing,
 )
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+    self = _current_test_context[]
     lib.ImGuiTestContext__ForeignWindowsHideOverPos(self, pos, ignore_list)
 end
 
@@ -3599,12 +3118,13 @@ $(TYPEDSIGNATURES)
 
 FIXME: Aim to remove this system...
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_context.h#L536).
 """
-function _ForeignWindowsUnhideAll(self::Union{Ptr{lib.ImGuiTestContext},Nothing} = nothing)
-    if isnothing(self)
-        self = _current_test_context[]
-    end
+function _ForeignWindowsUnhideAll()
+    self = _current_test_context[]
     lib.ImGuiTestContext__ForeignWindowsUnhideAll(self)
 end
 
@@ -3867,12 +3387,18 @@ Empty(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool_Empty(self)
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L122).
 """
 _Rebuild(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__Rebuild(self)
 
 """
 $(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L123).
 """
@@ -3882,6 +3408,9 @@ _IsVisibleBuild(self::Ptr{lib.ImGuiPerfTool}, batch::PtrOrRef{lib.ImGuiPerfToolB
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L124).
 """
 _IsVisibleBuild(self::Ptr{lib.ImGuiPerfTool}, batch::PtrOrRef{lib.ImGuiPerfToolEntry}) =
@@ -3890,12 +3419,18 @@ _IsVisibleBuild(self::Ptr{lib.ImGuiPerfTool}, batch::PtrOrRef{lib.ImGuiPerfToolE
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L125).
 """
 _IsVisibleTest(self::Ptr{lib.ImGuiPerfTool}, test_name) = lib.ImGuiPerfTool__IsVisibleTest(self, test_name)
 
 """
 $(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L126).
 """
@@ -3904,12 +3439,18 @@ _CalculateLegendAlignment(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__Cal
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L127).
 """
 _ShowEntriesPlot(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__ShowEntriesPlot(self)
 
 """
 $(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L128).
 """
@@ -3918,6 +3459,9 @@ _ShowEntriesTable(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__ShowEntries
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L129).
 """
 _SetBaseline(self::Ptr{lib.ImGuiPerfTool}, batch_index) = lib.ImGuiPerfTool__SetBaseline(self, batch_index)
@@ -3925,12 +3469,18 @@ _SetBaseline(self::Ptr{lib.ImGuiPerfTool}, batch_index) = lib.ImGuiPerfTool__Set
 """
 $(TYPEDSIGNATURES)
 
+!!! warning
+    This function is internal, it may change in the future.
+
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L130).
 """
 _AddSettingsHandler(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__AddSettingsHandler(self)
 
 """
 $(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.0/imgui_test_engine/imgui_te_perftool.h#L131).
 """

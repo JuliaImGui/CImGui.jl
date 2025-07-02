@@ -1,16 +1,4 @@
-const TestRef = Union{String, Int}
-
-"""
-$(TYPEDEF)
-
-This is a reference to a `ImGuiTestContext`. It cannot be created directly,
-instead the context will be passed to the `GuiFunc` and `TestFunc` functions of
-an [`ImGuiTest`](@ref).
-
-!!! danger
-    This a memory-unsafe type, only use it while the engine is alive.
-"""
-const TestContext = CxxPtr{lib.ImGuiTestContext}
+const TestContext = Ptr{ImGuiTestContext}
 
 const _current_test_context = ScopedValue(TestContext(C_NULL))
 
@@ -54,15 +42,12 @@ function _generate_imcheck(expr, source, with_return, kwargs...)
 
         # Ignore the output because we don't support breaking out to a debugger
         # for now.
-        lib.ImGuiTestEngine_Check($file, "", $line, lib.ImGuiTestCheckFlags_None, success, $expr_string)
+        Check($file, "", $line, CheckFlags_None, success, $expr_string)
         if $with_return && !success
             return
         end
     end
 end
-
-# Helper function to create a C++-wrapped ImVec2
-mkImVec2(x, y) = lib.mkImVec2(convert(Float32, x), convert(Float32, y))
 
 """
     @imcheck expr
@@ -85,7 +70,7 @@ wanted it can be disabled by passing `jltest=false`.
 # Examples
 ```julia
 engine = te.CreateContext()
-@register_test(engine, "foo", "bar") do ctx
+@register_test(engine, "foo", "bar") do
     # This record the result with `Test` as well as the test engine
     @imcheck false
 
@@ -108,316 +93,6 @@ macro imcheck_noret(expr, kwargs...)
     return _generate_imcheck(expr, __source__, false, kwargs...)
 end
 
-macro _default_ctx()
-    quote
-        if isnothing(ctx)
-            ctx = _current_test_context[]
-        end
-    end |> esc
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Set the current reference. For more information on references see the [upstream
-documentation](https://github.com/ocornut/imgui_test_engine/wiki/Named-References).
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    SetRef("My Window")
-end
-```
-
-Note that `test_ref` is *always* treated as an absolute reference:
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    SetRef("My Window/quux") # This will set the reference to `//My Window/quux`
-
-    # These two calls will not work
-    SetRef("My Window") # Set the reference to `//My Window`
-    SetRef("quux")      # Try to set the reference to `//quux`
-end
-```
-"""
-function SetRef(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.SetRef(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Same as [`SetRef(::TestRef)`](@ref), except it takes an explicit window to set a
-reference to.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    window = GetWindowByRef("Window")
-    SetRef(window)
-end
-```
-"""
-function SetRef(window::Ptr{libig.ImGuiWindow}, ctx=nothing)
-    @_default_ctx
-    lib.SetRef(ctx, Ptr{Cvoid}(window))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Get the current reference, with `id` and `path` properties.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    x = GetRef()
-    @show x.id x.path
-end
-```
-"""
-function GetRef(ctx=nothing)
-    @_default_ctx
-    ref = lib.GetRef(ctx)
-    path = lib.Path(ref)
-    path_str = path == C_NULL ? nothing : unsafe_string(path)
-
-    (; id=lib.ID(ref), path=path_str)
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Simulate a click on the reference.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ItemClick("My button")
-end
-```
-"""
-function ItemClick(test_ref::TestRef, button::ig.ImGuiMouseButton_ = ig.ImGuiMouseButton_Left, ctx=nothing)
-    @_default_ctx
-    lib.ItemClick(ctx, lib.ImGuiTestRef(test_ref), Int(button))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Ensure an item is opened.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ItemOpen("My menu")
-end
-```
-"""
-function ItemOpen(test_ref::TestRef, flags=0, ctx=nothing)
-    @_default_ctx
-    lib.ItemOpen(ctx, lib.ImGuiTestRef(test_ref), Int(flags))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Ensure an item is closed.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ItemClose("My menu")
-end
-```
-"""
-function ItemClose(test_ref::TestRef, flags=0, ctx=nothing)
-    @_default_ctx
-    lib.ItemClose(ctx, lib.ImGuiTestRef(test_ref), Int(flags))
-end
-
-
-"""
-$(TYPEDSIGNATURES)
-
-Simulate a double-click on the reference.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ItemDoubleClick("My selectable")
-end
-```
-"""
-function ItemDoubleClick(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.ItemDoubleClick(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Check an item.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ItemCheck("My checkbox")
-end
-```
-"""
-function ItemCheck(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.ItemCheck(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Click on a menu item.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    MenuClick("My menu")
-end
-```
-"""
-function MenuClick(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.MenuClick(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Click on a combo box item.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ComboClick("My combo/Item 1")
-end
-```
-"""
-function ComboClick(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.ComboClick(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Click on all items in a combo box.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    ComboClickAll("My combo")
-end
-```
-"""
-function ComboClickAll(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.ComboClickAll(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Move the mouse to `test_ref`.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    MouseMove("My button")
-end
-```
-"""
-function MouseMove(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    lib.MouseMove(ctx, lib.ImGuiTestRef(test_ref))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Move the mouse to the given position in absolute coordinates (e.g. matching
-[`ig.GetMousePos()`](@extref `CImGui.GetMousePos`) and
-[`ig.GetCursorScreenPos()`](@extref `CImGui.GetCursorScreenPos`)).
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    MouseMoveToPos(100, 100)
-    MouseMoveToPos((100, 100))
-    MouseMoveToPos(ig.ImVec2(100, 100))
-end
-```
-"""
-function MouseMoveToPos(x, y, ctx=nothing)
-    @_default_ctx
-    lib.MouseMoveToPos(ctx, mkImVec2(x, y))
-end
-
-"$(TYPEDSIGNATURES)"
-MouseMoveToPos(pos::ig.ImVec2, ctx=nothing) = MouseMoveToPos(pos.x, pos.y, ctx)
-
-"$(TYPEDSIGNATURES)"
-MouseMoveToPos(pos::NTuple{2, Real}, ctx=nothing) = MouseMoveToPos(pos[1], pos[2], ctx)
-
-"""
-$(TYPEDSIGNATURES)
-
-Register a click of `button`.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    MouseClick()                          # LMB
-    MouseClick(ig.ImGuiMouseButton_Right) # RMB
-end
-```
-"""
-function MouseClick(button::ig.ImGuiMouseButton_ = ig.ImGuiMouseButton_Left, ctx=nothing)
-    @_default_ctx
-    lib.MouseClick(ctx, Int(button))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Retrieve a `ImGuiWindow` by reference. This will return `nothing` if the window
-was not found.
-
-# Examples
-```julia
-@register_test(engine, "foo", "bar") do ctx
-    window_ptr = GetWindowByRef("My window")
-    @show window_ptr
-end
-```
-"""
-function GetWindowByRef(test_ref::TestRef, ctx=nothing)
-    @_default_ctx
-    ptr = lib.GetWindowByRef(ctx, lib.ImGuiTestRef(test_ref))
-    return ptr == C_NULL ? nothing : Ptr{libig.ImGuiWindow}(ptr)
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Yield to the application renderloop for `count` number of frames (defaults to
-1). This is useful if you need to wait for more frames to be drawn for some
-action to occur (e.g. waiting for a window to appear after checking a
-checkbox).
-"""
-function Yield(count::Int=1, ctx=nothing)
-    @_default_ctx
-    lib.Yield(ctx, count)
-end
-
 """
 $(TYPEDSIGNATURES)
 
@@ -427,15 +102,14 @@ then close the section again (handy for re-runnable tests).
 
 # Examples
 ```julia
-@register_test(engine, "foo", "bar") do ctx
+@register_test(engine, "foo", "bar") do
     OpenAndClose("My section") do
         # ...
     end
 end
 ```
 """
-function OpenAndClose(f, test_ref::TestRef, ctx=nothing)
-    @_default_ctx
+function OpenAndClose(f, test_ref::TestRef)
     ItemOpen(test_ref)
     f()
     ItemClose(test_ref)
@@ -448,9 +122,9 @@ Open and then close `test_ref`.
 
 # Examples
 ```julia
-@register_test(engine, "foo", "bar") do ctx
+@register_test(engine, "foo", "bar") do
     OpenAndClose("My section")
 end
 ```
 """
-OpenAndClose(test_ref::TestRef, ctx=nothing) = OpenAndClose(Returns(nothing), test_ref, ctx)
+OpenAndClose(test_ref::TestRef) = OpenAndClose(Returns(nothing), test_ref)

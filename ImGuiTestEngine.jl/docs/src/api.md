@@ -9,15 +9,15 @@ CollapsedDocStrings = true
     the upstream documentation. If you need general help we recommend looking at
     the [test engine wiki](https://github.com/ocornut/imgui_test_engine/wiki),
     and possibly at the documentation comments in these header files:
-    - [`imgui_te_engine.h`](https://github.com/ocornut/imgui_test_engine/blob/v1.90.8/imgui_test_engine/imgui_te_engine.h)
+    - [`imgui_te_engine.h`](https://github.com/ocornut/imgui_test_engine/blob/main/imgui_test_engine/imgui_te_engine.h)
       (for the engine API)
-    - [`imgui_te_context.h`](https://github.com/ocornut/imgui_test_engine/blob/v1.90.8/imgui_test_engine/imgui_te_context.h)
+    - [`imgui_te_context.h`](https://github.com/ocornut/imgui_test_engine/blob/main/imgui_test_engine/imgui_te_context.h)
       (for the test context API)
 
 There are two major parts of the test engine:
 - The [`Engine`](@ref) itself. This is the class that executes the tests and
   handles things like interacting with the GUI.
-- The [`TestContext`](@ref) API, which is what you'll use to control the GUI and
+- The [Test context](@ref) API, which is what you'll use to control the GUI and
   write the tests.
 
 !!! danger
@@ -67,78 +67,109 @@ Depth = 3
 Engine
 CreateContext
 DestroyContext
-Start
-Stop
-TestGroup
-TestRunFlags
-QueueTest
-QueueTests
-ShowTestEngineWindows
-Base.isassigned(::Engine)
 ```
 
-### EngineIO
-Some engine settings can be configured with [`EngineIO`](@ref):
-```@docs
-EngineIO
-GetIO
-TestVerboseLevel
-RunSpeed
+```@imguidocs
+Class = ImGuiTestEngine
 ```
 
 ### Registering tests
 Once the engine is set up you can register some tests for it to run:
 ```@docs
-ImGuiTest
 @register_test
 ```
+
+```@imguidocs
+Class = ImGuiTest
+```
+
+Within the tests you will often want to refer to parts of your interface by
+[named
+reference](https://github.com/ocornut/imgui_test_engine/wiki/Named-References). In
+the C++ API this is done with the [`ImGuiTestRef`](@ref) type but with
+ImGuiTestEngine.jl you should use either strings or integers and they will
+automatically be converted.
 
 ## Test context
 Inside `GuiFunc` and `TestFunc` you can use any methods of the test context API
 to control and test the GUI. It's not safe to use them outside of a
 `GuiFunc`/`TestFunc`.
 
-Note that even though `GuiFunc`/`TestFunc` are passed a [`TestContext`](@ref)
-object, it's never necessary to pass it explicitly to any of the methods below
-because we do some magic to automatically get the right [`TestContext`](@ref) in
-the current scope. e.g. `SetRef(ctx, "My window")` is fine, but it'll do the
-same thing as `SetRef("My window")`.
-
-!!! note
-    Loads of test context methods are missing Julia wrappers, feel free to open
-    an issue or contribute them yourself if you're missing one.
-
-    If you want to try calling the wrapped C++ functions directly, it'll
-    probably boil down to something like:
-    ```julia
-    te.lib.Thing(ctx, te.lib.ImGuiTestRef("my ref"))
-    ```
-
-    For functions that take an `ImVec2` argument, create one that can be passed
-    to the C++ functions with the un-exported `mkImVec2()` helper function like
-    so:
-    ```julia
-    te.lib.Thing(ctx, te.mkImVec2(x, y))
-    ```
-
 ```@docs
-TestContext
 @imcheck
 @imcheck_noret
-SetRef
-GetRef
-MouseClick
-MouseMove
-MouseMoveToPos
-ItemOpen
-ItemClose
 OpenAndClose
-ItemClick
-ItemDoubleClick
-ItemCheck
-MenuClick
-ComboClick
-ComboClickAll
-GetWindowByRef
-Yield
+```
+
+```@imguidocs
+Class = ImGuiTestContext
+```
+
+## Other
+
+These functions/types are less commonly used than the ones documented above.
+
+### ImGuiTestRef
+
+```@imguidocs
+Class = ImGuiTestRef
+```
+
+### ImGuiTestRefDesc
+
+```@imguidocs
+Class = ImGuiTestRefDesc
+```
+
+### ImGuiTestGenericItemStatus
+
+```@imguidocs
+Class = ImGuiTestGenericItemStatus
+```
+
+### ImGuiTestItemList
+
+```@imguidocs
+Class = ImGuiTestItemList
+```
+
+### ImGuiPerfTool
+
+```@imguidocs
+Class = ImGuiPerfTool
+```
+
+`ImGuiPerfToolEntry`:
+```@imguidocs
+Class = ImGuiPerfToolEntry
+```
+
+### ImGuiCaptureContext
+
+```@imguidocs
+Class = ImGuiCaptureContext
+```
+
+### ImGuiCaptureToolUI
+
+```@imguidocs
+Class = ImGuiCaptureToolUI
+```
+
+### ImGuiCsvParser
+
+```@imguidocs
+Class = ImGuiCsvParser
+```
+
+### ImGuiTestLog
+
+```@imguidocs
+Class = ImGuiTestLog
+```
+
+---
+
+```@imguidocs
+Class = <remaining>
 ```

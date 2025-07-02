@@ -3,5 +3,10 @@ Changelog = "5217a498-cd5d-4ec6-b8c2-9b85a09b6e3e"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 DocumenterInterLinks = "d12716ef-a0f6-4df4-a9f1-a5a34e75c656"
 ImGuiTestEngine = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
 LiveServer = "16fef848-5104-11e9-1b77-fb7a48bbb589"
+MarkdownAST = "d0879d2d-cac2-40c8-9cee-1863dc0c7391"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
+[sources]
+ImGuiTestEngine = {path = ".."}

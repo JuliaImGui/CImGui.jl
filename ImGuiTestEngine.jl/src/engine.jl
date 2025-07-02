@@ -10,13 +10,14 @@ properties:
   shouldn't be necessary if you're testing your own GUI.
 - `TestFunc::Function`, for tests that you want to execute.
 
-The functions you assign must take in one argument to a [`TestContext`](@ref).
+The functions you assign should not take any arguments, and any return value
+will be discarded.
 
 !!! danger
     This a memory-unsafe type, only use it while the engine is alive.
 """
 mutable struct ImGuiTest
-    ptr::Union{CxxPtr{lib.ImGuiTest}, Nothing}
+    ptr::Union{Ptr{lib.ImGuiTest}, Nothing}
 
     _gui_func::Union{Function, Nothing}
     _gui_cfunction::Union{Base.CFunction, Nothing}
@@ -27,55 +28,11 @@ end
 """
 $(TYPEDEF)
 
-Wrapper for the upstream `ImGuiTestGroup` enum. Possible values:
-- `TestGroup_Perfs`
-- `TestGroup_Tests`
-- `TestGroup_Unknown`
-"""
-@enum TestGroup begin
-    TestGroup_COUNT = lib.ImGuiTestGroup_COUNT
-    TestGroup_Perfs = lib.ImGuiTestGroup_Perfs
-    TestGroup_Tests = lib.ImGuiTestGroup_Tests
-    TestGroup_Unknown = lib.ImGuiTestGroup_Unknown
-end
-
-"""
-$(TYPEDEF)
-
-Wrapper for the upstream `ImGuiTestRunFlags` enum. Possible values:
-- `TestRunFlags_None`
-- `TestRunFlags_GuiFuncDisable`
-- `TestRunFlags_GuiFuncOnly`
-- `TestRunFlags_NoSuccessMsg`
-- `TestRunFlags_EnableRawInputs`
-- `TestRunFlags_RunFromGui`
-- `TestRunFlags_RunFromCommandLine`
-- `TestRunFlags_NoError`
-- `TestRunFlags_ShareVars`
-- `TestRunFlags_ShareTestContext`
-"""
-@enum TestRunFlags begin
-    TestRunFlags_None = lib.ImGuiTestRunFlags_None
-    TestRunFlags_GuiFuncDisable = lib.ImGuiTestRunFlags_GuiFuncDisable
-    TestRunFlags_GuiFuncOnly = lib.ImGuiTestRunFlags_GuiFuncOnly
-    TestRunFlags_NoSuccessMsg = lib.ImGuiTestRunFlags_NoSuccessMsg
-    TestRunFlags_EnableRawInputs = lib.ImGuiTestRunFlags_EnableRawInputs
-    TestRunFlags_RunFromGui = lib.ImGuiTestRunFlags_RunFromGui
-    TestRunFlags_RunFromCommandLine = lib.ImGuiTestRunFlags_RunFromCommandLine
-
-    TestRunFlags_NoError = lib.ImGuiTestRunFlags_NoError
-    TestRunFlags_ShareVars = lib.ImGuiTestRunFlags_ShareVars
-    TestRunFlags_ShareTestContext = lib.ImGuiTestRunFlags_ShareTestContext
-end
-
-"""
-$(TYPEDEF)
-
 Represents a test engine context. This a wrapper around the upstream
 `ImGuiTestEngine` type. Don't create it yourself, use [`CreateContext()`](@ref).
 """
 mutable struct Engine
-    ptr::Union{CxxPtr{lib.ImGuiTestEngine}, Nothing}
+    ptr::Union{Ptr{lib.ImGuiTestEngine}, Nothing}
     exit_on_completion::Bool
     show_test_window::Bool
 
@@ -84,20 +41,31 @@ mutable struct Engine
     tests::Vector{ImGuiTest}
 end
 
+function Base.getproperty(engine::Engine, name::Symbol)
+    if name in fieldnames(Engine)
+        getfield(engine, name)
+    else
+        getproperty(getfield(engine, :ptr), name)
+    end
+end
+
+function Base.unsafe_convert(::Type{Ptr{lib.ImGuiTestEngine}}, engine::Engine)
+    if !isassigned(engine)
+        throw(ArgumentError("Engine does not hold a valid pointer, cannot convert to to a Ptr{ImGuiTestEngine}"))
+    end
+
+    engine.ptr
+end
+
 function Base.show(io::IO, engine::Engine)
     if isassigned(engine)
-        ntests = length(lib.TestsAll(engine.ptr))
+        ntests = unsafe_load(engine.ptr.TestsAll).Size
         print(io, Engine, "($(ntests) tests)")
     else
         print(io, Engine, "(<destroyed>)")
     end
 end
 
-"""
-$(TYPEDSIGNATURES)
-
-Check if the `Engine` has a valid pointer to a test engine context.
-"""
 Base.isassigned(engine::Engine) = !isnothing(engine.ptr)
 
 """
@@ -118,16 +86,16 @@ engine = te.CreateContext()
 ```
 """
 function CreateContext(; exit_on_completion=true, show_test_window=true)
-    ptr = lib.ImGuiTestEngine_CreateContext()
+    ptr = lib.cImGuiTestEngine_CreateContext()
     engine = Engine(ptr, exit_on_completion, show_test_window, ImGuiTest[])
 
-    engine_io = GetIO(engine)
-    interface_ptr = pointer_from_objref(_Coroutine.interface)
-    lib.CoroutineFuncs!(engine_io, CxxPtr{lib.ImGuiTestCoroutineInterface}(interface_ptr))
+    engine_io = engine.IO
+    interface_ptr = Base.unsafe_convert(Ptr{ImGuiTestCoroutineInterface}, _Coroutine.interface)
+    engine_io.CoroutineFuncs = interface_ptr
 
     finalizer(engine) do engine
         if isassigned(engine)
-            DestroyContext(engine; throw=false)
+            DestroyContext(engine)
         end
     end
 end
@@ -156,252 +124,25 @@ function DestroyContext(engine::Engine; throw=true)
         end
     end
 
-    lib.ImGuiTestEngine_DestroyContext(engine.ptr)
+    lib.cImGuiTestEngine_DestroyContext(engine.ptr)
     engine.ptr = nothing
     empty!(engine.tests)
 
     return nothing
 end
 
-"""
-$(TYPEDSIGNATURES)
-
-Start a test engine context. If you're using CImGui.jl's renderloop you *must
-not* call this, it will be called automatically for you.
-
-# Examples
-```julia
-ctx = ig.CreateContext()
-engine = te.CreateContext()
-te.Start(engine, ctx)
-```
-"""
-function Start(engine::Engine, ctx::Ptr{libig.ImGuiContext})
-    if !isassigned(engine)
-        throw(ArgumentError("The `Engine` has already been destroyed, cannot start it."))
-    end
-
-    # ImGuiContext is wrapped in two different ways:
-    # - By CxxWrap for ImGuiTestEngine
-    # - By Clang.jl for CImGui.jl
-    #
-    # Hence here we need to convert the CImGui-wrapped pointer to a
-    # ImGuiTestEngine-wrapped pointer.
-    lib_ctx_ptr = CxxPtr(lib.Ptr2ImGuiContext(Ptr{Cvoid}(ctx)))
-    lib.ImGuiTestEngine_Start(engine.ptr, lib_ctx_ptr)
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Stop a test engine context.
-
-# Examples
-```julia
-ctx = ig.CreateContext()
-engine = te.CreateContext()
-te.Start(engine, ctx)
-te.Stop(engine)
-```
-"""
-function Stop(engine::Engine)
-    if !isassigned(engine)
-        throw(ArgumentError("The `Engine` has already been destroyed, cannot stop it."))
-    end
-
-    lib.ImGuiTestEngine_Stop(engine.ptr)
-end
-
-function PostSwap(engine::Engine)
+function GetResultSummary(engine::Engine)
     if !isassigned(engine)
         throw(ArgumentError("The `Engine` has already been destroyed, cannot use it."))
     end
 
-    lib.ImGuiTestEngine_PostSwap(engine.ptr)
+    ret = Ref{ImGuiTestEngineResultSummary}()
+    GetResultSummary(engine, ret)
+
+    return ret[]
 end
-
-function GetResult(engine::Engine)
-    if !isassigned(engine)
-        throw(ArgumentError("The `Engine` has already been destroyed, cannot use it."))
-    end
-
-    n_executed = Ref{Cint}()
-    n_successful = Ref{Cint}()
-    lib.ImGuiTestEngine_GetResult(engine.ptr, n_executed, n_successful)
-
-    return (; executed=n_executed[], successful=n_successful[])
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Queue a specific test for execution. If you're using the CImGui.jl renderloop
-it shouldn't be necessary to call this yourself.
-
-# Examples
-```julia
-engine = te.CreateContext()
-t = @register_test(engine, "foo", "bar") do ctx
-    @info "Hello world!"
-end
-
-te.QueueTest(engine, t)
-```
-"""
-function QueueTest(engine::Engine, test::ImGuiTest, run_flags=TestRunFlags_None)
-    lib.ImGuiTestEngine_QueueTest(engine.ptr, test.ptr, Int(run_flags))
-end
-
-"""
-$(TYPEDSIGNATURES)
-
-Queue all tests in a specific group. If you're using the CImGui.jl renderloop it
-shouldn't be necessary to call this yourself.
-
-# Examples
-```julia
-engine = te.CreateContext()
-t = @register_test(engine, "foo", "bar") do ctx
-    @info "Hello world!"
-end
-
-# Queue all tests
-te.QueueTests(engine)
-```
-"""
-function QueueTests(engine::Engine, group::TestGroup=TestGroup_Unknown,
-                    filter="all", run_flags=TestRunFlags_None)
-    lib.ImGuiTestEngine_QueueTests(engine.ptr, Int(group), filter, Int(run_flags))
-end
-
-
-## EngineIO
-
-
-"""
-$(TYPEDEF)
-
-A wee typedef for `ImGuiTestEngineIO`. Get this from an [`Engine`](@ref) with
-[`GetIO()`](@ref).
-
-Supported properties:
-- `ConfigSavedSettings::Bool`
-- `ConfigRunSpeed::`[`RunSpeed`](@ref)
-- `ConfigStopOnError::Bool`
-- `ConfigKeepGuiFunc::Bool`
-- `ConfigVerboseLevel::`[`TestVerboseLevel`](@ref)
-- `ConfigVerboseLevelOnError::`[`TestVerboseLevel`](@ref)
-- `ConfigRestoreFocusAfterTests::Bool`
-- `ConfigCaptureEnabled::Bool`
-- `ConfigCaptureOnError::Bool`
-- `ConfigNoThrottle::Bool`
-- `ConfigMouseDrawCursor::Bool`
-- `IsRunningTests::Bool` (readonly)
-
-!!! danger
-    This a memory-unsafe type, only use it while the engine is alive.
-"""
-const EngineIO = CxxRef{lib.ImGuiTestEngineIO}
-
-"""
-$(TYPEDSIGNATURES)
-
-Get the [`EngineIO`](@ref) object for an engine.
-
-# Examples
-```julia
-engine = te.CreateContext()
-engine_io = te.GetIO(engine)
-```
-"""
-GetIO(engine::Engine) = lib.ImGuiTestEngine_GetIO(engine.ptr)
-
-"""
-$(TYPEDEF)
-
-Wrapper around the upstream `ImGuiTestVerboseLevel`. Possible values:
-- `TestVerboseLevel_Silent`
-- `TestVerboseLevel_Error`
-- `TestVerboseLevel_Warning`
-- `TestVerboseLevel_Info`
-- `TestVerboseLevel_Debug`
-- `TestVerboseLevel_Trace`
-"""
-@enum TestVerboseLevel begin
-    TestVerboseLevel_Silent = lib.ImGuiTestVerboseLevel_Silent
-    TestVerboseLevel_Error = lib.ImGuiTestVerboseLevel_Error
-    TestVerboseLevel_Warning = lib.ImGuiTestVerboseLevel_Warning
-    TestVerboseLevel_Info = lib.ImGuiTestVerboseLevel_Info
-    TestVerboseLevel_Debug = lib.ImGuiTestVerboseLevel_Debug
-    TestVerboseLevel_Trace = lib.ImGuiTestVerboseLevel_Trace
-    TestVerboseLevel_COUNT = lib.ImGuiTestVerboseLevel_COUNT
-end
-
-"""
-$(TYPEDEF)
-
-Wrapper around the upstream `ImGuiTestRunSpeed`. Possible values:
-- `RunSpeed_Fast`
-- `RunSpeed_Normal`
-- `RunSpeed_Cinematic`
-"""
-@enum RunSpeed begin
-    RunSpeed_Fast = lib.ImGuiTestRunSpeed_Fast
-    RunSpeed_Normal = lib.ImGuiTestRunSpeed_Normal
-    RunSpeed_Cinematic = lib.ImGuiTestRunSpeed_Cinematic
-    RunSpeed_COUNT = lib.ImGuiTestRunSpeed_COUNT
-end
-
-function Base.show(io::IO, engine_io::EngineIO)
-    addr = UInt(engine_io.cpp_object)
-    hex_addr = string(addr; base=16)
-    print(io, EngineIO, "(pointer to 0x$(hex_addr))")
-end
-
-const _engineio_booleans = (:ConfigSavedSettings, :ConfigStopOnError,
-                            :ConfigKeepGuiFunc, :ConfigRestoreFocusAfterTests,
-                            :ConfigCaptureEnabled, :ConfigCaptureOnError,
-                            :ConfigNoThrottle, :ConfigMouseDrawCursor)
-Base.propertynames(::EngineIO) = (:cpp_object, # From `CxxRef`
-                                  _engineio_booleans...,
-                                  :ConfigRunSpeed,
-                                  :ConfigVerboseLevel, :ConfigVerboseLevelOnError,
-                                  :IsRunningTests)
-
-function Base.getproperty(engine_io::EngineIO, name::Symbol)
-    if name in _engineio_booleans
-        getproperty(lib, name)(engine_io)
-    elseif name == :ConfigRunSpeed
-        RunSpeed(lib.ConfigRunSpeed(engine_io))
-    elseif name == :ConfigVerboseLevel
-        TestVerboseLevel(lib.ConfigVerboseLevel(engine_io))
-    elseif name == :ConfigVerboseLevelOnError
-        TestVerboseLevel(lib.ConfigVerboseLevelOnError(engine_io))
-    elseif name == :IsRunningTests
-        # We handle this one specially because it's readonly
-        lib.IsRunningTests(engine_io)
-    else
-        getfield(engine_io, name)
-    end
-end
-
-function Base.setproperty!(engine_io::EngineIO, name::Symbol, value)
-    if name in _engineio_booleans
-        getproperty(lib, Symbol(name, :!))(engine_io, value)
-    elseif name == :ConfigRunSpeed
-        lib.ConfigRunSpeed!(engine_io, Int(value))
-    elseif name == :ConfigVerboseLevel
-        lib.ConfigVerboseLevel!(engine_io, Int(value))
-    elseif name == :ConfigVerboseLevelOnError
-        lib.ConfigVerboseLevelOnError!(engine_io, Int(value))
-    else
-        setfield!(engine_io, name, value)
-    end
-end
-
 
 ## ImGuiTest
-
 
 function Base.show(io::IO, test::ImGuiTest)
     status = x -> isnothing(x) ? "✗" : "🗸"
@@ -409,41 +150,42 @@ function Base.show(io::IO, test::ImGuiTest)
 end
 
 function Base.getproperty(test::ImGuiTest, name::Symbol)
-    if name == :Name
-        unsafe_string(lib.Name(test.ptr))
-    elseif name == :Category
-        unsafe_string(lib.Category(test.ptr))
-    elseif name == :GuiFunc
-        lib.GuiFunc(test.ptr)
-    elseif name == :TestFunc
-        lib.TestFunc(test.ptr)
-    elseif name == :SourceFile
-        unsafe_string(lib.SourceFile(test.ptr))
-    elseif name == :SourceLine
-        lib.SourceLine(test.ptr)
+    if name in fieldnames(ImGuiTest)
+        return getfield(test, name)
+    end
+
+    x = unsafe_load(getproperty(getfield(test, :ptr), name))
+    if name in (:Name, :Category, :SourceFile)
+        unsafe_string(x)
     else
-        getfield(test, name)
+        x
     end
 end
 
 function Base.setproperty!(test::ImGuiTest, name::Symbol, value)
-    if name != :GuiFunc && name != :TestFunc
+    if name in fieldnames(ImGuiTest)
         return setfield!(test, name, value)
     end
 
-    func = ctx -> _test_runner(test, name, ctx)
-    func_cfunction = @cfunction($func, Cvoid, (Ptr{Cvoid},))
-    func_ptr = Base.unsafe_convert(Ptr{Cvoid}, func_cfunction)
+    if name == :GuiFunc || name == :TestFunc
+        func = ctx -> _test_runner(test, name, ctx)
+        func_cfunction = @cfunction($func, Cvoid, (Ptr{Cvoid},))
+        func_ptr = Base.unsafe_convert(Ptr{Cvoid}, func_cfunction)
 
-    if name == :GuiFunc
-        lib.set_GuiFunc(test.ptr, func_ptr)
-        test._gui_func = value
-        test._gui_cfunction = func_cfunction
-    elseif name == :TestFunc
-        lib.set_TestFunc(test.ptr, func_ptr)
-        test._test_func = value
-        test._test_cfunction = func_cfunction
+        if name == :GuiFunc
+            test.ptr.GuiFunc = func_ptr
+            test._gui_func = value
+            test._gui_cfunction = func_cfunction
+        elseif name == :TestFunc
+            test.ptr.TestFunc = func_ptr
+            test._test_func = value
+            test._test_cfunction = func_cfunction
+        end
+    else
+        setproperty!(test.ptr, name, value)
     end
+
+    return value
 end
 
 function _test_runner(test::ImGuiTest, func_name::Symbol, ctx::Ptr{Cvoid})
@@ -456,7 +198,7 @@ function _test_runner(test::ImGuiTest, func_name::Symbol, ctx::Ptr{Cvoid})
 
     try
         test_ctx = TestContext(ctx)
-        @with _current_test_context=>test_ctx func(test_ctx)
+        @with _current_test_context=>test_ctx func()
     catch ex
         @error "Caught exception while executing $(func_name) of $(test)." exception=(ex, catch_backtrace())
     end
@@ -477,7 +219,7 @@ running it manually through [`ShowTestEngineWindows()`](@ref).
 If you only need to set `TestFunc` you can use do-syntax:
 ```julia
 engine = te.CreateContext()
-@register_test(engine, "foo", "bar") do ctx
+@register_test(engine, "foo", "bar") do
     @imtest ctx isa te.TestContext
 end
 ```
@@ -486,11 +228,11 @@ To set `GuiFunc` as well you'll need to set the `GuiFunc` property:
 ```julia
 engine = te.CreateContext()
 t = @register_test(engine, "foo", "bar")
-t.GuiFunc = ctx -> begin
+t.GuiFunc = () -> begin
     ig.Begin("Foo")
     ig.End()
 end
-t.TestFunc = ctx -> @info "Hello world!"
+t.TestFunc = () -> @info "Hello world!"
 ```
 """
 macro register_test(engine, category::AbstractString, name::AbstractString)
@@ -498,7 +240,7 @@ macro register_test(engine, category::AbstractString, name::AbstractString)
     line = __source__.line
 
     quote
-        local ptr = lib.ImGuiTestEngine_RegisterTest($(esc(engine)).ptr, $category, $name, $file, $line)
+        local ptr = RegisterTest($(esc(engine)), $category, $name, $file, $line)
         local test = ImGuiTest(ptr, nothing, nothing, nothing, nothing)
         push!($(esc(engine)).tests, test)
 
@@ -516,11 +258,12 @@ macro register_test(f, engine::Symbol, category::AbstractString, name::AbstractS
 end
 
 
-ig._test_engine_is_running(engine::Engine) = !lib.ImGuiTestEngine_IsTestQueueEmpty(engine.ptr)
+ig._test_engine_is_running(engine::Engine) = !IsTestQueueEmpty(engine)
 
 function ig._start_test_engine(engine::Engine, ctx::Ptr{libig.ImGuiContext})
     Start(engine, ctx)
-    QueueTests(engine)
+    QueueTests(engine, Group_Tests)
+    QueueTests(engine, Group_Perfs)
 end
 
-ig._show_test_window(engine::Engine) = ShowTestEngineWindows(engine)
+ig._show_test_window(engine::Engine) = ShowTestEngineWindows(engine, C_NULL)
