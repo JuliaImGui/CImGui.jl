@@ -1,0 +1,28 @@
+[general]
+library_name = "libcimgui"
+module_name = "lib"
+prologue_file_path = "./prologue.jl"
+output_ignorelist = [
+    "API",
+    "EXTERN",
+    "CIMGUI_TE_API",
+    "CONST",
+    "CIMGUI_INCLUDED",
+]
+
+auto_mutability = true
+auto_mutability_with_new = false
+auto_mutability_ignorelist = ["ImGuiTestRef", "ImGuiTestRefDesc", "ImGuiTestEngineResultSummary"]
+auto_mutability_includelist = ["ImGuiTestCoroutineInterface"]
+
+[codegen]
+field_access_method_list = [
+    "ImGuiTestEngine",
+    "ImGuiTestEngineIO",
+    "ImGuiTestCoroutineInterface",
+    "ImGuiTestItemInfo",
+    "ImGuiTest",
+    "ImGuiTestContext"
+]
+
+wrap_variadic_function = true
