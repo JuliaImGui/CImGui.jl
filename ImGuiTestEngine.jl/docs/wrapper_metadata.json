@@ -1,0 +1,1094 @@
+{
+    "CaptureUpdate": {
+        "line": 139,
+        "class": "ImGuiCaptureContext"
+    },
+    "ItemAction": {
+        "line": 420,
+        "class": "ImGuiTestContext"
+    },
+    "ComboClickAll": {
+        "line": 480,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollErrorCheck": {
+        "line": 407,
+        "class": "ImGuiTestContext"
+    },
+    "ItemDoubleClick": {
+        "line": 422,
+        "class": "ImGuiTestContext"
+    },
+    "LogBasicUiState": {
+        "line": 289,
+        "class": "ImGuiTestContext"
+    },
+    "RegisterTest": {
+        "line": 202,
+        "class": "ImGuiTestEngine"
+    },
+    "IsWarmUpGuiFrame": {
+        "line": 272,
+        "class": "ImGuiTestContext"
+    },
+    "ComboClick": {
+        "line": 479,
+        "class": "ImGuiTestContext"
+    },
+    "MouseClickMulti": {
+        "line": 355,
+        "class": "ImGuiTestContext"
+    },
+    "CaptureScreenshot": {
+        "line": 346,
+        "class": "ImGuiTestContext"
+    },
+    "PreNewFrame": {
+        "line": 134,
+        "class": "ImGuiCaptureContext"
+    },
+    "ImGuiCaptureImageBuf": {
+        "line": 40,
+        "class": "ImGuiCaptureImageBuf"
+    },
+    "GetMainMonitorWorkPos": {
+        "line": 338,
+        "class": "ImGuiTestContext"
+    },
+    "ImFileLoadSourceBlurb": {
+        "line": 34,
+        "class": ""
+    },
+    "GetPosOnVoid": {
+        "line": 336,
+        "class": "ImGuiTestContext"
+    },
+    "Clear": {
+        "line": 111,
+        "class": "ImGuiPerfTool"
+    },
+    "TableGetSortSpecs": {
+        "line": 487,
+        "class": "ImGuiTestContext"
+    },
+    "UnregisterAllTests": {
+        "line": 204,
+        "class": "ImGuiTestEngine"
+    },
+    "ItemHoldForFrames": {
+        "line": 458,
+        "class": "ImGuiTestContext"
+    },
+    "OpenSourceFile": {
+        "line": 25,
+        "class": "ImGuiTestEngine"
+    },
+    "LogInfo": {
+        "line": 286,
+        "class": "ImGuiTestContext"
+    },
+    "IsCapturingVideo": {
+        "line": 146,
+        "class": "ImGuiCaptureContext"
+    },
+    "TableClickHeader": {
+        "line": 484,
+        "class": "ImGuiTestContext"
+    },
+    "UndockWindow": {
+        "line": 504,
+        "class": "ImGuiTestContext"
+    },
+    "End": {
+        "line": 348,
+        "class": "ImGuiTestItemList"
+    },
+    "MouseDragWithDelta": {
+        "line": 360,
+        "class": "ImGuiTestContext"
+    },
+    "GatherItems": {
+        "line": 417,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTestEngineHook_Log": {
+        "line": 178,
+        "class": ""
+    },
+    "ItemInfoOpenFullPath": {
+        "line": 414,
+        "class": "ImGuiTestContext"
+    },
+    "SetOwnedName": {
+        "line": 446,
+        "class": "ImGuiTest"
+    },
+    "MouseMoveToVoid": {
+        "line": 364,
+        "class": "ImGuiTestContext"
+    },
+    "MouseUp": {
+        "line": 358,
+        "class": "ImGuiTestContext"
+    },
+    "ImStrXmlEscape": {
+        "line": 51,
+        "class": ""
+    },
+    "ImHashDecoratedPath": {
+        "line": 23,
+        "class": ""
+    },
+    "MouseWheel": {
+        "line": 361,
+        "class": "ImGuiTestContext"
+    },
+    "ClearState": {
+        "line": 141,
+        "class": "ImGuiCaptureContext"
+    },
+    "PrintResultSummary": {
+        "line": 59,
+        "class": "ImGuiTestEngine"
+    },
+    "RunChildTest": {
+        "line": 267,
+        "class": "ImGuiTestContext"
+    },
+    "CaptureSetExtension": {
+        "line": 343,
+        "class": "ImGuiTestContext"
+    },
+    "TableResizeColumn": {
+        "line": 486,
+        "class": "ImGuiTestContext"
+    },
+    "ItemExists": {
+        "line": 451,
+        "class": "ImGuiTestContext"
+    },
+    "LoadCSV": {
+        "line": 112,
+        "class": "ImGuiPerfTool"
+    },
+    "ImStrchrRangeWithEscaping": {
+        "line": 50,
+        "class": ""
+    },
+    "ImOsPClose": {
+        "line": 116,
+        "class": ""
+    },
+    "ImGuiTestActionFilter": {
+        "line": 147,
+        "class": "ImGuiTestActionFilter"
+    },
+    "ViewportPlatform_SetWindowFocus": {
+        "line": 495,
+        "class": "ImGuiTestContext"
+    },
+    "GetTempStringBuilder": {
+        "line": 186,
+        "class": ""
+    },
+    "ItemIsChecked": {
+        "line": 452,
+        "class": "ImGuiTestContext"
+    },
+    "KeyChars": {
+        "line": 381,
+        "class": "ImGuiTestContext"
+    },
+    "FindTestByName": {
+        "line": 211,
+        "class": "ImGuiTestEngine"
+    },
+    "ImGuiCaptureContext": {
+        "line": 130,
+        "class": "ImGuiCaptureContext"
+    },
+    "UndockNode": {
+        "line": 503,
+        "class": "ImGuiTestContext"
+    },
+    "ItemReadAsString": {
+        "line": 448,
+        "class": "ImGuiTestContext"
+    },
+    "QueueTests": {
+        "line": 208,
+        "class": "ImGuiTestEngine"
+    },
+    "ItemReadAsScalar": {
+        "line": 446,
+        "class": "ImGuiTestContext"
+    },
+    "CrashHandler": {
+        "line": 229,
+        "class": ""
+    },
+    "ItemHold": {
+        "line": 457,
+        "class": "ImGuiTestContext"
+    },
+    "GetMainMonitorWorkSize": {
+        "line": 339,
+        "class": "ImGuiTestContext"
+    },
+    "KeyCharsAppend": {
+        "line": 382,
+        "class": "ImGuiTestContext"
+    },
+    "DockIdIsUndockedOrStandalone": {
+        "line": 506,
+        "class": "ImGuiTestContext"
+    },
+    "ImFileCreateDirectoryChain": {
+        "line": 32,
+        "class": ""
+    },
+    "ImParseFindIniSection": {
+        "line": 59,
+        "class": ""
+    },
+    "ItemInfo": {
+        "line": 413,
+        "class": "ImGuiTestContext"
+    },
+    "TabClose": {
+        "line": 464,
+        "class": "ImGuiTestContext"
+    },
+    "ImThreadSleepInMilliseconds": {
+        "line": 72,
+        "class": ""
+    },
+    "KeyHold": {
+        "line": 379,
+        "class": "ImGuiTestContext"
+    },
+    "IsCapturing": {
+        "line": 147,
+        "class": "ImGuiCaptureContext"
+    },
+    "NavInput": {
+        "line": 395,
+        "class": "ImGuiTestContext"
+    },
+    "WindowResize": {
+        "line": 321,
+        "class": "ImGuiTestContext"
+    },
+    "ExportEx": {
+        "line": 62,
+        "class": "ImGuiTestEngine"
+    },
+    "Yield": {
+        "line": 293,
+        "class": "ImGuiTestContext"
+    },
+    "CaptureScreenshotWindow": {
+        "line": 345,
+        "class": "ImGuiTestContext"
+    },
+    "Error": {
+        "line": 184,
+        "class": ""
+    },
+    "MenuCheckAll": {
+        "line": 475,
+        "class": "ImGuiTestContext"
+    },
+    "Size": {
+        "line": 346,
+        "class": "ImGuiTestItemList"
+    },
+    "ShowPerfToolWindow": {
+        "line": 115,
+        "class": "ImGuiPerfTool"
+    },
+    "ImGuiTestRef": {
+        "line": 85,
+        "class": "ImGuiTestRef"
+    },
+    "Stop": {
+        "line": 196,
+        "class": "ImGuiTestEngine"
+    },
+    "ImFileFindInParents": {
+        "line": 33,
+        "class": ""
+    },
+    "CaptureEndVideo": {
+        "line": 348,
+        "class": "ImGuiTestContext"
+    },
+    "ItemReadAsFloat": {
+        "line": 445,
+        "class": "ImGuiTestContext"
+    },
+    "TryAbortEngine": {
+        "line": 209,
+        "class": "ImGuiTestEngine"
+    },
+    "ImPathFindFilename": {
+        "line": 41,
+        "class": ""
+    },
+    "WindowBringToFront": {
+        "line": 319,
+        "class": "ImGuiTestContext"
+    },
+    "Reserve": {
+        "line": 340,
+        "class": "ImGuiTestItemList"
+    },
+    "MouseDoubleClick": {
+        "line": 356,
+        "class": "ImGuiTestContext"
+    },
+    "MenuAction": {
+        "line": 470,
+        "class": "ImGuiTestContext"
+    },
+    "CaptureReset": {
+        "line": 342,
+        "class": "ImGuiTestContext"
+    },
+    "ItemReadAsInt": {
+        "line": 444,
+        "class": "ImGuiTestContext"
+    },
+    "SetInputMode": {
+        "line": 392,
+        "class": "ImGuiTestContext"
+    },
+    "KeyCharsAppendEnter": {
+        "line": 383,
+        "class": "ImGuiTestContext"
+    },
+    "KeyPress": {
+        "line": 378,
+        "class": "ImGuiTestContext"
+    },
+    "SaveFile": {
+        "line": 45,
+        "class": "ImGuiCaptureImageBuf"
+    },
+    "MenuClick": {
+        "line": 472,
+        "class": "ImGuiTestContext"
+    },
+    "QuerySet": {
+        "line": 171,
+        "class": "ImGuiTestGenericItemStatus"
+    },
+    "IsTestQueueEmpty": {
+        "line": 215,
+        "class": "ImGuiTestEngine"
+    },
+    "SetRef": {
+        "line": 309,
+        "class": "ImGuiTestContext"
+    },
+    "Export": {
+        "line": 61,
+        "class": "ImGuiTestEngine"
+    },
+    "GetTestQueue": {
+        "line": 219,
+        "class": "ImGuiTestEngine"
+    },
+    "SuspendTestFunc": {
+        "line": 278,
+        "class": "ImGuiTestContext"
+    },
+    "Start": {
+        "line": 195,
+        "class": "ImGuiTestEngine"
+    },
+    "ItemActionAll": {
+        "line": 431,
+        "class": "ImGuiTestContext"
+    },
+    "ItemDragAndDrop": {
+        "line": 460,
+        "class": "ImGuiTestContext"
+    },
+    "PopupGetWindowID": {
+        "line": 328,
+        "class": "ImGuiTestContext"
+    },
+    "PreRender": {
+        "line": 135,
+        "class": "ImGuiCaptureContext"
+    },
+    "GetID": {
+        "line": 333,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiPerfToolEntry": {
+        "line": 48,
+        "class": "ImGuiPerfToolEntry"
+    },
+    "ImOsPOpen": {
+        "line": 115,
+        "class": ""
+    },
+    "MouseMoveToPos": {
+        "line": 352,
+        "class": "ImGuiTestContext"
+    },
+    "ViewportPlatform_SetWindowSize": {
+        "line": 494,
+        "class": "ImGuiTestContext"
+    },
+    "ItemIsOpened": {
+        "line": 453,
+        "class": "ImGuiTestContext"
+    },
+    "ShowCaptureToolWindow": {
+        "line": 172,
+        "class": "ImGuiCaptureToolUI"
+    },
+    "MouseLiftDragThreshold": {
+        "line": 359,
+        "class": "ImGuiTestContext"
+    },
+    "ItemOpen": {
+        "line": 425,
+        "class": "ImGuiTestContext"
+    },
+    "MouseClickOnVoid": {
+        "line": 365,
+        "class": "ImGuiTestContext"
+    },
+    "ImOsOutputDebugString": {
+        "line": 119,
+        "class": ""
+    },
+    "ScrollVerifyScrollMax": {
+        "line": 408,
+        "class": "ImGuiTestContext"
+    },
+    "GetTestList": {
+        "line": 218,
+        "class": "ImGuiTestEngine"
+    },
+    "IsFirstTestFrame": {
+        "line": 274,
+        "class": "ImGuiTestContext"
+    },
+    "MouseSetViewportID": {
+        "line": 373,
+        "class": "ImGuiTestContext"
+    },
+    "Destroy": {
+        "line": -1,
+        "class": ""
+    },
+    "Finish": {
+        "line": 266,
+        "class": "ImGuiTestContext"
+    },
+    "ItemCheck": {
+        "line": 423,
+        "class": "ImGuiTestContext"
+    },
+    "IsEmpty": {
+        "line": 86,
+        "class": "ImGuiTestRef"
+    },
+    "SleepStandard": {
+        "line": 296,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollToTabItem": {
+        "line": 406,
+        "class": "ImGuiTestContext"
+    },
+    "ViewportPlatform_CloseWindow": {
+        "line": 496,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollToItemX": {
+        "line": 404,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollToItemY": {
+        "line": 405,
+        "class": "ImGuiTestContext"
+    },
+    "WindowIsUndockedOrStandalone": {
+        "line": 505,
+        "class": "ImGuiTestContext"
+    },
+    "ImFileDelete": {
+        "line": 31,
+        "class": ""
+    },
+    "ImGuiTestGenericItemStatus": {
+        "line": 169,
+        "class": "ImGuiTestGenericItemStatus"
+    },
+    "DockNodeHideTabBar": {
+        "line": 507,
+        "class": "ImGuiTestContext"
+    },
+    "RestoreBackedUpData": {
+        "line": 140,
+        "class": "ImGuiCaptureContext"
+    },
+    "ItemClose": {
+        "line": 426,
+        "class": "ImGuiTestContext"
+    },
+    "RemoveAlpha": {
+        "line": 46,
+        "class": "ImGuiCaptureImageBuf"
+    },
+    "Check": {
+        "line": 182,
+        "class": ""
+    },
+    "GetSize": {
+        "line": 341,
+        "class": "ImGuiTestItemList"
+    },
+    "ImFindNextDecoratedPartInPath": {
+        "line": 24,
+        "class": ""
+    },
+    "TableOpenContextMenu": {
+        "line": 483,
+        "class": "ImGuiTestContext"
+    },
+    "GetWindowTitlebarPoint": {
+        "line": 337,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTest": {
+        "line": 443,
+        "class": "ImGuiTest"
+    },
+    "ViewportPlatform_SetWindowPos": {
+        "line": 493,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTestGenericVars": {
+        "line": 207,
+        "class": "ImGuiTestGenericVars"
+    },
+    "AddEntry": {
+        "line": 113,
+        "class": "ImGuiPerfTool"
+    },
+    "ScrollToY": {
+        "line": 400,
+        "class": "ImGuiTestContext"
+    },
+    "FindHoveredWindowAtPos": {
+        "line": 366,
+        "class": "ImGuiTestContext"
+    },
+    "Load": {
+        "line": 174,
+        "class": "ImGuiCsvParser"
+    },
+    "ItemClick": {
+        "line": 421,
+        "class": "ImGuiTestContext"
+    },
+    "TableDiscardInstanceAndSettings": {
+        "line": 130,
+        "class": ""
+    },
+    "ImStrReplace": {
+        "line": 49,
+        "class": ""
+    },
+    "LogToDebugger": {
+        "line": 284,
+        "class": "ImGuiTestContext"
+    },
+    "ImOsOpenInShell": {
+        "line": 117,
+        "class": ""
+    },
+    "EndVideoCapture": {
+        "line": 145,
+        "class": "ImGuiCaptureContext"
+    },
+    "SaveHtmlReport": {
+        "line": 119,
+        "class": "ImGuiPerfTool"
+    },
+    "WindowCollapse": {
+        "line": 317,
+        "class": "ImGuiTestContext"
+    },
+    "ExtractLinesForVerboseLevels": {
+        "line": 382,
+        "class": "ImGuiTestLog"
+    },
+    "CaptureAddWindow": {
+        "line": 344,
+        "class": "ImGuiTestContext"
+    },
+    "MenuUncheckAll": {
+        "line": 476,
+        "class": "ImGuiTestContext"
+    },
+    "ImTimestampToISO8601": {
+        "line": 66,
+        "class": ""
+    },
+    "GetByID": {
+        "line": 343,
+        "class": "ImGuiTestItemList"
+    },
+    "DrawDataVerifyMatchingBufferCount": {
+        "line": 133,
+        "class": ""
+    },
+    "WindowInfo": {
+        "line": 315,
+        "class": "ImGuiTestContext"
+    },
+    "FindExistingVoidPosOnViewport": {
+        "line": 367,
+        "class": "ImGuiTestContext"
+    },
+    "IsUsingSimulatedInputs": {
+        "line": 216,
+        "class": "ImGuiTestEngine"
+    },
+    "Draw": {
+        "line": 173,
+        "class": "ImGuiTestGenericItemStatus"
+    },
+    "ImStrBase64Encode": {
+        "line": 52,
+        "class": ""
+    },
+    "ShowTestEngineWindows": {
+        "line": 24,
+        "class": "ImGuiTestEngine"
+    },
+    "ImGuiTestItemInfo": {
+        "line": 331,
+        "class": "ImGuiTestItemInfo"
+    },
+    "WindowMove": {
+        "line": 320,
+        "class": "ImGuiTestContext"
+    },
+    "KeySetEx": {
+        "line": 380,
+        "class": "ImGuiTestContext"
+    },
+    "GetCell": {
+        "line": 176,
+        "class": "ImGuiCsvParser"
+    },
+    "GetByIndex": {
+        "line": 342,
+        "class": "ImGuiTestItemList"
+    },
+    "LogItemList": {
+        "line": 290,
+        "class": "ImGuiTestContext"
+    },
+    "LogEx": {
+        "line": 281,
+        "class": "ImGuiTestContext"
+    },
+    "BeginVideoCapture": {
+        "line": 144,
+        "class": "ImGuiCaptureContext"
+    },
+    "FindItemDebugLabel": {
+        "line": 179,
+        "class": ""
+    },
+    "ItemInputValue": {
+        "line": 438,
+        "class": "ImGuiTestContext"
+    },
+    "MenuActionAll": {
+        "line": 471,
+        "class": "ImGuiTestContext"
+    },
+    "LogError": {
+        "line": 288,
+        "class": "ImGuiTestContext"
+    },
+    "ItemCloseAll": {
+        "line": 433,
+        "class": "ImGuiTestContext"
+    },
+    "KeyCharsReplaceEnter": {
+        "line": 385,
+        "class": "ImGuiTestContext"
+    },
+    "ImOsIsDebuggerPresent": {
+        "line": 118,
+        "class": ""
+    },
+    "ScrollToItem": {
+        "line": 403,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollToTop": {
+        "line": 401,
+        "class": "ImGuiTestContext"
+    },
+    "ItemNavActivate": {
+        "line": 428,
+        "class": "ImGuiTestContext"
+    },
+    "GetWindowByRef": {
+        "line": 323,
+        "class": "ImGuiTestContext"
+    },
+    "TableGetHeaderID": {
+        "line": 129,
+        "class": ""
+    },
+    "GetRef": {
+        "line": 310,
+        "class": "ImGuiTestContext"
+    },
+    "ImPathFindExtension": {
+        "line": 42,
+        "class": ""
+    },
+    "MouseSetViewport": {
+        "line": 372,
+        "class": "ImGuiTestContext"
+    },
+    "PostSwap": {
+        "line": 197,
+        "class": "ImGuiTestEngine"
+    },
+    "CreateEmpty": {
+        "line": 44,
+        "class": "ImGuiCaptureImageBuf"
+    },
+    "PerfToolAppendToCSV": {
+        "line": 134,
+        "class": ""
+    },
+    "ImGuiPerfTool": {
+        "line": 108,
+        "class": "ImGuiPerfTool"
+    },
+    "ScrollToBottom": {
+        "line": 402,
+        "class": "ImGuiTestContext"
+    },
+    "ItemUncheck": {
+        "line": 424,
+        "class": "ImGuiTestContext"
+    },
+    "PostRender": {
+        "line": 136,
+        "class": "ImGuiCaptureContext"
+    },
+    "Sleep": {
+        "line": 294,
+        "class": "ImGuiTestContext"
+    },
+    "ItemDragOverAndHold": {
+        "line": 459,
+        "class": "ImGuiTestContext"
+    },
+    "ImOsCreateProcess": {
+        "line": 114,
+        "class": ""
+    },
+    "IsFirstGuiFrame": {
+        "line": 273,
+        "class": "ImGuiTestContext"
+    },
+    "DockInto": {
+        "line": 502,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiCaptureToolUI": {
+        "line": 171,
+        "class": "ImGuiCaptureToolUI"
+    },
+    "DockClear": {
+        "line": 501,
+        "class": "ImGuiTestContext"
+    },
+    "ItemVerifyCheckedIfAlive": {
+        "line": 454,
+        "class": "ImGuiTestContext"
+    },
+    "GetEntryByBatchIdx": {
+        "line": 118,
+        "class": "ImGuiPerfTool"
+    },
+    "ItemDragWithDelta": {
+        "line": 461,
+        "class": "ImGuiTestContext"
+    },
+    "KeyDown": {
+        "line": 376,
+        "class": "ImGuiTestContext"
+    },
+    "LogDebug": {
+        "line": 285,
+        "class": "ImGuiTestContext"
+    },
+    "ItemInfoHandleWildcardSearch": {
+        "line": 415,
+        "class": "ImGuiTestContext"
+    },
+    "SleepNoSkip": {
+        "line": 297,
+        "class": "ImGuiTestContext"
+    },
+    "LogWarning": {
+        "line": 287,
+        "class": "ImGuiTestContext"
+    },
+    "SleepShort": {
+        "line": 295,
+        "class": "ImGuiTestContext"
+    },
+    "KeyCharsReplace": {
+        "line": 384,
+        "class": "ImGuiTestContext"
+    },
+    "ImParseExtractArgcArgvFromCommandLine": {
+        "line": 58,
+        "class": ""
+    },
+    "ScrollTo": {
+        "line": 398,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTestEngineHook_ItemInfo": {
+        "line": 176,
+        "class": ""
+    },
+    "MouseTeleportToPos": {
+        "line": 353,
+        "class": "ImGuiTestContext"
+    },
+    "GetResultSummary": {
+        "line": 217,
+        "class": "ImGuiTestEngine"
+    },
+    "WindowTeleportToMakePosVisible": {
+        "line": 322,
+        "class": "ImGuiTestContext"
+    },
+    "WindowFocus": {
+        "line": 318,
+        "class": "ImGuiTestContext"
+    },
+    "GetIO": {
+        "line": 198,
+        "class": "ImGuiTestEngine"
+    },
+    "InstallDefaultCrashHandler": {
+        "line": 228,
+        "class": ""
+    },
+    "QueryInc": {
+        "line": 172,
+        "class": "ImGuiTestGenericItemStatus"
+    },
+    "MenuCheck": {
+        "line": 473,
+        "class": "ImGuiTestContext"
+    },
+    "PerfCapture": {
+        "line": 512,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTestEngineHook_ItemAdd": {
+        "line": 169,
+        "class": ""
+    },
+    "ImBuildFindGitBranchName": {
+        "line": 91,
+        "class": ""
+    },
+    "CaptureBeginVideo": {
+        "line": 347,
+        "class": "ImGuiTestContext"
+    },
+    "TableSetColumnEnabled": {
+        "line": 485,
+        "class": "ImGuiTestContext"
+    },
+    "MouseWheelX": {
+        "line": 362,
+        "class": "ImGuiTestContext"
+    },
+    "PerfCalcRef": {
+        "line": 511,
+        "class": "ImGuiTestContext"
+    },
+    "ViewOnly": {
+        "line": 117,
+        "class": "ImGuiPerfTool"
+    },
+    "IsGuiFuncOnly": {
+        "line": 275,
+        "class": "ImGuiTestContext"
+    },
+    "KeyUp": {
+        "line": 377,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiTestLog": {
+        "line": 369,
+        "class": "ImGuiTestLog"
+    },
+    "MouseClick": {
+        "line": 354,
+        "class": "ImGuiTestContext"
+    },
+    "AbortCurrentTest": {
+        "line": 210,
+        "class": "ImGuiTestEngine"
+    },
+    "UpdateLineOffsets": {
+        "line": 385,
+        "class": "ImGuiTestLog"
+    },
+    "ItemInput": {
+        "line": 427,
+        "class": "ImGuiTestContext"
+    },
+    "WindowClose": {
+        "line": 316,
+        "class": "ImGuiTestContext"
+    },
+    "ItemInfoNull": {
+        "line": 416,
+        "class": "ImGuiTestContext"
+    },
+    "Set": {
+        "line": 50,
+        "class": "ImGuiPerfToolEntry"
+    },
+    "ImOsConsoleSetTextColor": {
+        "line": 120,
+        "class": ""
+    },
+    "TabBarCompareOrder": {
+        "line": 465,
+        "class": "ImGuiTestContext"
+    },
+    "ImThreadSetCurrentThreadDescription": {
+        "line": 73,
+        "class": ""
+    },
+    "IsError": {
+        "line": 271,
+        "class": "ImGuiTestContext"
+    },
+    "ImGuiCsvParser": {
+        "line": 172,
+        "class": "ImGuiCsvParser"
+    },
+    "LogToTTY": {
+        "line": 283,
+        "class": "ImGuiTestContext"
+    },
+    "MouseWheelY": {
+        "line": 363,
+        "class": "ImGuiTestContext"
+    },
+    "ItemOpenAll": {
+        "line": 432,
+        "class": "ImGuiTestContext"
+    },
+    "PopupCloseAll": {
+        "line": 327,
+        "class": "ImGuiTestContext"
+    },
+    "NavMoveTo": {
+        "line": 393,
+        "class": "ImGuiTestContext"
+    },
+    "MouseMove": {
+        "line": 351,
+        "class": "ImGuiTestContext"
+    },
+    "CheckStrOp": {
+        "line": 183,
+        "class": ""
+    },
+    "QueueTest": {
+        "line": 207,
+        "class": "ImGuiTestEngine"
+    },
+    "NavActivate": {
+        "line": 394,
+        "class": "ImGuiTestContext"
+    },
+    "ImBuildGetCompilationInfo": {
+        "line": 90,
+        "class": ""
+    },
+    "ImGuiTestRefDesc": {
+        "line": 97,
+        "class": "ImGuiTestRefDesc"
+    },
+    "MenuUncheck": {
+        "line": 474,
+        "class": "ImGuiTestContext"
+    },
+    "UnregisterTest": {
+        "line": 203,
+        "class": "ImGuiTestEngine"
+    },
+    "ImTimeGetInMicroseconds": {
+        "line": 65,
+        "class": ""
+    },
+    "C_str": {
+        "line": 95,
+        "class": "ImGuiTestRefDesc"
+    },
+    "Empty": {
+        "line": 120,
+        "class": "ImGuiPerfTool"
+    },
+    "AssertLog": {
+        "line": 185,
+        "class": ""
+    },
+    "MouseDown": {
+        "line": 357,
+        "class": "ImGuiTestContext"
+    },
+    "ImPathFixSeparatorsForCurrentOS": {
+        "line": 43,
+        "class": ""
+    },
+    "ImFileExist": {
+        "line": 30,
+        "class": ""
+    },
+    "PopupCloseOne": {
+        "line": 326,
+        "class": "ImGuiTestContext"
+    },
+    "ScrollToX": {
+        "line": 399,
+        "class": "ImGuiTestContext"
+    },
+    "Begin": {
+        "line": 347,
+        "class": "ImGuiTestItemList"
+    }
+}

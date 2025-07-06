@@ -1,22 +1,20 @@
 name = "ImGuiTestEngine"
 uuid = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
 authors = ["JamesWrigley <james@puiterwijk.org>"]
-version = "0.1.7"
+version = "1.0.0"
 
 [deps]
+CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 CImGui = "5d785b6c-b76f-510e-a07c-3070796c7e87"
 CImGuiPack_jll = "333409e9-af72-5310-9767-d6ad21a76a05"
-Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
-CxxWrap = "1f15a43c-97ca-5a2a-ae31-89f07a497df4"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 ScopedValues = "7e506255-f358-4e82-b7e4-beb19740aa63"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
-CImGui = "2,3,4,5"
-CImGuiPack_jll = "0.7.1,0.8"
-Compat = "4.15.0"
-CxxWrap = "0.16.0"
+CEnum = "0.5.0"
+CImGui = "6"
+CImGuiPack_jll = "0.9"
 DocStringExtensions = "0.9.3"
 ScopedValues = "1.2.1"
 Test = "1"

@@ -7,6 +7,20 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [v1.0.0]
+
+### Changed
+- **Breaking**: the package changed being mostly handwritten wrappers to mostly
+  auto-generated wrappers, and so now the API much more closely mimics the
+  upstream API, but there will also be breakages.
+- **Breaking**: the `GuiFunc` and `TestFunc` functions no longer take a `ctx`
+  argument. You will need to replace code like `t.GuiFunc = ctx -> ...` with
+  `t.GuiFunc = () -> ...` and `@register_test(engine, "foo", "bar") do ctx
+  ... end` with `@register_test(engine, "foo", "bar") do ... end`.
+- **Breaking**: we also updated to the test engine for Dear ImGui 1.92, which has
+  some of [its own breaking
+  changes](https://github.com/ocornut/imgui_test_engine/blob/0406f8a96068155ad7b30d4d632ae287f7a4389f/docs/CHANGELOG.txt#L11).
+
 ## [v0.1.7] - 2025-02-05
 
 Patch release to add compat for CImGui v5/Dear ImGui 1.91.8 ([#13]).

@@ -17,17 +17,8 @@ a task will stay on the same thread.
 =#
 module _Coroutine
 
-import Test
+import ..ImGuiTestCoroutineInterface
 
-
-# This is a copy of the upstream ImGuiTestCoroutineInterface, basically just a
-# struct of function pointers that we give to the test engine.
-mutable struct CoroutineInterface
-    CreateFunc::Ptr{Cvoid}
-    DestroyFunc::Ptr{Cvoid}
-    RunFunc::Ptr{Cvoid}
-    YieldFunc::Ptr{Cvoid}
-end
 
 mutable struct CoroutineData
     StateChange::Threads.Condition
@@ -52,7 +43,7 @@ mutable struct CoroutineData
 end
 
 # Global variables
-interface::Union{CoroutineInterface, Nothing} = nothing
+interface::Ref{ImGuiTestCoroutineInterface} = Ref{ImGuiTestCoroutineInterface}()
 data::Union{CoroutineData, Nothing} = nothing
 
 function run_coroutine(data::CoroutineData, func::Ptr{Cvoid}, ctx::Ptr{Cvoid}, parent_testsets)
@@ -157,11 +148,11 @@ end
 
 
 function __init__()
-    global interface = CoroutineInterface(C_NULL, C_NULL, C_NULL, C_NULL)
-    interface.CreateFunc  = @cfunction(CreateFunc, Ptr{Cvoid}, (Ptr{Cvoid}, Cstring, Ptr{Cvoid}))
-    interface.DestroyFunc = @cfunction(DestroyFunc, Cvoid, (Ptr{Cvoid},))
-    interface.RunFunc     = @cfunction(RunFunc, Bool, (Ptr{Cvoid},))
-    interface.YieldFunc   = @cfunction(YieldFunc, Cvoid, ())
+    global interface[] = ImGuiTestCoroutineInterface(C_NULL, C_NULL, C_NULL, C_NULL)
+    interface[].CreateFunc  = @cfunction(CreateFunc, Ptr{Cvoid}, (Ptr{Cvoid}, Cstring, Ptr{Cvoid}))
+    interface[].DestroyFunc = @cfunction(DestroyFunc, Cvoid, (Ptr{Cvoid},))
+    interface[].RunFunc     = @cfunction(RunFunc, Bool, (Ptr{Cvoid},))
+    interface[].YieldFunc   = @cfunction(YieldFunc, Cvoid, ())
 end
 
 end
