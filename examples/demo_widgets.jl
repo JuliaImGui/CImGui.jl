@@ -290,13 +290,14 @@ function ShowDemoWindowWidgets()
         # Using ShowMetricsWindow() as a "debugger" to inspect the draw data that are being passed to your render will help you debug issues if you are confused about this.
         # Consider using the lower-level ImDrawList::AddImage() API, via CImGui.GetWindowDrawList()->AddImage().
         font_atlas = unsafe_load(io.Fonts)
-        my_tex_id = unsafe_load(font_atlas.TexID)
-        my_tex_w = unsafe_load(font_atlas.TexWidth)
-        my_tex_h = unsafe_load(font_atlas.TexHeight)
+        my_tex_ref = unsafe_load(font_atlas.TexRef)
+        tex_data = unsafe_load(font_atlas.TexData)
+        my_tex_w = unsafe_load(tex_data.Width)
+        my_tex_h = unsafe_load(tex_data.Height)
 
         CImGui.Text(@sprintf("%.0fx%.0f", my_tex_w, my_tex_h))
         pos = CImGui.GetCursorScreenPos()
-        CImGui.Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), (0,0), (1,1), (255,255,255,255), (255,255,255,128))
+        CImGui.ImageWithBg(my_tex_ref, ImVec2(my_tex_w, my_tex_h), (0,0), (1,1), (255,255,255,255), (255,255,255,128))
         if CImGui.IsItemHovered()
             CImGui.BeginTooltip()
             region_sz = 32.0
@@ -317,7 +318,7 @@ function ShowDemoWindowWidgets()
             CImGui.Text(@sprintf("Max: (%.2f, %.2f)", region_x + region_sz, region_y + region_sz))
             uv0 = ImVec2((region_x) / my_tex_w, (region_y) / my_tex_h)
             uv1 = ImVec2((region_x + region_sz) / my_tex_w, (region_y + region_sz) / my_tex_h)
-            CImGui.Image(my_tex_id, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, (255,255,255,255), (255,255,255,128))
+            CImGui.ImageWithBg(my_tex_ref, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, (255,255,255,255), (255,255,255,128))
             CImGui.EndTooltip()
         end
         CImGui.TextWrapped("And now some textured buttons..")
@@ -329,7 +330,7 @@ function ShowDemoWindowWidgets()
                     CImGui.PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(i, i))
                 end
 
-                if CImGui.ImageButton("", my_tex_id, (32,32), (0,0), ImVec2(32.0/my_tex_w,32/my_tex_h), ImVec4(0,0,0,255))
+                if CImGui.ImageButton("", my_tex_ref, (32,32), (0,0), ImVec2(32.0/my_tex_w,32/my_tex_h), ImVec4(0,0,0,255))
                     pressed_count += 1
                 end
 

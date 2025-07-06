@@ -6,6 +6,21 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v6.0.0] - 2025-07-07
+
+### Changed
+- **Breaking**: We updated to [Dear ImGui
+  1.92](https://github.com/ocornut/imgui/releases/tag/v1.92.0) ([#176]). All
+  the changes from 1.91.9, 1.91.9b, and 1.92 apply to the release. 1.92 is
+  particularly breaking so read the changelog carefully. The most breaking is
+  likely to the `[Add]Image*` functions which now take an
+  [`ImTextureRef`](@ref) instead of an `ImTextureID`.
+- **Breaking**: The
+  `create_image_texture()`/`update_image_texture()`/`destroy_image_texture()`
+  helper functions have been changed to work with `ImTextureRef` objects instead
+  of `ImTextureID`. If you're using these functions it should simplify
+  upgrading.
+
 ## [v5.1.2] - 2025-06-13
 
 ### Changed

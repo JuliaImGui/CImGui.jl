@@ -35,15 +35,25 @@ function ig._create_image_texture(::Val{:GlfwOpenGL3}, image_width, image_height
     GL.glPixelStorei(GL.GL_UNPACK_ROW_LENGTH, 0)
     GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, format, GL.GLsizei(image_width), GL.GLsizei(image_height), 0, format, type, C_NULL)
     g_ImageTexture[id] = id
-    return ig.ImTextureID(id)
+    return ig.ImTextureRef(ig.ImTextureID(id))
 end
 
-function ig._update_image_texture(::Val{:GlfwOpenGL3}, id, image_data, image_width, image_height; format=GL.GL_RGBA, type=GL.GL_UNSIGNED_BYTE)
+function ig._update_image_texture(::Val{:GlfwOpenGL3}, tex_ref, image_data, image_width, image_height; format=GL.GL_RGBA, type=GL.GL_UNSIGNED_BYTE)
+    id = tex_ref._TexID
+    if id <= 0
+        error("ImTextureRef has an invalid ImTextureId: $(id)")
+    end
+
     GL.glBindTexture(GL.GL_TEXTURE_2D, g_ImageTexture[id])
     GL.glTexSubImage2D(GL.GL_TEXTURE_2D, 0, 0, 0, GL.GLsizei(image_width), GL.GLsizei(image_height), format, type, image_data)
 end
 
 function ig._destroy_image_texture(::Val{:GlfwOpenGL3}, id)
+    id = tex_ref._TexID
+    if id <= 0
+        error("ImTextureRef has an invalid ImTextureId: $(id)")
+    end
+
     id = g_ImageTexture[id]
     @c GL.glDeleteTextures(1, &id)
     delete!(g_ImageTexture, id)
@@ -170,7 +180,7 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                 @ccall jl_gc_safe_leave()::Int8
             end
 
-            if (unsafe_load(lib.igGetIO().ConfigFlags) & lib.ImGuiConfigFlags_ViewportsEnable) == lib.ImGuiConfigFlags_ViewportsEnable
+            if (unsafe_load(ig.GetIO().ConfigFlags) & lib.ImGuiConfigFlags_ViewportsEnable) == lib.ImGuiConfigFlags_ViewportsEnable
                 backup_current_context = GLFW.GetCurrentContext()
                 lib.igUpdatePlatformWindows()
                 lib.igRenderPlatformWindowsDefault(C_NULL, C_NULL)

@@ -3,7 +3,6 @@ module CImGui
 using CSyntax
 using CEnum
 using CEnum: Cenum, name_value_pairs
-import Compat: @compat
 import DocStringExtensions: TYPEDSIGNATURES
 
 
@@ -35,6 +34,13 @@ Base.convert(::Type{ImU32}, x::ImVec4) = ColorConvertFloat4ToU32(x)
 Base.:~(x::Cenum{UInt32}) = ~UInt32(x)
 Base.:(:)(a::T, b::Cenum) where {T<:Integer} = a:T(b)
 Base.:(:)(a::Cenum, b::T) where {T<:Integer} = T(a):b
+
+"""
+$(TYPEDSIGNATURES)
+
+Convert an `ImTextureID` to an `ImTextureRef`.
+"""
+lib.ImTextureRef(id::lib.ImTextureID) = lib.ImTextureRef(C_NULL, id)
 
 """
     imgui_version()::VersionNumber

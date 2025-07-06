@@ -73,13 +73,13 @@ include(joinpath(@__DIR__, "../demo/demo.jl"))
     @test ig.imgui_version() isa VersionNumber
     engine = te.CreateContext()
 
-    @register_test(engine, "Official demo", "Hiding demo window") do ctx
-        @imcheck GetWindowByRef("Dear ImGui Demo") != nothing
+    @register_test(engine, "Official demo", "Hiding demo window") do
+        @imcheck GetWindowByRef("Dear ImGui Demo") != C_NULL
 
         SetRef("Hello, world!")
         ItemClick("Demo Window") # This should hide the demo window
 
-        @imcheck GetWindowByRef("Dear ImGui Demo") == nothing
+        @imcheck GetWindowByRef("Dear ImGui Demo") == C_NULL
     end
 
     official_demo(; engine)
@@ -94,7 +94,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
     engine_io = te.GetIO(engine)
     # engine_io.ConfigRunSpeed = te.RunSpeed_Normal
 
-    @register_test(engine, "Julia demo", "About window") do ctx
+    @register_test(engine, "Julia demo", "About window") do
         SetRef("ImGui Demo")
         MenuClick("Help/About Dear ImGui")
 
@@ -105,7 +105,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ItemCheck("Config\\/Build Information")
     end
 
-    @register_test(engine, "Examples", "Main menu bar") do ctx
+    @register_test(engine, "Examples", "Main menu bar") do
         SetRef("ImGui Demo")
         MenuClick("Examples/Main menu bar")
 
@@ -116,7 +116,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         MenuClick("File/Quit")
     end
 
-    @register_test(engine, "Examples", "Long text display") do ctx
+    @register_test(engine, "Examples", "Long text display") do
         SetRef("ImGui Demo")
         MenuClick("Examples/Long text display")
 
@@ -125,7 +125,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ComboClickAll("Test type")
     end
 
-    @register_test(engine, "Examples", "Constrained-resizing window") do ctx
+    @register_test(engine, "Examples", "Constrained-resizing window") do
         SetRef("ImGui Demo")
         MenuClick("Examples/Constrained-resizing window")
 
@@ -133,7 +133,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ComboClickAll("Constraint")
     end
 
-    @register_test(engine, "Configuration", "ConfigFlags") do ctx
+    @register_test(engine, "Configuration", "ConfigFlags") do
         SetRef("ImGui Demo")
         ItemClick("Configuration")
         ItemClick("Configuration##2")
@@ -141,7 +141,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ItemCheck("io.ConfigFlags: NoMouse")
     end
 
-    @register_test(engine, "Julia demo", "Widgets") do ctx
+    @register_test(engine, "Julia demo", "Widgets") do
         SetRef("ImGui Demo")
         ItemClick("Widgets")
 
@@ -177,7 +177,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ItemClick("Widgets") # Close the 'Widgets' section
     end
 
-    @register_test(engine, "Julia demo", "Layout") do ctx
+    @register_test(engine, "Julia demo", "Layout") do
         SetRef("ImGui Demo")
         ItemClick("Layout")
 
@@ -199,7 +199,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         ItemClick("Layout")
     end
 
-    @register_test(engine, "Julia demo", "Popups & modal windows") do ctx
+    @register_test(engine, "Julia demo", "Popups & modal windows") do
         SetRef("ImGui Demo")
         OpenAndClose("Popups & Modal windows") do
             OpenAndClose("Popups") do
@@ -227,7 +227,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         end
     end
 
-    @register_test(engine, "Julia demo", "Columns") do ctx
+    @register_test(engine, "Julia demo", "Columns") do
         SetRef("ImGui Demo")
         OpenAndClose("Columns") do
             OpenAndClose("Columns/Basic")
@@ -243,7 +243,7 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         end
     end
 
-    @register_test(engine, "Julia demo", "Inputs") do ctx
+    @register_test(engine, "Julia demo", "Inputs") do
         SetRef("ImGui Demo")
         OpenAndClose("Inputs, Navigation & Focus") do
             section = "Keyboard, Mouse & Navigation State"
@@ -269,7 +269,7 @@ include(joinpath(@__DIR__, "../examples/makie_demo.jl"))
 @testset "MakieFigure" begin
     engine = te.CreateContext()
 
-    @register_test(engine, "Makie demo", "Simple plot") do ctx
+    @register_test(engine, "Makie demo", "Simple plot") do
         SetRef("Makie demo")
         ItemClick("Random data")
     end

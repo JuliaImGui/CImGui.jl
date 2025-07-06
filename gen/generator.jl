@@ -37,7 +37,13 @@ const function_ignorelist = (
     # either to be Ptr{Cvoid}, but C_NULL is the default argument to
     # GetForegroundDrawList(ImGuiViewPort*). Hence we disable this other
     # (internal) overload.
-    :igGetForegroundDrawList_WindowPtr
+    :igGetForegroundDrawList_WindowPtr,
+
+    # This is a simple helper function that we implement ourselves to avoid any
+    # heap allocations. See:
+    # https://github.com/ocornut/imgui/blob/0448428322780d34599e30e5267b4a063374d691/imgui.h#L350-L351
+    :ImTextureRef_ImTextureRef_TextureID,
+    :ImTextureRef_ImTextureRef_Nil
 )
 
 struct WrapperMethod
@@ -575,7 +581,11 @@ function generate()
             filter!(x -> !startswith(x, "lib.") && !startswith(x, "_"), function_names)
             function_names = join(function_names, ", ")
 
-            write(io, "@compat public ($(function_names))")
+            write(io, """
+            @static if VERSION >= v"1.11"
+                eval(Meta.parse("public $(function_names)"))
+            end
+            """)
         end
 
         format_file(output_file; margin=120)
