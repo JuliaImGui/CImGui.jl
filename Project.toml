@@ -1,13 +1,12 @@
 name = "CImGui"
 uuid = "5d785b6c-b76f-510e-a07c-3070796c7e87"
 authors = ["Yupei Qi <qiyupei@gmail.com>"]
-version = "5.1.2"
+version = "6.0.0"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
 CImGuiPack_jll = "333409e9-af72-5310-9767-d6ad21a76a05"
 CSyntax = "ea656a56-6ca6-5dda-bba5-7b6963a5f74c"
-Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
@@ -24,9 +23,8 @@ MakieIntegration = ["GLFW", "ModernGL", "GLMakie"]
 
 [compat]
 CEnum = "0.4, 0.5"
-CImGuiPack_jll = "0.8.0"
+CImGuiPack_jll = "0.9.0"
 CSyntax = "0.4"
-Compat = "4.16.0"
 DocStringExtensions = "0.9.3"
 GLFW = "3"
 GLMakie = "0.10.6, 0.12, 0.13"
