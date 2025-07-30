@@ -590,9 +590,9 @@ struct ImFontConfig
     MergeMode::Bool
     PixelSnapH::Bool
     PixelSnapV::Bool
-    FontNo::ImS8
     OversampleH::ImS8
     OversampleV::ImS8
+    EllipsisChar::ImWchar
     SizePixels::Cfloat
     GlyphRanges::Ptr{ImWchar}
     GlyphExcludeRanges::Ptr{ImWchar}
@@ -600,10 +600,10 @@ struct ImFontConfig
     GlyphMinAdvanceX::Cfloat
     GlyphMaxAdvanceX::Cfloat
     GlyphExtraAdvanceX::Cfloat
+    FontNo::ImU32
     FontLoaderFlags::Cuint
     RasterizerMultiply::Cfloat
     RasterizerDensity::Cfloat
-    EllipsisChar::ImWchar
     Flags::ImFontFlags
     DstFont::Ptr{Cvoid} # DstFont::Ptr{ImFont}
     FontLoader::Ptr{ImFontLoader}
@@ -623,9 +623,9 @@ function Base.getproperty(x::Ptr{ImFontConfig}, f::Symbol)
     f === :MergeMode && return Ptr{Bool}(x + 53)
     f === :PixelSnapH && return Ptr{Bool}(x + 54)
     f === :PixelSnapV && return Ptr{Bool}(x + 55)
-    f === :FontNo && return Ptr{ImS8}(x + 56)
-    f === :OversampleH && return Ptr{ImS8}(x + 57)
-    f === :OversampleV && return Ptr{ImS8}(x + 58)
+    f === :OversampleH && return Ptr{ImS8}(x + 56)
+    f === :OversampleV && return Ptr{ImS8}(x + 57)
+    f === :EllipsisChar && return Ptr{ImWchar}(x + 58)
     f === :SizePixels && return Ptr{Cfloat}(x + 60)
     f === :GlyphRanges && return Ptr{Ptr{ImWchar}}(x + 64)
     f === :GlyphExcludeRanges && return Ptr{Ptr{ImWchar}}(x + 72)
@@ -633,10 +633,10 @@ function Base.getproperty(x::Ptr{ImFontConfig}, f::Symbol)
     f === :GlyphMinAdvanceX && return Ptr{Cfloat}(x + 88)
     f === :GlyphMaxAdvanceX && return Ptr{Cfloat}(x + 92)
     f === :GlyphExtraAdvanceX && return Ptr{Cfloat}(x + 96)
-    f === :FontLoaderFlags && return Ptr{Cuint}(x + 100)
-    f === :RasterizerMultiply && return Ptr{Cfloat}(x + 104)
-    f === :RasterizerDensity && return Ptr{Cfloat}(x + 108)
-    f === :EllipsisChar && return Ptr{ImWchar}(x + 112)
+    f === :FontNo && return Ptr{ImU32}(x + 100)
+    f === :FontLoaderFlags && return Ptr{Cuint}(x + 104)
+    f === :RasterizerMultiply && return Ptr{Cfloat}(x + 108)
+    f === :RasterizerDensity && return Ptr{Cfloat}(x + 112)
     f === :Flags && return Ptr{ImFontFlags}(x + 116)
     f === :DstFont && return Ptr{Ptr{ImFont}}(x + 120)
     f === :FontLoader && return Ptr{Ptr{ImFontLoader}}(x + 128)
@@ -3580,7 +3580,7 @@ function Base.getproperty(x::Ptr{ImGuiContext}, f::Symbol)
     f === :WheelingWindowReleaseTimer && return Ptr{Cfloat}(x + 5552)
     f === :WheelingWindowWheelRemainder && return Ptr{ImVec2}(x + 5556)
     f === :WheelingAxisAvg && return Ptr{ImVec2}(x + 5564)
-    f === :DebugDrawIdConflicts && return Ptr{ImGuiID}(x + 5572)
+    f === :DebugDrawIdConflictsId && return Ptr{ImGuiID}(x + 5572)
     f === :DebugHookIdInfo && return Ptr{ImGuiID}(x + 5576)
     f === :HoveredId && return Ptr{ImGuiID}(x + 5580)
     f === :HoveredIdPreviousFrame && return Ptr{ImGuiID}(x + 5584)
@@ -7806,6 +7806,10 @@ function ImFontAtlas_CompactCache(self)
     ccall((:ImFontAtlas_CompactCache, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
 end
 
+function ImFontAtlas_SetFontLoader(self, font_loader)
+    ccall((:ImFontAtlas_SetFontLoader, libcimgui), Cvoid, (Ptr{ImFontAtlas}, Ptr{ImFontLoader}), self, font_loader)
+end
+
 function ImFontAtlas_ClearInputData(self)
     ccall((:ImFontAtlas_ClearInputData, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
 end
@@ -11147,6 +11151,10 @@ end
 
 function igImFontAtlasBakedAddFontGlyph(atlas, baked, src, in_glyph)
     ccall((:igImFontAtlasBakedAddFontGlyph, libcimgui), Ptr{ImFontGlyph}, (Ptr{ImFontAtlas}, Ptr{ImFontBaked}, Ptr{ImFontConfig}, Ptr{ImFontGlyph}), atlas, baked, src, in_glyph)
+end
+
+function igImFontAtlasBakedAddFontGlyphAdvancedX(atlas, baked, src, codepoint, advance_x)
+    ccall((:igImFontAtlasBakedAddFontGlyphAdvancedX, libcimgui), Cvoid, (Ptr{ImFontAtlas}, Ptr{ImFontBaked}, Ptr{ImFontConfig}, ImWchar, Cfloat), atlas, baked, src, codepoint, advance_x)
 end
 
 function igImFontAtlasBakedDiscardFontGlyph(atlas, font, baked, glyph)
