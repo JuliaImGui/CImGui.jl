@@ -67,7 +67,7 @@ function create_docstring(func_name, overload)
     end
 
     header, line = split(overload[:location], ':')
-    te_version = "1.92.0"
+    te_version = "1.92.1"
     link = "https://github.com/ocornut/imgui_test_engine/blob/v$(te_version)/imgui_test_engine/$(header).h#L$(line)"
 
     if is_internal(overload)
