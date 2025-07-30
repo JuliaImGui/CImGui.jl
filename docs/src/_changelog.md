@@ -6,6 +6,13 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v6.1.0] - 2025-07-30
+
+### Changed
+- We updated to [Dear ImGui
+  1.92.1](https://github.com/ocornut/imgui/releases/tag/v1.92.1) ([#177]). There
+  should be no breaking changes.
+
 ## [v6.0.0] - 2025-07-07
 
 ### Changed
