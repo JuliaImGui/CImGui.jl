@@ -7,7 +7,12 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
-## [v1.0.0]
+## [v1.0.1] - 2025-07-30
+
+### Changed
+- Version bump to add compat for CImGui v6.1/Dear ImGui 1.92.1 ([#15]).
+
+## [v1.0.0] - 2025-07-06
 
 ### Changed
 - **Breaking**: the package changed being mostly handwritten wrappers to mostly
