@@ -6,6 +6,12 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v6.1.1] - 2025-09-27
+
+### Fixed
+- Fixed compatibility with Makie 0.24/GLMakie 0.13 and Julia 1.12 ([#180]). This
+  required bumping the minimum support Julia version to 1.10.
+
 ## [v6.1.0] - 2025-07-30
 
 ### Changed
