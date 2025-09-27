@@ -99,7 +99,7 @@ function imgui_to_jl_type(ig_type)
         [:(NTuple{2})]
     elseif parsed_type === :ImVec4
         [:(NTuple{4})]
-    elseif getproperty(bindings_module, parsed_type) in (Cint, Cuint)
+    elseif @invokelatest(getproperty(bindings_module, parsed_type)) in (Cint, Cuint)
         [:Integer]
     elseif endswith(string(parsed_type), "Callback")
         # Allow passing CFunctions and Ptr{Cvoid}'s to callback arguments
@@ -116,7 +116,7 @@ function imgui_to_jl_type(ig_type)
         # Note that we have to use getproperty() and catch an exception because
         # `bindings_module` is an anonymous module, for which propertynames()
         # doesn't work as usual.
-        getproperty(bindings_module, enum_type)
+        @invokelatest getproperty(bindings_module, enum_type)
         pushfirst!(unions, enum_type)
     catch ex
         if !(ex isa UndefVarError)
@@ -629,7 +629,7 @@ function generate()
         global bindings_module = Module()
         @eval bindings_module using CImGuiPack_jll
         Base.include(bindings_module, options["general"]["output_file_path"])
-        bindings_module = bindings_module.lib
+        bindings_module = @invokelatest bindings_module.lib
 
         renamer = expr -> postwalk(expr) do x
             if @capture(x, f_(args__))
@@ -639,7 +639,7 @@ function generate()
                             y_str = string(y)
                             if startswith(y_str, "Im") && y in names(CImGui.lib; all=true)
                                 :(libig.$y)
-                            elseif startswith(y_str, "Im") && y in names(bindings_module; all=true)
+                            elseif startswith(y_str, "Im") && y in @invokelatest(names(bindings_module; all=true))
                                 :(lib.$y)
                             else
                                 y
@@ -682,7 +682,7 @@ function generate()
             # we take the opportunity to shorten them a bit.
             enum_renamer = x -> chopprefix(chopprefix(string(x), "ImGui"), "Test")
             for e in enums
-                x = getproperty(bindings_module, e)
+                x = @invokelatest getproperty(bindings_module, e)
 
                 write(io, "const $(enum_renamer(e)) = lib.$e\n")
                 for inst in @invokelatest instances(x)
@@ -700,6 +700,13 @@ function generate()
                       $(w.docstring)
                       \"\"\"
                       """)
+
+                # If the function name is exported from Base then we need to explicitly
+                # declare a new function with `function` to avoid warnings on 1.12+.
+                if Base.isexported(Base, Symbol(w.name))
+                    write(io, "function $(w.name) end\n")
+                end
+
                 write(io, string(renamer(w.expr)), "\n\n")
             end
 

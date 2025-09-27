@@ -1,7 +1,7 @@
 name = "ImGuiTestEngine"
 uuid = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
 authors = ["JamesWrigley <james@puiterwijk.org>"]
-version = "1.0.1"
+version = "1.0.2"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
