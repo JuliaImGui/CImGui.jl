@@ -1203,6 +1203,7 @@ Formatted text.
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.1-docking/imgui.h#L613).
 """
+function Text end
 Text(fmt) = igText(fmt)
 
 """

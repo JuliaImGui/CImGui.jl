@@ -1,4 +1,4 @@
-using CEnum
+using CEnum: CEnum, @cenum
 
 to_c_type(t::Type) = t
 to_c_type_pairs(va_list) = map(enumerate(to_c_type.(va_list))) do (ind, type)
@@ -474,6 +474,14 @@ function Base.setproperty!(x::Ptr{ImFontGlyph}, f::Symbol, v)
     end
 end
 
+function Base.propertynames(x::ImFontGlyph, private::Bool = false)
+    (:Colored, :Visible, :SourceIdx, :Codepoint, :AdvanceX, :X0, :Y0, :X1, :Y1, :U0, :V0, :U1, :V1, :PackId, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImVector_ImFontGlyph
     Size::Cint
     Capacity::Cint
@@ -545,6 +553,14 @@ function Base.setproperty!(x::Ptr{ImFontBaked}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImFontBaked, private::Bool = false)
+    (:IndexAdvanceX, :FallbackAdvanceX, :Size, :RasterizerDensity, :IndexLookup, :Glyphs, :FallbackGlyphIndex, :Ascent, :Descent, :MetricsTotalSurface, :WantDestroy, :LockLoadingFallback, :LastUsedFrame, :BakedId, :ContainerFont, :FontLoaderDatas, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 const ImFontFlags = Cint
@@ -661,6 +677,14 @@ end
 
 function Base.setproperty!(x::Ptr{ImGuiStoragePair}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::ImGuiStoragePair, private::Bool = false)
+    (:key, :val_i, :val_f, :val_p, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_ImGuiStoragePair
@@ -782,6 +806,14 @@ function Base.setproperty!(x::Ptr{ImFontAtlasRectEntry}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImFontAtlasRectEntry, private::Bool = false)
+    (:TargetIndex, :Generation, :IsUsed, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_ImFontAtlasRectEntry
@@ -1558,6 +1590,14 @@ function Base.setproperty!(x::Ptr{ImGuiInputEvent}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
+function Base.propertynames(x::ImGuiInputEvent, private::Bool = false)
+    (:Type, :Source, :EventId, :MousePos, :MouseWheel, :MouseButton, :MouseViewport, :Key, :Text, :AppFocused, :AddedByTestEngine, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImVector_ImGuiInputEvent
     Size::Cint
     Capacity::Cint
@@ -1957,6 +1997,14 @@ function Base.setproperty!(x::Ptr{ImGuiDockNode}, f::Symbol, v)
     end
 end
 
+function Base.propertynames(x::ImGuiDockNode, private::Bool = false)
+    (:ID, :SharedFlags, :LocalFlags, :LocalFlagsInWindows, :MergedFlags, :State, :ParentNode, :ChildNodes, :Windows, :TabBar, :Pos, :Size, :SizeRef, :SplitAxis, :WindowClass, :LastBgColor, :HostWindow, :VisibleWindow, :CentralNode, :OnlyNodeWithWindows, :CountNodeWithWindows, :LastFrameAlive, :LastFrameActive, :LastFrameFocused, :LastFocusedNodeId, :SelectedTabId, :WantCloseTabId, :RefViewportId, :AuthorityForPos, :AuthorityForSize, :AuthorityForViewport, :IsVisible, :IsFocused, :IsBgDrawnThisFrame, :HasCloseButton, :HasWindowMenuButton, :HasCentralNodeChild, :WantCloseAll, :WantLockSizeOnce, :WantMouseMove, :WantHiddenTabBarUpdate, :WantHiddenTabBarToggle, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImGuiWindow
     data::NTuple{1056, UInt8}
 end
@@ -2131,6 +2179,14 @@ function Base.setproperty!(x::Ptr{ImGuiWindow}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImGuiWindow, private::Bool = false)
+    (:Ctx, :Name, :ID, :Flags, :FlagsPreviousFrame, :ChildFlags, :WindowClass, :Viewport, :ViewportId, :ViewportPos, :ViewportAllowPlatformMonitorExtend, :Pos, :Size, :SizeFull, :ContentSize, :ContentSizeIdeal, :ContentSizeExplicit, :WindowPadding, :WindowRounding, :WindowBorderSize, :TitleBarHeight, :MenuBarHeight, :DecoOuterSizeX1, :DecoOuterSizeY1, :DecoOuterSizeX2, :DecoOuterSizeY2, :DecoInnerSizeX1, :DecoInnerSizeY1, :NameBufLen, :MoveId, :TabId, :ChildId, :PopupId, :Scroll, :ScrollMax, :ScrollTarget, :ScrollTargetCenterRatio, :ScrollTargetEdgeSnapDist, :ScrollbarSizes, :ScrollbarX, :ScrollbarY, :ScrollbarXStabilizeEnabled, :ScrollbarXStabilizeToggledHistory, :ViewportOwned, :Active, :WasActive, :WriteAccessed, :Collapsed, :WantCollapseToggle, :SkipItems, :SkipRefresh, :Appearing, :Hidden, :IsFallbackWindow, :IsExplicitChild, :HasCloseButton, :ResizeBorderHovered, :ResizeBorderHeld, :BeginCount, :BeginCountPreviousFrame, :BeginOrderWithinParent, :BeginOrderWithinContext, :FocusOrder, :AutoFitFramesX, :AutoFitFramesY, :AutoFitOnlyGrows, :AutoPosLastDirection, :HiddenFramesCanSkipItems, :HiddenFramesCannotSkipItems, :HiddenFramesForRenderOnly, :DisableInputsFrames, :SetWindowPosAllowFlags, :SetWindowSizeAllowFlags, :SetWindowCollapsedAllowFlags, :SetWindowDockAllowFlags, :SetWindowPosVal, :SetWindowPosPivot, :IDStack, :DC, :OuterRectClipped, :InnerRect, :InnerClipRect, :WorkRect, :ParentWorkRect, :ClipRect, :ContentRegionRect, :HitTestHoleSize, :HitTestHoleOffset, :LastFrameActive, :LastFrameJustFocused, :LastTimeActive, :ItemWidthDefault, :StateStorage, :ColumnsStorage, :FontWindowScale, :FontWindowScaleParents, :FontRefSize, :SettingsOffset, :DrawList, :DrawListInst, :ParentWindow, :ParentWindowInBeginStack, :RootWindow, :RootWindowPopupTree, :RootWindowDockTree, :RootWindowForTitleBarHighlight, :RootWindowForNav, :ParentWindowForFocusRoute, :NavLastChildNavWindow, :NavLastIds, :NavRectRel, :NavPreferredScoringPosRel, :NavRootFocusScopeId, :MemoryDrawListIdxCapacity, :MemoryDrawListVtxCapacity, :MemoryCompacted, :DockIsActive, :DockNodeIsVisible, :DockTabIsVisible, :DockTabWantClose, :DockOrder, :DockStyle, :DockNode, :DockNodeAsHost, :DockId, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 const ImGuiItemFlags = Cint
@@ -2311,6 +2367,14 @@ end
 
 function Base.setproperty!(x::Ptr{ImGuiStyleMod}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::ImGuiStyleMod, private::Bool = false)
+    (:VarIdx, :BackupInt, :BackupFloat, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_ImGuiStyleMod
@@ -2799,6 +2863,14 @@ function Base.setproperty!(x::Ptr{ImGuiTableColumn}, f::Symbol, v)
     end
 end
 
+function Base.propertynames(x::ImGuiTableColumn, private::Bool = false)
+    (:Flags, :WidthGiven, :MinX, :MaxX, :WidthRequest, :WidthAuto, :WidthMax, :StretchWeight, :InitStretchWeightOrWidth, :ClipRect, :UserID, :WorkMinX, :WorkMaxX, :ItemWidth, :ContentMaxXFrozen, :ContentMaxXUnfrozen, :ContentMaxXHeadersUsed, :ContentMaxXHeadersIdeal, :NameOffset, :DisplayOrder, :IndexWithinEnabledSet, :PrevEnabledColumn, :NextEnabledColumn, :SortOrder, :DrawChannelCurrent, :DrawChannelFrozen, :DrawChannelUnfrozen, :IsEnabled, :IsUserEnabled, :IsUserEnabledNextFrame, :IsVisibleX, :IsVisibleY, :IsRequestOutput, :IsSkipItems, :IsPreserveWidthAuto, :NavLayerCurrent, :AutoFitQueue, :CannotSkipItemsQueue, :SortDirection, :SortDirectionsAvailCount, :SortDirectionsAvailMask, :SortDirectionsAvailList, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImSpan_ImGuiTableColumn
     Data::Ptr{ImGuiTableColumn}
     DataEnd::Ptr{ImGuiTableColumn}
@@ -3027,6 +3099,14 @@ function Base.setproperty!(x::Ptr{ImGuiTable}, f::Symbol, v)
     end
 end
 
+function Base.propertynames(x::ImGuiTable, private::Bool = false)
+    (:ID, :Flags, :RawData, :TempData, :Columns, :DisplayOrderToIndex, :RowCellData, :EnabledMaskByDisplayOrder, :EnabledMaskByIndex, :VisibleMaskByIndex, :SettingsLoadedFlags, :SettingsOffset, :LastFrameActive, :ColumnsCount, :CurrentRow, :CurrentColumn, :InstanceCurrent, :InstanceInteracted, :RowPosY1, :RowPosY2, :RowMinHeight, :RowCellPaddingY, :RowTextBaseline, :RowIndentOffsetX, :RowFlags, :LastRowFlags, :RowBgColorCounter, :RowBgColor, :BorderColorStrong, :BorderColorLight, :BorderX1, :BorderX2, :HostIndentX, :MinColumnWidth, :OuterPaddingX, :CellPaddingX, :CellSpacingX1, :CellSpacingX2, :InnerWidth, :ColumnsGivenWidth, :ColumnsAutoFitWidth, :ColumnsStretchSumWeights, :ResizedColumnNextWidth, :ResizeLockMinContentsX2, :RefScale, :AngledHeadersHeight, :AngledHeadersSlope, :OuterRect, :InnerRect, :WorkRect, :InnerClipRect, :BgClipRect, :Bg0ClipRectForDrawCmd, :Bg2ClipRectForDrawCmd, :HostClipRect, :HostBackupInnerClipRect, :OuterWindow, :InnerWindow, :ColumnsNames, :DrawSplitter, :InstanceDataFirst, :InstanceDataExtra, :SortSpecsSingle, :SortSpecsMulti, :SortSpecs, :SortSpecsCount, :ColumnsEnabledCount, :ColumnsEnabledFixedCount, :DeclColumnsCount, :AngledHeadersCount, :HoveredColumnBody, :HoveredColumnBorder, :HighlightColumnHeader, :AutoFitSingleColumn, :ResizedColumn, :LastResizedColumn, :HeldHeaderColumn, :ReorderColumn, :ReorderColumnDir, :LeftMostEnabledColumn, :RightMostEnabledColumn, :LeftMostStretchedColumn, :RightMostStretchedColumn, :ContextPopupColumn, :FreezeRowsRequest, :FreezeRowsCount, :FreezeColumnsRequest, :FreezeColumnsCount, :RowCellDataCurrent, :DummyDrawChannel, :Bg2DrawChannelCurrent, :Bg2DrawChannelUnfrozen, :NavLayer, :IsLayoutLocked, :IsInsideRow, :IsInitializing, :IsSortSpecsDirty, :IsUsingHeaders, :IsContextPopupOpen, :DisableDefaultContextMenu, :IsSettingsRequestLoad, :IsSettingsDirty, :IsDefaultDisplayOrder, :IsResetAllRequest, :IsResetDisplayOrderRequest, :IsUnfrozenRows, :IsDefaultSizingPolicy, :IsActiveIdAliveBeforeTable, :IsActiveIdInTable, :HasScrollbarYCurr, :HasScrollbarYPrev, :MemoryCompacted, :HostSkipItems, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImVector_ImGuiTableTempData
     Size::Cint
     Capacity::Cint
@@ -3148,6 +3228,14 @@ function Base.setproperty!(x::Ptr{ImGuiBoxSelectState}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImGuiBoxSelectState, private::Bool = false)
+    (:ID, :IsActive, :IsStarting, :IsStartedFromVoid, :IsStartedSetNavIdOnce, :RequestClear, :KeyMods, :StartPosRel, :EndPosRel, :ScrollAccum, :Window, :UnclipMode, :UnclipRect, :BoxSelectRectPrev, :BoxSelectRectCurr, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 @cenum ImGuiSelectionRequestType::UInt32 begin
@@ -3479,6 +3567,14 @@ function Base.setproperty!(x::Ptr{ImGuiStackLevelInfo}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImGuiStackLevelInfo, private::Bool = false)
+    (:ID, :QueryFrameCount, :QuerySuccess, :DataType, :Desc, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_ImGuiStackLevelInfo
@@ -3879,6 +3975,14 @@ function Base.setproperty!(x::Ptr{ImGuiContext}, f::Symbol, v)
     end
 end
 
+function Base.propertynames(x::ImGuiContext, private::Bool = false)
+    (:Initialized, :IO, :PlatformIO, :Style, :ConfigFlagsCurrFrame, :ConfigFlagsLastFrame, :FontAtlases, :Font, :FontBaked, :FontSize, :FontSizeBase, :FontBakedScale, :FontRasterizerDensity, :CurrentDpiScale, :DrawListSharedData, :Time, :FrameCount, :FrameCountEnded, :FrameCountPlatformEnded, :FrameCountRendered, :WithinEndChildID, :WithinFrameScope, :WithinFrameScopeWithImplicitWindow, :GcCompactAll, :TestEngineHookItems, :TestEngine, :ContextName, :InputEventsQueue, :InputEventsTrail, :InputEventsNextMouseSource, :InputEventsNextEventId, :Windows, :WindowsFocusOrder, :WindowsTempSortBuffer, :CurrentWindowStack, :WindowsById, :WindowsActiveCount, :WindowsBorderHoverPadding, :DebugBreakInWindow, :CurrentWindow, :HoveredWindow, :HoveredWindowUnderMovingWindow, :HoveredWindowBeforeClear, :MovingWindow, :WheelingWindow, :WheelingWindowRefMousePos, :WheelingWindowStartFrame, :WheelingWindowScrolledFrame, :WheelingWindowReleaseTimer, :WheelingWindowWheelRemainder, :WheelingAxisAvg, :DebugDrawIdConflictsId, :DebugHookIdInfo, :HoveredId, :HoveredIdPreviousFrame, :HoveredIdPreviousFrameItemCount, :HoveredIdTimer, :HoveredIdNotActiveTimer, :HoveredIdAllowOverlap, :HoveredIdIsDisabled, :ItemUnclipByLog, :ActiveId, :ActiveIdIsAlive, :ActiveIdTimer, :ActiveIdIsJustActivated, :ActiveIdAllowOverlap, :ActiveIdNoClearOnFocusLoss, :ActiveIdHasBeenPressedBefore, :ActiveIdHasBeenEditedBefore, :ActiveIdHasBeenEditedThisFrame, :ActiveIdFromShortcut, :ActiveIdMouseButton, :ActiveIdClickOffset, :ActiveIdWindow, :ActiveIdSource, :ActiveIdPreviousFrame, :DeactivatedItemData, :ActiveIdValueOnActivation, :LastActiveId, :LastActiveIdTimer, :LastKeyModsChangeTime, :LastKeyModsChangeFromNoneTime, :LastKeyboardKeyPressTime, :KeysMayBeCharInput, :KeysOwnerData, :KeysRoutingTable, :ActiveIdUsingNavDirMask, :ActiveIdUsingAllKeyboardKeys, :DebugBreakInShortcutRouting, :CurrentFocusScopeId, :CurrentItemFlags, :DebugLocateId, :NextItemData, :LastItemData, :NextWindowData, :DebugShowGroupRects, :DebugFlashStyleColorIdx, :ColorStack, :StyleVarStack, :FontStack, :FocusScopeStack, :ItemFlagsStack, :GroupStack, :OpenPopupStack, :BeginPopupStack, :TreeNodeStack, :Viewports, :CurrentViewport, :MouseViewport, :MouseLastHoveredViewport, :PlatformLastFocusedViewportId, :FallbackMonitor, :PlatformMonitorsFullWorkRect, :ViewportCreatedCount, :PlatformWindowsCreatedCount, :ViewportFocusedStampCount, :NavCursorVisible, :NavHighlightItemUnderNav, :NavMousePosDirty, :NavIdIsAlive, :NavId, :NavWindow, :NavFocusScopeId, :NavLayer, :NavActivateId, :NavActivateDownId, :NavActivatePressedId, :NavActivateFlags, :NavFocusRoute, :NavHighlightActivatedId, :NavHighlightActivatedTimer, :NavNextActivateId, :NavNextActivateFlags, :NavInputSource, :NavLastValidSelectionUserData, :NavCursorHideFrames, :NavAnyRequest, :NavInitRequest, :NavInitRequestFromMove, :NavInitResult, :NavMoveSubmitted, :NavMoveScoringItems, :NavMoveForwardToNextFrame, :NavMoveFlags, :NavMoveScrollFlags, :NavMoveKeyMods, :NavMoveDir, :NavMoveDirForDebug, :NavMoveClipDir, :NavScoringRect, :NavScoringNoClipRect, :NavScoringDebugCount, :NavTabbingDir, :NavTabbingCounter, :NavMoveResultLocal, :NavMoveResultLocalVisible, :NavMoveResultOther, :NavTabbingResultFirst, :NavJustMovedFromFocusScopeId, :NavJustMovedToId, :NavJustMovedToFocusScopeId, :NavJustMovedToKeyMods, :NavJustMovedToIsTabbing, :NavJustMovedToHasSelectionData, :ConfigNavWindowingWithGamepad, :ConfigNavWindowingKeyNext, :ConfigNavWindowingKeyPrev, :NavWindowingTarget, :NavWindowingTargetAnim, :NavWindowingListWindow, :NavWindowingTimer, :NavWindowingHighlightAlpha, :NavWindowingInputSource, :NavWindowingToggleLayer, :NavWindowingToggleKey, :NavWindowingAccumDeltaPos, :NavWindowingAccumDeltaSize, :DimBgRatio, :DragDropActive, :DragDropWithinSource, :DragDropWithinTarget, :DragDropSourceFlags, :DragDropSourceFrameCount, :DragDropMouseButton, :DragDropPayload, :DragDropTargetRect, :DragDropTargetClipRect, :DragDropTargetId, :DragDropAcceptFlags, :DragDropAcceptIdCurrRectSurface, :DragDropAcceptIdCurr, :DragDropAcceptIdPrev, :DragDropAcceptFrameCount, :DragDropHoldJustPressedId, :DragDropPayloadBufHeap, :DragDropPayloadBufLocal, :ClipperTempDataStacked, :ClipperTempData, :CurrentTable, :DebugBreakInTable, :TablesTempDataStacked, :TablesTempData, :Tables, :TablesLastTimeActive, :DrawChannelsTempMergeBuffer, :CurrentTabBar, :TabBars, :CurrentTabBarStack, :ShrinkWidthBuffer, :BoxSelectState, :CurrentMultiSelect, :MultiSelectTempDataStacked, :MultiSelectTempData, :MultiSelectStorage, :HoverItemDelayId, :HoverItemDelayIdPreviousFrame, :HoverItemDelayTimer, :HoverItemDelayClearTimer, :HoverItemUnlockedStationaryId, :HoverWindowUnlockedStationaryId, :MouseCursor, :MouseStationaryTimer, :MouseLastValidPos, :InputTextState, :InputTextDeactivatedState, :InputTextPasswordFontBackupBaked, :InputTextPasswordFontBackupFlags, :TempInputId, :DataTypeZeroValue, :BeginMenuDepth, :BeginComboDepth, :ColorEditOptions, :ColorEditCurrentID, :ColorEditSavedID, :ColorEditSavedHue, :ColorEditSavedSat, :ColorEditSavedColor, :ColorPickerRef, :ComboPreviewData, :WindowResizeBorderExpectedRect, :WindowResizeRelativeMode, :ScrollbarSeekMode, :ScrollbarClickDeltaToGrabCenter, :SliderGrabClickOffset, :SliderCurrentAccum, :SliderCurrentAccumDirty, :DragCurrentAccumDirty, :DragCurrentAccum, :DragSpeedDefaultRatio, :DisabledAlphaBackup, :DisabledStackSize, :TooltipOverrideCount, :TooltipPreviousWindow, :ClipboardHandlerData, :MenusIdSubmittedThisFrame, :TypingSelectState, :PlatformImeData, :PlatformImeDataPrev, :UserTextures, :DockContext, :DockNodeWindowMenuHandler, :SettingsLoaded, :SettingsDirtyTimer, :SettingsIniData, :SettingsHandlers, :SettingsWindows, :SettingsTables, :Hooks, :HookIdNext, :LocalizationTable, :LogEnabled, :LogFlags, :LogWindow, :LogFile, :LogBuffer, :LogNextPrefix, :LogNextSuffix, :LogLinePosY, :LogLineFirstItem, :LogDepthRef, :LogDepthToExpand, :LogDepthToExpandDefault, :ErrorCallback, :ErrorCallbackUserData, :ErrorTooltipLockedPos, :ErrorFirst, :ErrorCountCurrentFrame, :StackSizesInNewFrame, :StackSizesInBeginForCurrentWindow, :DebugDrawIdConflictsCount, :DebugLogFlags, :DebugLogBuf, :DebugLogIndex, :DebugLogSkippedErrors, :DebugLogAutoDisableFlags, :DebugLogAutoDisableFrames, :DebugLocateFrames, :DebugBreakInLocateId, :DebugBreakKeyChord, :DebugBeginReturnValueCullDepth, :DebugItemPickerActive, :DebugItemPickerMouseButton, :DebugItemPickerBreakId, :DebugFlashStyleColorTime, :DebugFlashStyleColorBackup, :DebugMetricsConfig, :DebugIDStackTool, :DebugAllocInfo, :DebugHoveredDockNode, :FramerateSecPerFrame, :FramerateSecPerFrameIdx, :FramerateSecPerFrameCount, :FramerateSecPerFrameAccum, :WantCaptureMouseNextFrame, :WantCaptureKeyboardNextFrame, :WantTextInputNextFrame, :TempBuffer, :TempKeychordName, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
 struct ImGuiInputTextCallbackData
     Ctx::Ptr{ImGuiContext}
     EventFlag::ImGuiInputTextFlags
@@ -4049,6 +4153,14 @@ function Base.setproperty!(x::Ptr{ImGuiStyleVarInfo}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImGuiStyleVarInfo, private::Bool = false)
+    (:Count, :DataType, :Offset, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImGuiTableSettings
@@ -5200,6 +5312,14 @@ function Base.setproperty!(x::Ptr{ImGuiTableColumnSettings}, f::Symbol, v)
             unsafe_store!(baseptr32 + 4, u64 >> 32)
         end
     end
+end
+
+function Base.propertynames(x::ImGuiTableColumnSettings, private::Bool = false)
+    (:WidthOrWeight, :UserID, :Index, :DisplayOrder, :SortOrder, :SortDirection, :IsEnabled, :IsStretch, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 function ImVec2_ImVec2_Nil()

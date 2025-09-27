@@ -160,6 +160,7 @@ function ig.MakieFigure(title_id::String, f::GLMakie.Figure;
         resize!(f, new_size[1], new_size[2])
     end
 
+    GLMakie.poll_updates(imfigure.screen)
     do_render = GLMakie.requires_update(imfigure.screen)
     if do_render
         idx = mod1(imfigure.times_idx, length(imfigure.render_times))

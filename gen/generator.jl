@@ -102,7 +102,7 @@ function imgui_to_jl_type(ig_type)
         [:(NTuple{2})]
     elseif parsed_type === :ImVec4
         [:(NTuple{4})]
-    elseif getproperty(bindings_module, parsed_type) in (Cint, Cuint)
+    elseif @invokelatest(getproperty(bindings_module, parsed_type)) in (Cint, Cuint)
         [:Integer]
     elseif endswith(string(parsed_type), "Callback")
         # Allow passing CFunctions and Ptr{Cvoid}'s to callback arguments
@@ -119,7 +119,7 @@ function imgui_to_jl_type(ig_type)
         # Note that we have to use getproperty() and catch an exception because
         # `bindings_module` is an anonymous module, for which propertynames()
         # doesn't work as usual.
-        getproperty(bindings_module, enum_type)
+        @invokelatest getproperty(bindings_module, enum_type)
         pushfirst!(unions, enum_type)
     catch ex
         if !(ex isa UndefVarError)
@@ -572,6 +572,13 @@ function generate()
                       $(w.docstring)
                       \"\"\"
                       """)
+
+                # If the function name is exported from Base then we need to explicitly
+                # declare a new function with `function` to avoid warnings on 1.12+.
+                if Base.isexported(Base, Symbol(w.name))
+                    write(io, "function $(w.name) end\n")
+                end
+
                 write(io, string(w.expr), "\n\n")
             end
 
