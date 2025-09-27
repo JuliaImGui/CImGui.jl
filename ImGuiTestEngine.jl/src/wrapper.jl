@@ -3290,6 +3290,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.1/imgui_test_engine/imgui_te_perftool.h#L50).
 """
+function Set end
 Set(self::Ptr{lib.ImGuiPerfToolEntry}, rhs::VoidablePtrOrRef{lib.ImGuiPerfToolEntry}) =
     lib.ImGuiPerfToolEntry_Set(self, rhs)
 

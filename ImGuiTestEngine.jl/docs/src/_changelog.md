@@ -7,6 +7,11 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [v1.0.2] - 2025-09-27
+
+### Fixed
+- Updated the generated code to be compatible with Julia 1.12 ([#16]).
+
 ## [v1.0.1] - 2025-07-30
 
 ### Changed
