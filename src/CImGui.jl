@@ -93,8 +93,8 @@ function pintask!(task::Task, tid::Integer)
     end
 end
 
-# This is implemented by the MakieIntegration extension but we document it here
-# so that we don't have to install GLMakie to build the docs.
+# The Makie functions are implemented by the MakieIntegration extension but we
+# document it here so that we don't have to install GLMakie to build the docs.
 """
     MakieFigure(id::String, f::GLMakie.Figure;
                 auto_resize_x=true, auto_resize_y=false,
@@ -136,6 +136,18 @@ Known issues:
     yet so there may be breaking changes in minor releases.
 """
 function MakieFigure end
+
+"""
+    delete_figure!(f::GLMakie.Figure)
+
+Delete a figure from the internal CImGui state.
+
+When [`MakieFigure()`](@ref) is called it will create some internal state for
+the figure. If your application ever 'deletes' a figure (i.e. hiding it so it
+shouldn't be displayed again) then you should call this function to clear the
+internal state and allow the figure to be GC'd.
+"""
+function delete_figure! end
 
 ## Backends
 
@@ -272,9 +284,10 @@ function __init__()
             if isempty(methods(exc.f))
                 print(io, "\nrender() cannot be called yet. You must load the packages for supported backends, e.g. `import ModernGL, GLFW` for the GLFW/OpenGL3 backend.")
             end
-        elseif exc.f === MakieFigure
+        elseif exc.f === MakieFigure || exc.f === delete_figure!
+            name = nameof(exc.f)
             if isempty(methods(exc.f))
-                print(io, "\nMakieFigure() cannot be called yet, you must load GLMakie with e.g. `import GLMakie`.")
+                print(io, "\n$(name)() cannot be called yet, you must load GLMakie with e.g. `import GLMakie`.")
             end
         end
     end

@@ -6,6 +6,7 @@ import Statistics: mean, std
 import CImGui as ig
 import ModernGL as gl
 import GLFW
+
 import GLMakie
 import GLMakie.Makie as Makie
 
@@ -30,11 +31,11 @@ mutable struct ImMakieFigure
     end
 end
 
-const makie_context = Dict{ig.ImGuiID, ImMakieFigure}()
+const makie_context = IdDict{GLMakie.Figure, ImMakieFigure}()
 
 function destroy_context()
-    for imfigure in values(makie_context)
-        empty!(imfigure.figure)
+    for f in keys(makie_context)
+        empty!(f)
     end
 
     empty!(makie_context)
@@ -42,15 +43,15 @@ end
 
 Base.isopen(window::ImMakieWindow) = isopen(window.glfw_window)
 GLMakie.framebuffer_size(window::ImMakieWindow) = GLMakie.framebuffer_size(window.glfw_window)
-GLMakie.scale_factor(window::ImMakieWindow) = GLMakie.scale_factor(window.glfw_window)
-GLMakie.was_destroyed(window::ImMakieWindow) = GLMakie.was_destroyed(window.glfw_window)
+GLMakie.scale_factor(window::ImMakieWindow)::Float32 = GLMakie.scale_factor(window.glfw_window)
+GLMakie.was_destroyed(window::ImMakieWindow)::Bool = GLMakie.was_destroyed(window.glfw_window)
 GLMakie.reopen!(x::GLMakie.Screen{ImMakieWindow}) = x
 GLMakie.destroy!(::ImMakieWindow) = nothing
 GLMakie.set_screen_visibility!(::GLMakie.Screen{ImMakieWindow}, ::Bool) = nothing
 
 # ShaderAbstractions support
 GLMakie.ShaderAbstractions.native_switch_context!(x::ImMakieWindow) = GLFW.MakeContextCurrent(x.glfw_window)
-GLMakie.ShaderAbstractions.native_context_alive(x::ImMakieWindow) = GLFW.is_initialized() && x.glfw_window != C_NULL
+GLMakie.ShaderAbstractions.native_context_alive(x::ImMakieWindow)::Bool = GLFW.is_initialized() && x.glfw_window != C_NULL
 
 # This is called by GLMakie.display() to set up connections to GLFW for
 # mouse/keyboard events etc. We disable it explicitly because we deliver the
@@ -129,24 +130,29 @@ function draw_popup(axis)
     end
 end
 
+function ig.delete_figure!(f::GLMakie.Figure)
+    delete!(makie_context, f)
+    return nothing
+end
+
 function ig.MakieFigure(title_id::String, f::GLMakie.Figure;
                         auto_resize_x=true, auto_resize_y=false,
                         tooltip=true, stats=false)
     ig.PushID(title_id)
     id = ig.GetID(title_id)
 
-    if !haskey(makie_context, id)
+    if !haskey(makie_context, f)
         window = ig.current_window()
         makie_window = ImMakieWindow(window)
         screen = GLMakie.Screen(; window=makie_window, start_renderloop=false)
 
-        makie_context[id] = ImMakieFigure(f, screen)
+        makie_context[f] = ImMakieFigure(f, screen)
         scene = Makie.get_scene(f)
         scene.events.window_open[] = true
         display(screen, f)
     end
 
-    imfigure = makie_context[id]
+    imfigure = makie_context[f]
     scene = Makie.get_scene(f)
 
     region_avail = ig.GetContentRegionAvail()
