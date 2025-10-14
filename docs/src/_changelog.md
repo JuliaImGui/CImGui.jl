@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v6.2.1] - 2025-10-15
+
+### Fixed
+- Fixed teardown of GLMakie figures by the Makie extension ([#182]).
+
 ## [v6.2.0] - 2025-09-27
 
 ### Fixed
