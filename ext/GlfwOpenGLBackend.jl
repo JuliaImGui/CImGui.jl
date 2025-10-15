@@ -65,7 +65,7 @@ ig._current_window(::Val{:GlfwOpenGL3}) = _window
 
 function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     hotloading=true,
-                    on_exit=nothing,
+                    on_exit=Returns(nothing),
                     clear_color=Cfloat[0.45, 0.55, 0.60, 1.00],
                     window_size=(1280, 720),
                     window_title="CImGui",
@@ -192,11 +192,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
     catch e
         @error "Error in CImGui $(ig._backend) renderloop!" exception=(e, catch_backtrace())
     finally
-        for func in vcat(ig._exit_handlers, isnothing(on_exit) ? [] : [on_exit])
+        for func in vcat(ig._exit_handlers, [on_exit])
             try
                 func()
             catch ex
-                @error "Error in exit handler!" exception=(ex, catch_backtrace())
+                @error "Error in CImGui.jl exit handler!" exception=(ex, catch_backtrace())
             end
         end
 

@@ -35,6 +35,7 @@ const makie_context = Dict{ig.ImGuiID, ImMakieFigure}()
 function destroy_context()
     for imfigure in values(makie_context)
         empty!(imfigure.figure)
+        GLMakie.destroy!(imfigure.screen)
     end
 
     empty!(makie_context)
@@ -293,7 +294,11 @@ end
         ig.set_backend(:GlfwOpenGL3)
         ctx = ig.CreateContext()
 
-        ig.render(ctx; window_title="CImGui/Makie precompilation workload", opengl_version=v"3.3") do
+        # Note that we explicitly pass `on_exit=destroy_context` since
+        # __init__() doesn't run during precompilation.
+        ig.render(ctx; window_title="CImGui/Makie precompilation workload",
+                  opengl_version=v"3.3",
+                  on_exit=destroy_context) do
             ig.Begin("Foo")
             ig.MakieFigure("plot", f)
             ig.End()
@@ -301,7 +306,6 @@ end
             return :imgui_exit_loop
         end
 
-        destroy_context()
         ig._backend = nothing
     end
 end
