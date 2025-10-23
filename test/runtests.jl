@@ -264,6 +264,17 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
     te.DestroyContext(engine)
 end
 
+@testset "Image Texture" begin
+    ctx = ig.CreateContext()
+
+    ig.render(ctx) do
+        img_id = ig.create_image_texture(256, 256)
+        ig.update_image_texture(img_id, rand(UInt8, 256, 256, 4), 256, 256)
+        ig.destroy_image_texture(img_id)
+        return :imgui_exit_loop
+    end
+end
+
 include(joinpath(@__DIR__, "../examples/makie_demo.jl"))
 
 @testset "MakieFigure" begin
