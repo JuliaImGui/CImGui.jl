@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## Unreleased
+
+### Fixed
+- Fixed a typo in `destroy_image_texture()` ([#185]).
+
 ## [v6.2.1] - 2025-10-15
 
 ### Fixed
