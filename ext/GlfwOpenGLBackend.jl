@@ -48,7 +48,7 @@ function ig._update_image_texture(::Val{:GlfwOpenGL3}, tex_ref, image_data, imag
     GL.glTexSubImage2D(GL.GL_TEXTURE_2D, 0, 0, 0, GL.GLsizei(image_width), GL.GLsizei(image_height), format, type, image_data)
 end
 
-function ig._destroy_image_texture(::Val{:GlfwOpenGL3}, id)
+function ig._destroy_image_texture(::Val{:GlfwOpenGL3}, tex_ref)
     id = tex_ref._TexID
     if id <= 0
         error("ImTextureRef has an invalid ImTextureId: $(id)")
