@@ -1,7 +1,7 @@
 name = "ImGuiTestEngine"
 uuid = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
 authors = ["JamesWrigley <james@puiterwijk.org>"]
-version = "1.0.2"
+version = "1.0.3"
 
 [deps]
 CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
@@ -13,8 +13,8 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 CEnum = "0.5.0"
-CImGui = "6"
-CImGuiPack_jll = "0.9, 0.10"
+CImGui = "7"
+CImGuiPack_jll = "0.11"
 DocStringExtensions = "0.9.3"
 ScopedValues = "1.2.1"
 Test = "1"

@@ -141,6 +141,9 @@ end
     ImGuiTestVerboseLevel_COUNT = 6
 end
 
+# typedef void ( ImGuiTestEngineLogFunc ) ( ImGuiTestEngine * engine , ImGuiTestContext * test_ctx , ImGuiTestVerboseLevel level , const char * message , void * user_data )
+const ImGuiTestEngineLogFunc = Cvoid
+
 @cenum ImGuiTestEngineExportFormat::UInt32 begin
     ImGuiTestEngineExportFormat_None = 0
     ImGuiTestEngineExportFormat_JUnitXml = 1
@@ -157,10 +160,6 @@ struct ImGuiTestEngineIO
     ConfigStopOnError::Bool
     ConfigBreakOnError::Bool
     ConfigKeepGuiFunc::Bool
-    ConfigVerboseLevel::ImGuiTestVerboseLevel
-    ConfigVerboseLevelOnError::ImGuiTestVerboseLevel
-    ConfigLogToTTY::Bool
-    ConfigLogToDebugger::Bool
     ConfigRestoreFocusAfterTests::Bool
     ConfigCaptureEnabled::Bool
     ConfigCaptureOnError::Bool
@@ -169,6 +168,12 @@ struct ImGuiTestEngineIO
     ConfigFixedDeltaTime::Cfloat
     PerfStressAmount::Cint
     GitBranchName::NTuple{64, Cchar}
+    ConfigVerboseLevel::ImGuiTestVerboseLevel
+    ConfigVerboseLevelOnError::ImGuiTestVerboseLevel
+    ConfigLogToTTY::Bool
+    ConfigLogToDebugger::Bool
+    ConfigLogToFunc::Ptr{ImGuiTestEngineLogFunc}
+    ConfigLogToFuncUserData::Ptr{Cvoid}
     MouseSpeed::Cfloat
     MouseWobble::Cfloat
     ScrollSpeed::Cfloat
@@ -200,37 +205,39 @@ function Base.getproperty(x::Ptr{ImGuiTestEngineIO}, f::Symbol)
     f === :ConfigStopOnError && return Ptr{Bool}(x + 48)
     f === :ConfigBreakOnError && return Ptr{Bool}(x + 49)
     f === :ConfigKeepGuiFunc && return Ptr{Bool}(x + 50)
-    f === :ConfigVerboseLevel && return Ptr{ImGuiTestVerboseLevel}(x + 52)
-    f === :ConfigVerboseLevelOnError && return Ptr{ImGuiTestVerboseLevel}(x + 56)
-    f === :ConfigLogToTTY && return Ptr{Bool}(x + 60)
-    f === :ConfigLogToDebugger && return Ptr{Bool}(x + 61)
-    f === :ConfigRestoreFocusAfterTests && return Ptr{Bool}(x + 62)
-    f === :ConfigCaptureEnabled && return Ptr{Bool}(x + 63)
-    f === :ConfigCaptureOnError && return Ptr{Bool}(x + 64)
-    f === :ConfigNoThrottle && return Ptr{Bool}(x + 65)
-    f === :ConfigMouseDrawCursor && return Ptr{Bool}(x + 66)
-    f === :ConfigFixedDeltaTime && return Ptr{Cfloat}(x + 68)
-    f === :PerfStressAmount && return Ptr{Cint}(x + 72)
-    f === :GitBranchName && return Ptr{NTuple{64, Cchar}}(x + 76)
-    f === :MouseSpeed && return Ptr{Cfloat}(x + 140)
-    f === :MouseWobble && return Ptr{Cfloat}(x + 144)
-    f === :ScrollSpeed && return Ptr{Cfloat}(x + 148)
-    f === :TypingSpeed && return Ptr{Cfloat}(x + 152)
-    f === :ActionDelayShort && return Ptr{Cfloat}(x + 156)
-    f === :ActionDelayStandard && return Ptr{Cfloat}(x + 160)
-    f === :VideoCaptureEncoderPath && return Ptr{NTuple{256, Cchar}}(x + 164)
-    f === :VideoCaptureEncoderParams && return Ptr{NTuple{256, Cchar}}(x + 420)
-    f === :GifCaptureEncoderParams && return Ptr{NTuple{512, Cchar}}(x + 676)
-    f === :VideoCaptureExtension && return Ptr{NTuple{8, Cchar}}(x + 1188)
-    f === :ConfigWatchdogWarning && return Ptr{Cfloat}(x + 1196)
-    f === :ConfigWatchdogKillTest && return Ptr{Cfloat}(x + 1200)
-    f === :ConfigWatchdogKillApp && return Ptr{Cfloat}(x + 1204)
-    f === :ExportResultsFilename && return Ptr{Ptr{Cchar}}(x + 1208)
-    f === :ExportResultsFormat && return Ptr{ImGuiTestEngineExportFormat}(x + 1216)
-    f === :CheckDrawDataIntegrity && return Ptr{Bool}(x + 1220)
-    f === :IsRunningTests && return Ptr{Bool}(x + 1221)
-    f === :IsRequestingMaxAppSpeed && return Ptr{Bool}(x + 1222)
-    f === :IsCapturing && return Ptr{Bool}(x + 1223)
+    f === :ConfigRestoreFocusAfterTests && return Ptr{Bool}(x + 51)
+    f === :ConfigCaptureEnabled && return Ptr{Bool}(x + 52)
+    f === :ConfigCaptureOnError && return Ptr{Bool}(x + 53)
+    f === :ConfigNoThrottle && return Ptr{Bool}(x + 54)
+    f === :ConfigMouseDrawCursor && return Ptr{Bool}(x + 55)
+    f === :ConfigFixedDeltaTime && return Ptr{Cfloat}(x + 56)
+    f === :PerfStressAmount && return Ptr{Cint}(x + 60)
+    f === :GitBranchName && return Ptr{NTuple{64, Cchar}}(x + 64)
+    f === :ConfigVerboseLevel && return Ptr{ImGuiTestVerboseLevel}(x + 128)
+    f === :ConfigVerboseLevelOnError && return Ptr{ImGuiTestVerboseLevel}(x + 132)
+    f === :ConfigLogToTTY && return Ptr{Bool}(x + 136)
+    f === :ConfigLogToDebugger && return Ptr{Bool}(x + 137)
+    f === :ConfigLogToFunc && return Ptr{Ptr{ImGuiTestEngineLogFunc}}(x + 144)
+    f === :ConfigLogToFuncUserData && return Ptr{Ptr{Cvoid}}(x + 152)
+    f === :MouseSpeed && return Ptr{Cfloat}(x + 160)
+    f === :MouseWobble && return Ptr{Cfloat}(x + 164)
+    f === :ScrollSpeed && return Ptr{Cfloat}(x + 168)
+    f === :TypingSpeed && return Ptr{Cfloat}(x + 172)
+    f === :ActionDelayShort && return Ptr{Cfloat}(x + 176)
+    f === :ActionDelayStandard && return Ptr{Cfloat}(x + 180)
+    f === :VideoCaptureEncoderPath && return Ptr{NTuple{256, Cchar}}(x + 184)
+    f === :VideoCaptureEncoderParams && return Ptr{NTuple{256, Cchar}}(x + 440)
+    f === :GifCaptureEncoderParams && return Ptr{NTuple{512, Cchar}}(x + 696)
+    f === :VideoCaptureExtension && return Ptr{NTuple{8, Cchar}}(x + 1208)
+    f === :ConfigWatchdogWarning && return Ptr{Cfloat}(x + 1216)
+    f === :ConfigWatchdogKillTest && return Ptr{Cfloat}(x + 1220)
+    f === :ConfigWatchdogKillApp && return Ptr{Cfloat}(x + 1224)
+    f === :ExportResultsFilename && return Ptr{Ptr{Cchar}}(x + 1232)
+    f === :ExportResultsFormat && return Ptr{ImGuiTestEngineExportFormat}(x + 1240)
+    f === :CheckDrawDataIntegrity && return Ptr{Bool}(x + 1244)
+    f === :IsRunningTests && return Ptr{Bool}(x + 1245)
+    f === :IsRequestingMaxAppSpeed && return Ptr{Bool}(x + 1246)
+    f === :IsCapturing && return Ptr{Bool}(x + 1247)
     return getfield(x, f)
 end
 
@@ -356,6 +363,7 @@ struct ImGuiTest
     Flags::Cint
     GuiFunc::Ptr{ImGuiTestGuiFunc}
     TestFunc::Ptr{ImGuiTestTestFunc}
+    TeardownFunc::Ptr{ImGuiTestTestFunc}
     UserData::Ptr{Cvoid}
     SourceFile::Ptr{Cchar}
     SourceLine::Cint
@@ -376,16 +384,17 @@ function Base.getproperty(x::Ptr{ImGuiTest}, f::Symbol)
     f === :Flags && return Ptr{Cint}(x + 28)
     f === :GuiFunc && return Ptr{Ptr{ImGuiTestGuiFunc}}(x + 32)
     f === :TestFunc && return Ptr{Ptr{ImGuiTestTestFunc}}(x + 40)
-    f === :UserData && return Ptr{Ptr{Cvoid}}(x + 48)
-    f === :SourceFile && return Ptr{Ptr{Cchar}}(x + 56)
-    f === :SourceLine && return Ptr{Cint}(x + 64)
-    f === :SourceLineEnd && return Ptr{Cint}(x + 68)
-    f === :Output && return Ptr{ImGuiTestOutput}(x + 72)
-    f === :VarsSize && return Ptr{Culong}(x + 152)
-    f === :VarsConstructor && return Ptr{Ptr{ImGuiTestVarsConstructor}}(x + 160)
-    f === :VarsPostConstructor && return Ptr{Ptr{ImGuiTestVarsPostConstructor}}(x + 168)
-    f === :VarsPostConstructorUserFn && return Ptr{Ptr{Cvoid}}(x + 176)
-    f === :VarsDestructor && return Ptr{Ptr{ImGuiTestVarsDestructor}}(x + 184)
+    f === :TeardownFunc && return Ptr{Ptr{ImGuiTestTestFunc}}(x + 48)
+    f === :UserData && return Ptr{Ptr{Cvoid}}(x + 56)
+    f === :SourceFile && return Ptr{Ptr{Cchar}}(x + 64)
+    f === :SourceLine && return Ptr{Cint}(x + 72)
+    f === :SourceLineEnd && return Ptr{Cint}(x + 76)
+    f === :Output && return Ptr{ImGuiTestOutput}(x + 80)
+    f === :VarsSize && return Ptr{Culong}(x + 160)
+    f === :VarsConstructor && return Ptr{Ptr{ImGuiTestVarsConstructor}}(x + 168)
+    f === :VarsPostConstructor && return Ptr{Ptr{ImGuiTestVarsPostConstructor}}(x + 176)
+    f === :VarsPostConstructorUserFn && return Ptr{Ptr{Cvoid}}(x + 184)
+    f === :VarsDestructor && return Ptr{Ptr{ImGuiTestVarsDestructor}}(x + 192)
     return getfield(x, f)
 end
 
@@ -419,6 +428,7 @@ end
 struct ImGuiTestGenericItemStatus
     RetValue::Cint
     Hovered::Cint
+    HoveredAllowDisabled::Cint
     Active::Cint
     Focused::Cint
     Clicked::Cint
@@ -438,6 +448,7 @@ struct ImGuiTestGenericVars
     WindowFlags::Cint
     TableFlags::Cint
     PopupFlags::Cint
+    InputTextFlags::Cint
     Status::ImGuiTestGenericItemStatus
     ShowWindow1::Bool
     ShowWindow2::Bool
@@ -540,6 +551,7 @@ struct ImGuiTestInputs
     Queue::ImVector_ImGuiTestInput
     HostEscDown::Bool
     HostEscDownDuration::Cfloat
+    HostMousePos::ImVec2
 end
 
 const Str = Cvoid
@@ -662,6 +674,7 @@ struct ImGuiTestEngine
     UiContextTarget::Ptr{ImGuiContext}
     UiContextActive::Ptr{ImGuiContext}
     Started::Bool
+    UiContextHasHooks::Bool
     BatchStartTime::Culonglong
     BatchEndTime::Culonglong
     FrameCount::Cint
@@ -675,6 +688,7 @@ struct ImGuiTestEngine
     FindByLabelTask::ImGuiTestFindByLabelTask
     TestQueueCoroutine::Ptr{Cvoid}
     TestQueueCoroutineShouldExit::Bool
+    StringBuilderForChecks::ImGuiTextBuffer
     Inputs::ImGuiTestInputs
     Abort::Bool
     UiSelectAndScrollToTest::Ptr{ImGuiTest}
@@ -710,48 +724,50 @@ end
 
 function Base.getproperty(x::Ptr{ImGuiTestEngine}, f::Symbol)
     f === :IO && return Ptr{ImGuiTestEngineIO}(x + 0)
-    f === :UiContextTarget && return Ptr{Ptr{ImGuiContext}}(x + 1224)
-    f === :UiContextActive && return Ptr{Ptr{ImGuiContext}}(x + 1232)
-    f === :Started && return Ptr{Bool}(x + 1240)
-    f === :BatchStartTime && return Ptr{Culonglong}(x + 1248)
-    f === :BatchEndTime && return Ptr{Culonglong}(x + 1256)
-    f === :FrameCount && return Ptr{Cint}(x + 1264)
-    f === :OverrideDeltaTime && return Ptr{Cfloat}(x + 1268)
-    f === :TestsAll && return Ptr{ImVector_ImGuiTest_Ptr}(x + 1272)
-    f === :TestsQueue && return Ptr{ImVector_ImGuiTestRunTask}(x + 1288)
-    f === :TestContext && return Ptr{Ptr{ImGuiTestContext}}(x + 1304)
-    f === :TestsSourceLinesDirty && return Ptr{Bool}(x + 1312)
-    f === :InfoTasks && return Ptr{ImVector_ImGuiTestInfoTask_Ptr}(x + 1320)
-    f === :GatherTask && return Ptr{ImGuiTestGatherTask}(x + 1336)
-    f === :FindByLabelTask && return Ptr{ImGuiTestFindByLabelTask}(x + 1368)
-    f === :TestQueueCoroutine && return Ptr{Ptr{Cvoid}}(x + 1408)
-    f === :TestQueueCoroutineShouldExit && return Ptr{Bool}(x + 1416)
-    f === :Inputs && return Ptr{ImGuiTestInputs}(x + 1424)
-    f === :Abort && return Ptr{Bool}(x + 1472)
-    f === :UiSelectAndScrollToTest && return Ptr{Ptr{ImGuiTest}}(x + 1480)
-    f === :UiSelectedTest && return Ptr{Ptr{ImGuiTest}}(x + 1488)
-    f === :UiFilterTests && return Ptr{Ptr{Str}}(x + 1496)
-    f === :UiFilterPerfs && return Ptr{Ptr{Str}}(x + 1504)
-    f === :UiFilterByStatusMask && return Ptr{Cuint}(x + 1512)
-    f === :UiMetricsOpen && return Ptr{Bool}(x + 1516)
-    f === :UiDebugLogOpen && return Ptr{Bool}(x + 1517)
-    f === :UiCaptureToolOpen && return Ptr{Bool}(x + 1518)
-    f === :UiStackToolOpen && return Ptr{Bool}(x + 1519)
-    f === :UiPerfToolOpen && return Ptr{Bool}(x + 1520)
-    f === :UiLogHeight && return Ptr{Cfloat}(x + 1524)
-    f === :PerfRefDeltaTime && return Ptr{Cdouble}(x + 1528)
-    f === :PerfDeltaTime100 && return Ptr{ImMovingAverage_double}(x + 1536)
-    f === :PerfDeltaTime500 && return Ptr{ImMovingAverage_double}(x + 1568)
-    f === :PerfTool && return Ptr{Ptr{ImGuiPerfTool}}(x + 1600)
-    f === :CaptureTool && return Ptr{ImGuiCaptureToolUI}(x + 1608)
-    f === :CaptureContext && return Ptr{ImGuiCaptureContext}(x + 2504)
-    f === :CaptureCurrentArgs && return Ptr{Ptr{ImGuiCaptureArgs}}(x + 2712)
-    f === :PostSwapCalled && return Ptr{Bool}(x + 2720)
-    f === :ToolDebugRebootUiContext && return Ptr{Bool}(x + 2721)
-    f === :ToolSlowDown && return Ptr{Bool}(x + 2722)
-    f === :ToolSlowDownMs && return Ptr{Cint}(x + 2724)
-    f === :BackupConfigRunSpeed && return Ptr{ImGuiTestRunSpeed}(x + 2728)
-    f === :BackupConfigNoThrottle && return Ptr{Bool}(x + 2732)
+    f === :UiContextTarget && return Ptr{Ptr{ImGuiContext}}(x + 1248)
+    f === :UiContextActive && return Ptr{Ptr{ImGuiContext}}(x + 1256)
+    f === :Started && return Ptr{Bool}(x + 1264)
+    f === :UiContextHasHooks && return Ptr{Bool}(x + 1265)
+    f === :BatchStartTime && return Ptr{Culonglong}(x + 1272)
+    f === :BatchEndTime && return Ptr{Culonglong}(x + 1280)
+    f === :FrameCount && return Ptr{Cint}(x + 1288)
+    f === :OverrideDeltaTime && return Ptr{Cfloat}(x + 1292)
+    f === :TestsAll && return Ptr{ImVector_ImGuiTest_Ptr}(x + 1296)
+    f === :TestsQueue && return Ptr{ImVector_ImGuiTestRunTask}(x + 1312)
+    f === :TestContext && return Ptr{Ptr{ImGuiTestContext}}(x + 1328)
+    f === :TestsSourceLinesDirty && return Ptr{Bool}(x + 1336)
+    f === :InfoTasks && return Ptr{ImVector_ImGuiTestInfoTask_Ptr}(x + 1344)
+    f === :GatherTask && return Ptr{ImGuiTestGatherTask}(x + 1360)
+    f === :FindByLabelTask && return Ptr{ImGuiTestFindByLabelTask}(x + 1392)
+    f === :TestQueueCoroutine && return Ptr{Ptr{Cvoid}}(x + 1432)
+    f === :TestQueueCoroutineShouldExit && return Ptr{Bool}(x + 1440)
+    f === :StringBuilderForChecks && return Ptr{ImGuiTextBuffer}(x + 1448)
+    f === :Inputs && return Ptr{ImGuiTestInputs}(x + 1464)
+    f === :Abort && return Ptr{Bool}(x + 1520)
+    f === :UiSelectAndScrollToTest && return Ptr{Ptr{ImGuiTest}}(x + 1528)
+    f === :UiSelectedTest && return Ptr{Ptr{ImGuiTest}}(x + 1536)
+    f === :UiFilterTests && return Ptr{Ptr{Str}}(x + 1544)
+    f === :UiFilterPerfs && return Ptr{Ptr{Str}}(x + 1552)
+    f === :UiFilterByStatusMask && return Ptr{Cuint}(x + 1560)
+    f === :UiMetricsOpen && return Ptr{Bool}(x + 1564)
+    f === :UiDebugLogOpen && return Ptr{Bool}(x + 1565)
+    f === :UiCaptureToolOpen && return Ptr{Bool}(x + 1566)
+    f === :UiStackToolOpen && return Ptr{Bool}(x + 1567)
+    f === :UiPerfToolOpen && return Ptr{Bool}(x + 1568)
+    f === :UiLogHeight && return Ptr{Cfloat}(x + 1572)
+    f === :PerfRefDeltaTime && return Ptr{Cdouble}(x + 1576)
+    f === :PerfDeltaTime100 && return Ptr{ImMovingAverage_double}(x + 1584)
+    f === :PerfDeltaTime500 && return Ptr{ImMovingAverage_double}(x + 1616)
+    f === :PerfTool && return Ptr{Ptr{ImGuiPerfTool}}(x + 1648)
+    f === :CaptureTool && return Ptr{ImGuiCaptureToolUI}(x + 1656)
+    f === :CaptureContext && return Ptr{ImGuiCaptureContext}(x + 2552)
+    f === :CaptureCurrentArgs && return Ptr{Ptr{ImGuiCaptureArgs}}(x + 2760)
+    f === :PostSwapCalled && return Ptr{Bool}(x + 2768)
+    f === :ToolDebugRebootUiContext && return Ptr{Bool}(x + 2769)
+    f === :ToolSlowDown && return Ptr{Bool}(x + 2770)
+    f === :ToolSlowDownMs && return Ptr{Cint}(x + 2772)
+    f === :BackupConfigRunSpeed && return Ptr{ImGuiTestRunSpeed}(x + 2776)
+    f === :BackupConfigNoThrottle && return Ptr{Bool}(x + 2780)
     return getfield(x, f)
 end
 
@@ -763,6 +779,7 @@ end
     ImGuiTestActiveFunc_None = 0
     ImGuiTestActiveFunc_GuiFunc = 1
     ImGuiTestActiveFunc_TestFunc = 2
+    ImGuiTestActiveFunc_TeardownFunc = 3
 end
 
 struct ImGuiTestContext
@@ -802,38 +819,38 @@ struct ImGuiTestContext
 end
 function Base.getproperty(x::Ptr{ImGuiTestContext}, f::Symbol)
     f === :GenericVars && return Ptr{ImGuiTestGenericVars}(x + 0)
-    f === :UserVars && return Ptr{Ptr{Cvoid}}(x + 808)
-    f === :UiContext && return Ptr{Ptr{ImGuiContext}}(x + 816)
-    f === :EngineIO && return Ptr{Ptr{ImGuiTestEngineIO}}(x + 824)
-    f === :Test && return Ptr{Ptr{ImGuiTest}}(x + 832)
-    f === :TestOutput && return Ptr{Ptr{ImGuiTestOutput}}(x + 840)
-    f === :OpFlags && return Ptr{Cint}(x + 848)
-    f === :PerfStressAmount && return Ptr{Cint}(x + 852)
-    f === :FrameCount && return Ptr{Cint}(x + 856)
-    f === :FirstTestFrameCount && return Ptr{Cint}(x + 860)
-    f === :FirstGuiFrame && return Ptr{Bool}(x + 864)
-    f === :HasDock && return Ptr{Bool}(x + 865)
-    f === :CaptureArgs && return Ptr{Ptr{ImGuiCaptureArgs}}(x + 872)
-    f === :Engine && return Ptr{Ptr{ImGuiTestEngine}}(x + 880)
-    f === :Inputs && return Ptr{Ptr{ImGuiTestInputs}}(x + 888)
-    f === :RunFlags && return Ptr{Cint}(x + 896)
-    f === :ActiveFunc && return Ptr{ImGuiTestActiveFunc}(x + 900)
-    f === :RunningTime && return Ptr{Cdouble}(x + 904)
-    f === :ActionDepth && return Ptr{Cint}(x + 912)
-    f === :CaptureCounter && return Ptr{Cint}(x + 916)
-    f === :ErrorCounter && return Ptr{Cint}(x + 920)
-    f === :Abort && return Ptr{Bool}(x + 924)
-    f === :PerfRefDt && return Ptr{Cdouble}(x + 928)
-    f === :PerfIterations && return Ptr{Cint}(x + 936)
-    f === :RefStr && return Ptr{NTuple{256, Cchar}}(x + 940)
-    f === :RefID && return Ptr{Cuint}(x + 1196)
-    f === :RefWindowID && return Ptr{Cuint}(x + 1200)
-    f === :InputMode && return Ptr{ImGuiInputSource}(x + 1204)
-    f === :TempString && return Ptr{ImVector_char}(x + 1208)
-    f === :Clipboard && return Ptr{ImVector_char}(x + 1224)
-    f === :ForeignWindowsToHide && return Ptr{ImVector_ImGuiWindowPtr}(x + 1240)
-    f === :DummyItemInfoNull && return Ptr{ImGuiTestItemInfo}(x + 1256)
-    f === :CachedLinesPrintedToTTY && return Ptr{Bool}(x + 1368)
+    f === :UserVars && return Ptr{Ptr{Cvoid}}(x + 816)
+    f === :UiContext && return Ptr{Ptr{ImGuiContext}}(x + 824)
+    f === :EngineIO && return Ptr{Ptr{ImGuiTestEngineIO}}(x + 832)
+    f === :Test && return Ptr{Ptr{ImGuiTest}}(x + 840)
+    f === :TestOutput && return Ptr{Ptr{ImGuiTestOutput}}(x + 848)
+    f === :OpFlags && return Ptr{Cint}(x + 856)
+    f === :PerfStressAmount && return Ptr{Cint}(x + 860)
+    f === :FrameCount && return Ptr{Cint}(x + 864)
+    f === :FirstTestFrameCount && return Ptr{Cint}(x + 868)
+    f === :FirstGuiFrame && return Ptr{Bool}(x + 872)
+    f === :HasDock && return Ptr{Bool}(x + 873)
+    f === :CaptureArgs && return Ptr{Ptr{ImGuiCaptureArgs}}(x + 880)
+    f === :Engine && return Ptr{Ptr{ImGuiTestEngine}}(x + 888)
+    f === :Inputs && return Ptr{Ptr{ImGuiTestInputs}}(x + 896)
+    f === :RunFlags && return Ptr{Cint}(x + 904)
+    f === :ActiveFunc && return Ptr{ImGuiTestActiveFunc}(x + 908)
+    f === :RunningTime && return Ptr{Cdouble}(x + 912)
+    f === :ActionDepth && return Ptr{Cint}(x + 920)
+    f === :CaptureCounter && return Ptr{Cint}(x + 924)
+    f === :ErrorCounter && return Ptr{Cint}(x + 928)
+    f === :Abort && return Ptr{Bool}(x + 932)
+    f === :PerfRefDt && return Ptr{Cdouble}(x + 936)
+    f === :PerfIterations && return Ptr{Cint}(x + 944)
+    f === :RefStr && return Ptr{NTuple{256, Cchar}}(x + 948)
+    f === :RefID && return Ptr{Cuint}(x + 1204)
+    f === :RefWindowID && return Ptr{Cuint}(x + 1208)
+    f === :InputMode && return Ptr{ImGuiInputSource}(x + 1212)
+    f === :TempString && return Ptr{ImVector_char}(x + 1216)
+    f === :Clipboard && return Ptr{ImVector_char}(x + 1232)
+    f === :ForeignWindowsToHide && return Ptr{ImVector_ImGuiWindowPtr}(x + 1248)
+    f === :DummyItemInfoNull && return Ptr{ImGuiTestItemInfo}(x + 1264)
+    f === :CachedLinesPrintedToTTY && return Ptr{Bool}(x + 1376)
     return getfield(x, f)
 end
 
@@ -850,23 +867,6 @@ mutable struct ImBuildInfo
     Date::NTuple{32, Cchar}
     Time::Ptr{Cchar}
 end
-
-const ImGuiCaptureFlags = Cuint
-
-const ImGuiTestFlags = Cint
-
-const ImGuiTestCheckFlags = Cint
-
-const ImGuiTestLogFlags = Cint
-
-const ImGuiTestRunFlags = Cint
-
-const ImGuiTestOpFlags = Cint
-
-const ImGuiTestCoroutineHandle = Ptr{Cvoid}
-
-# typedef void ( ImGuiTestCoroutineMainFunc ) ( void * data )
-const ImGuiTestCoroutineMainFunc = Cvoid
 
 @cenum ImGuiCaptureFlags_::UInt32 begin
     ImGuiCaptureFlags_None = 0
@@ -957,6 +957,23 @@ end
     ImOsConsoleTextColor_BrightBlue = 5
     ImOsConsoleTextColor_BrightYellow = 6
 end
+
+const ImGuiCaptureFlags = Cuint
+
+const ImGuiTestFlags = Cint
+
+const ImGuiTestCheckFlags = Cint
+
+const ImGuiTestLogFlags = Cint
+
+const ImGuiTestRunFlags = Cint
+
+const ImGuiTestOpFlags = Cint
+
+const ImGuiTestCoroutineHandle = Ptr{Cvoid}
+
+# typedef void ( ImGuiTestCoroutineMainFunc ) ( void * data )
+const ImGuiTestCoroutineMainFunc = Cvoid
 
 function cImGuiTestEngine_FindItemInfo(engine, id, debug_id)
     ccall((:cImGuiTestEngine_FindItemInfo, libcimgui), Ptr{ImGuiTestItemInfo}, (Ptr{ImGuiTestEngine}, Cuint, Ptr{Cchar}), engine, id, debug_id)
@@ -1090,7 +1107,7 @@ function cImParseFindIniSection(ini_config, header, result)
     ccall((:cImParseFindIniSection, libcimgui), Bool, (Ptr{Cchar}, Ptr{Cchar}, Ptr{ImVector_char}), ini_config, header, result)
 end
 
-# no prototype is found for this function at cimgui_te.h:839:24, please use with caution
+# no prototype is found for this function at cimgui_te.h:850:24, please use with caution
 function cImTimeGetInMicroseconds()
     ccall((:cImTimeGetInMicroseconds, libcimgui), UInt64, ())
 end
@@ -1107,7 +1124,7 @@ function cImThreadSetCurrentThreadDescription(description)
     ccall((:cImThreadSetCurrentThreadDescription, libcimgui), Cvoid, (Ptr{Cchar},), description)
 end
 
-# no prototype is found for this function at cimgui_te.h:843:35, please use with caution
+# no prototype is found for this function at cimgui_te.h:854:35, please use with caution
 function cImBuildGetCompilationInfo()
     ccall((:cImBuildGetCompilationInfo, libcimgui), Ptr{ImBuildInfo}, ())
 end
@@ -1132,7 +1149,7 @@ function cImOsOpenInShell(path)
     ccall((:cImOsOpenInShell, libcimgui), Cvoid, (Ptr{Cchar},), path)
 end
 
-# no prototype is found for this function at cimgui_te.h:849:20, please use with caution
+# no prototype is found for this function at cimgui_te.h:860:20, please use with caution
 function cImOsIsDebuggerPresent()
     ccall((:cImOsIsDebuggerPresent, libcimgui), Bool, ())
 end
@@ -1202,8 +1219,8 @@ function cImGuiTestEngine_Check(file, func, line, flags, result, expr)
     ccall((:cImGuiTestEngine_Check, libcimgui), Bool, (Ptr{Cchar}, Ptr{Cchar}, Cint, Cint, Bool, Ptr{Cchar}), file, func, line, flags, result, expr)
 end
 
-function cImGuiTestEngine_CheckStrOp(file, func, line, flags, op, lhs_var, lhs_value, rhs_var, rhs_value, out_result)
-    ccall((:cImGuiTestEngine_CheckStrOp, libcimgui), Bool, (Ptr{Cchar}, Ptr{Cchar}, Cint, Cint, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Bool}), file, func, line, flags, op, lhs_var, lhs_value, rhs_var, rhs_value, out_result)
+function cImGuiTestEngine_CheckOpStr(file, func, line, flags, op, lhs_desc, lhs_value, rhs_desc, rhs_value, out_result)
+    ccall((:cImGuiTestEngine_CheckOpStr, libcimgui), Bool, (Ptr{Cchar}, Ptr{Cchar}, Cint, Cint, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Bool}), file, func, line, flags, op, lhs_desc, lhs_value, rhs_desc, rhs_value, out_result)
 end
 
 # automatic type deduction for variadic arguments may not be what you want, please use with caution
@@ -1215,12 +1232,12 @@ function cImGuiTestEngine_AssertLog(expr, file, _function, line)
     ccall((:cImGuiTestEngine_AssertLog, libcimgui), Cvoid, (Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}, Cint), expr, file, _function, line)
 end
 
-# no prototype is found for this function at cimgui_te.h:875:33, please use with caution
+# no prototype is found for this function at cimgui_te.h:886:33, please use with caution
 function cImGuiTestEngine_GetTempStringBuilder()
     ccall((:cImGuiTestEngine_GetTempStringBuilder, libcimgui), Ptr{ImGuiTextBuffer}, ())
 end
 
-# no prototype is found for this function at cimgui_te.h:877:33, please use with caution
+# no prototype is found for this function at cimgui_te.h:888:33, please use with caution
 function cImGuiTestEngine_CreateContext()
     ccall((:cImGuiTestEngine_CreateContext, libcimgui), Ptr{ImGuiTestEngine}, ())
 end
@@ -1297,12 +1314,12 @@ function cImGuiTestEngine_GetTestQueue(engine, out_tests)
     ccall((:cImGuiTestEngine_GetTestQueue, libcimgui), Cvoid, (Ptr{ImGuiTestEngine}, Ptr{ImVector_ImGuiTestRunTask}), engine, out_tests)
 end
 
-# no prototype is found for this function at cimgui_te.h:902:20, please use with caution
+# no prototype is found for this function at cimgui_te.h:913:20, please use with caution
 function cImGuiTestEngine_InstallDefaultCrashHandler()
     ccall((:cImGuiTestEngine_InstallDefaultCrashHandler, libcimgui), Cvoid, ())
 end
 
-# no prototype is found for this function at cimgui_te.h:904:20, please use with caution
+# no prototype is found for this function at cimgui_te.h:915:20, please use with caution
 function cImGuiTestEngine_CrashHandler()
     ccall((:cImGuiTestEngine_CrashHandler, libcimgui), Cvoid, ())
 end
@@ -1311,7 +1328,7 @@ function cImGuiTestEngine_PerfToolAppendToCSV(perf_log, entry, filename)
     ccall((:cImGuiTestEngine_PerfToolAppendToCSV, libcimgui), Cvoid, (Ptr{ImGuiPerfTool}, Ptr{ImGuiPerfToolEntry}, Ptr{Cchar}), perf_log, entry, filename)
 end
 
-# no prototype is found for this function at cimgui_te.h:915:38, please use with caution
+# no prototype is found for this function at cimgui_te.h:926:38, please use with caution
 function ImGuiCaptureImageBuf_ImGuiCaptureImageBuf()
     ccall((:ImGuiCaptureImageBuf_ImGuiCaptureImageBuf, libcimgui), Ptr{ImGuiCaptureImageBuf}, ())
 end
@@ -1384,7 +1401,7 @@ function ImGuiCaptureContext_destroy(self)
     ccall((:ImGuiCaptureContext_destroy, libcimgui), Cvoid, (Ptr{ImGuiCaptureContext},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:942:36, please use with caution
+# no prototype is found for this function at cimgui_te.h:953:36, please use with caution
 function ImGuiCaptureToolUI_ImGuiCaptureToolUI()
     ccall((:ImGuiCaptureToolUI_ImGuiCaptureToolUI, libcimgui), Ptr{ImGuiCaptureToolUI}, ())
 end
@@ -1417,7 +1434,7 @@ function ImGuiCaptureToolUI_destroy(self)
     ccall((:ImGuiCaptureToolUI_destroy, libcimgui), Cvoid, (Ptr{ImGuiCaptureToolUI},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:958:35, please use with caution
+# no prototype is found for this function at cimgui_te.h:969:35, please use with caution
 function ImGuiTestItemInfo_ImGuiTestItemInfo()
     ccall((:ImGuiTestItemInfo_ImGuiTestItemInfo, libcimgui), Ptr{ImGuiTestItemInfo}, ())
 end
@@ -1458,13 +1475,21 @@ function ImGuiTestItemList_end(self)
     ccall((:ImGuiTestItemList_end, libcimgui), Ptr{ImGuiTestItemInfo}, (Ptr{ImGuiTestItemList},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:973:30, please use with caution
+# no prototype is found for this function at cimgui_te.h:984:30, please use with caution
 function ImGuiTestLog_ImGuiTestLog()
     ccall((:ImGuiTestLog_ImGuiTestLog, libcimgui), Ptr{ImGuiTestLog}, ())
 end
 
 function ImGuiTestLog_IsEmpty(self)
     ccall((:ImGuiTestLog_IsEmpty, libcimgui), Bool, (Ptr{ImGuiTestLog},), self)
+end
+
+function ImGuiTestLog_GetText(self)
+    ccall((:ImGuiTestLog_GetText, libcimgui), Ptr{Cchar}, (Ptr{ImGuiTestLog},), self)
+end
+
+function ImGuiTestLog_GetTextLen(self)
+    ccall((:ImGuiTestLog_GetTextLen, libcimgui), Cint, (Ptr{ImGuiTestLog},), self)
 end
 
 function ImGuiTestLog_Clear(self)
@@ -1483,7 +1508,7 @@ function ImGuiTestLog_destroy(self)
     ccall((:ImGuiTestLog_destroy, libcimgui), Cvoid, (Ptr{ImGuiTestLog},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:982:27, please use with caution
+# no prototype is found for this function at cimgui_te.h:995:27, please use with caution
 function ImGuiTest_ImGuiTest()
     ccall((:ImGuiTest_ImGuiTest, libcimgui), Ptr{ImGuiTest}, ())
 end
@@ -1532,7 +1557,7 @@ function ImGuiTestRefDesc_destroy(self)
     ccall((:ImGuiTestRefDesc_destroy, libcimgui), Cvoid, (Ptr{ImGuiTestRefDesc},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:1002:39, please use with caution
+# no prototype is found for this function at cimgui_te.h:1015:39, please use with caution
 function ImGuiTestActionFilter_ImGuiTestActionFilter()
     ccall((:ImGuiTestActionFilter_ImGuiTestActionFilter, libcimgui), Ptr{ImGuiTestActionFilter}, ())
 end
@@ -1541,7 +1566,7 @@ function ImGuiTestActionFilter_destroy(self)
     ccall((:ImGuiTestActionFilter_destroy, libcimgui), Cvoid, (Ptr{ImGuiTestActionFilter},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:1007:44, please use with caution
+# no prototype is found for this function at cimgui_te.h:1020:44, please use with caution
 function ImGuiTestGenericItemStatus_ImGuiTestGenericItemStatus()
     ccall((:ImGuiTestGenericItemStatus_ImGuiTestGenericItemStatus, libcimgui), Ptr{ImGuiTestGenericItemStatus}, ())
 end
@@ -1566,7 +1591,7 @@ function ImGuiTestGenericItemStatus_destroy(self)
     ccall((:ImGuiTestGenericItemStatus_destroy, libcimgui), Cvoid, (Ptr{ImGuiTestGenericItemStatus},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:1016:38, please use with caution
+# no prototype is found for this function at cimgui_te.h:1029:38, please use with caution
 function ImGuiTestGenericVars_ImGuiTestGenericVars()
     ccall((:ImGuiTestGenericVars_ImGuiTestGenericVars, libcimgui), Ptr{ImGuiTestGenericVars}, ())
 end
@@ -1936,6 +1961,18 @@ function ImGuiTestContext_ScrollToBottom(self, ref)
     ccall((:ImGuiTestContext_ScrollToBottom, libcimgui), Cvoid, (Ptr{ImGuiTestContext}, ImGuiTestRef), self, ref)
 end
 
+function ImGuiTestContext_ScrollToPos(self, window_ref, pos_v, axis, flags)
+    ccall((:ImGuiTestContext_ScrollToPos, libcimgui), Cvoid, (Ptr{ImGuiTestContext}, ImGuiTestRef, Cfloat, ImGuiAxis, Cint), self, window_ref, pos_v, axis, flags)
+end
+
+function ImGuiTestContext_ScrollToPosX(self, window_ref, pos_x)
+    ccall((:ImGuiTestContext_ScrollToPosX, libcimgui), Cvoid, (Ptr{ImGuiTestContext}, ImGuiTestRef, Cfloat), self, window_ref, pos_x)
+end
+
+function ImGuiTestContext_ScrollToPosY(self, window_ref, pos_y)
+    ccall((:ImGuiTestContext_ScrollToPosY, libcimgui), Cvoid, (Ptr{ImGuiTestContext}, ImGuiTestRef, Cfloat), self, window_ref, pos_y)
+end
+
 function ImGuiTestContext_ScrollToItem(self, ref, axis, flags)
     ccall((:ImGuiTestContext_ScrollToItem, libcimgui), Cvoid, (Ptr{ImGuiTestContext}, ImGuiTestRef, ImGuiAxis, Cint), self, ref, axis, flags)
 end
@@ -2273,7 +2310,7 @@ function ImGuiTestInput_ForViewportClose(pOut, self, viewport_id)
     ccall((:ImGuiTestInput_ForViewportClose, libcimgui), Cvoid, (Ptr{ImGuiTestInput}, Ptr{ImGuiTestInput}, Cuint), pOut, self, viewport_id)
 end
 
-# no prototype is found for this function at cimgui_te.h:1238:33, please use with caution
+# no prototype is found for this function at cimgui_te.h:1254:33, please use with caution
 function ImGuiTestEngine_ImGuiTestEngine()
     ccall((:ImGuiTestEngine_ImGuiTestEngine, libcimgui), Ptr{ImGuiTestEngine}, ())
 end
@@ -2282,7 +2319,7 @@ function ImGuiTestEngine_destroy(self)
     ccall((:ImGuiTestEngine_destroy, libcimgui), Cvoid, (Ptr{ImGuiTestEngine},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:1242:36, please use with caution
+# no prototype is found for this function at cimgui_te.h:1258:36, please use with caution
 function ImGuiPerfToolEntry_ImGuiPerfToolEntry()
     ccall((:ImGuiPerfToolEntry_ImGuiPerfToolEntry, libcimgui), Ptr{ImGuiPerfToolEntry}, ())
 end
@@ -2303,7 +2340,7 @@ function ImGuiPerfToolBatch_destroy(self)
     ccall((:ImGuiPerfToolBatch_destroy, libcimgui), Cvoid, (Ptr{ImGuiPerfToolBatch},), self)
 end
 
-# no prototype is found for this function at cimgui_te.h:1253:31, please use with caution
+# no prototype is found for this function at cimgui_te.h:1269:31, please use with caution
 function ImGuiPerfTool_ImGuiPerfTool()
     ccall((:ImGuiPerfTool_ImGuiPerfTool, libcimgui), Ptr{ImGuiPerfTool}, ())
 end
