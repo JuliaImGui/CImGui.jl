@@ -2,8 +2,8 @@ import JSON3
 using Clang.Generators
 using Clang.JLLEnvs
 using CImGuiPack_jll
-import JuliaFormatter: format_file, format_text
-import MacroTools: @capture, splitdef, prettify
+using JuliaFormatter: format_file, format_text
+using MacroTools: @capture, splitdef, prettify, postwalk
 
 
 """
@@ -319,15 +319,8 @@ function wrap_function!(methods, func_name, func_def, overloads; with_arg_types=
     arg_types_strs = [func_metadata[:argsT][i][:type] for i in eachindex(arg_names)]
 
     args = copy(arg_names)
-    is_pOut = false
 
     for i in eachindex(args)
-        # pOut arguments are part of cimgui and are a pointer to a return value,
-        # to be filled in by the cimgui function.
-        if arg_names[i] == :pOut
-            is_pOut = true
-        end
-
         arg_type_str = arg_types_strs[i]
 
         # If this is the `self` argument and this function belongs to a struct,
@@ -384,35 +377,11 @@ function wrap_function!(methods, func_name, func_def, overloads; with_arg_types=
         arg_names[i] = :(length($(arg_names[i - 1])))
     end
 
-    func_expr = if is_pOut
-        ccall_info = split_ccall(func_def[:body])
-        local pOut_type
-        if !@capture(ccall_info.argtypes[1], Ptr{pOut_type_})
-            @warn "Skipping '$func_name', couldn't get type of the `pOut` argument"
-            return
-        end
-
-        popfirst!(args)
-        popfirst!(arg_names)
-
-        # Special-case HSV() because it should return an ImVec4 instead of an ImColor
-        return_expr = if func_name === :ImColor_HSV
-            :(pOut[].Value)
-        else
-            :(pOut[])
-        end
-
-        quote
-            function $new_identifier($(args...))
-                pOut = Ref{$pOut_type}()
-                $func_name(pOut, $(arg_names...))
-                return $return_expr
-            end
-        end
+    # Special-case HSV() because it should return an ImVec4 instead of an ImColor
+    func_expr = if func_name === :ImColor_HSV
+        :($new_identifier($(args...)) = $func_name($(arg_names...)).Value)
     else
-        quote
-            $new_identifier($(args...)) = $func_name($(arg_names...))
-        end
+        :($new_identifier($(args...)) = $func_name($(arg_names...)))
     end
 
     docstring = create_docstring(func_name, func_metadata)
@@ -511,6 +480,31 @@ function get_wrappers(dag::ExprDAG)
     return methods
 end
 
+function rewrite!(dag)
+    # In newer versions of the cimgui bindings non-POD-types-that-look-like-POD-types-but-actually-aren't
+    # are renamed to have a '_c' underscore. In the generated Julia bindings we
+    # rename these back to their old names for the sake of convenience.
+    # See: https://github.com/cimgui/cimgui/issues/309
+    new2old_names = Dict{Symbol, Symbol}()
+    for file in (:cimgui_structs_and_enums, :cimplot_structs_and_enums, :cimnodes_structs_and_enums)
+        structs_and_enums = JSON3.read(getproperty(CImGuiPack_jll, file))
+        nonpod_used = structs_and_enums[:nonPOD_used]
+        merge!(new2old_names, Dict([Symbol(x, "_c") => x for x in keys(nonpod_used)]))
+    end
+
+    for node in dag.nodes
+        for i in eachindex(node.exprs)
+            node.exprs[i] = postwalk(node.exprs[i]) do x
+                if x isa Symbol && x in keys(new2old_names)
+                    new2old_names[x]
+                else
+                    x
+                end
+            end
+        end
+    end
+end
+
 function generate()
     cd(@__DIR__) do
         include_dir = joinpath(CImGuiPack_jll.artifact_dir, "include")
@@ -541,7 +535,9 @@ function generate()
                   "-includestdbool.h")
 
             ctx = create_context([cimgui_h, cimplot_h, cimnodes_h, cimgui_impl_h], args, options)
-            build!(ctx)
+            build!(ctx, BUILDSTAGE_NO_PRINTING)
+            rewrite!(ctx.dag)
+            build!(ctx, BUILDSTAGE_PRINTING_ONLY)
         end
 
         println()

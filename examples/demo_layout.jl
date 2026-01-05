@@ -244,7 +244,7 @@ function ShowDemoWindowLayout()
                 if (tab_bar_flags & CImGui.ImGuiTabBarFlags_FittingPolicyMask_) == 0
                     tab_bar_flags |= CImGui.ImGuiTabBarFlags_FittingPolicyDefault_
                 end
-                result = @c CImGui.CheckboxFlags("ImGuiTabBarFlags_FittingPolicyResizeDown", &tab_bar_flags, CImGui.ImGuiTabBarFlags_FittingPolicyResizeDown)
+                result = @c CImGui.CheckboxFlags("ImGuiTabBarFlags_FittingPolicyShrink", &tab_bar_flags, CImGui.ImGuiTabBarFlags_FittingPolicyShrink)
                 if result != 0
                     tab_bar_flags &= ~(CImGui.ImGuiTabBarFlags_FittingPolicyMask_ ⊻ CImGui.ImGuiTabBarFlags_FittingPolicyResizeDown)
                 end

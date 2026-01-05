@@ -6,7 +6,12 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
-## Unreleased
+## [v7.0.0] - 2026-01-05
+
+### Changed
+- **Breaking**: We updated to [Dear ImGui
+  1.92.5](https://github.com/ocornut/imgui/releases/tag/v1.92.5) ([#189]). All
+  the changes from 1.92.2 - 1.92.5 apply to this release.
 
 ### Fixed
 - Fixed a typo in `destroy_image_texture()` ([#185]).
