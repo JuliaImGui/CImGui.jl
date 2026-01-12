@@ -8,6 +8,8 @@ import ModernGL as GL
 
 using PrecompileTools: @compile_workload
 
+# because pkgversion do not work with PackageCompiler
+const GLFW_VERSION = VersionNumber("$(pkgversion(GLFW))")
 
 # Helper function to get the GLSL version
 function get_glsl_version(gl_version)
@@ -72,7 +74,7 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     engine=nothing,
                     opengl_version=v"3.2",
                     wait_events=false)
-    if pkgversion(GLFW) >= v"3.4.4"
+    if GLFW_VERSION >= v"3.4.4"
         # We leave thread-safety to the user
         GLFW.ENABLE_THREAD_ASSERTIONS[] = false
     end
