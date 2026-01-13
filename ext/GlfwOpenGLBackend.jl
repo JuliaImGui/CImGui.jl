@@ -9,7 +9,7 @@ import ModernGL as GL
 using PrecompileTools: @compile_workload
 
 # because pkgversion do not work with PackageCompiler
-const GLFW_VERSION = VersionNumber("$(pkgversion(GLFW))")
+const GLFW_VERSION = pkgversion(GLFW)
 
 # Helper function to get the GLSL version
 function get_glsl_version(gl_version)
