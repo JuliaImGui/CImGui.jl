@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v7.0.1] - 2026-01-16
+
+### Fixed
+- Fixed apps compiled with PackageCompiler - `pkgversion(GLFW)` now evaluates at module precompilation ([#190]).
+
 ## [v7.0.0] - 2026-01-05
 
 ### Changed
