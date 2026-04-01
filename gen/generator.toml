@@ -18,6 +18,7 @@ field_access_method_list = [
     "ImFontAtlas",
     "ImTextureData",
     "ImGuiSizeCallbackData",
+    "ImGuiInputTextCallbackData",
     "ImFontConfig",
     "ImGuiPlatformIO",
     "ImGuiViewport",

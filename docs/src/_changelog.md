@@ -6,6 +6,12 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v7.1.0] - 2026-04-01
+
+### Added
+- Added `getproperty()` and `setproperty!()` methods for
+  `Ptr{ImGuiInputTextCallbackData}` objects for convenience ([#193]).
+
 ## [v7.0.1] - 2026-01-16
 
 ### Fixed
