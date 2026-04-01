@@ -3954,6 +3954,27 @@ struct ImGuiInputTextCallbackData
     SelectionStart::Cint
     SelectionEnd::Cint
 end
+function Base.getproperty(x::Ptr{ImGuiInputTextCallbackData}, f::Symbol)
+    f === :Ctx && return Ptr{Ptr{ImGuiContext}}(x + 0)
+    f === :EventFlag && return Ptr{ImGuiInputTextFlags}(x + 8)
+    f === :Flags && return Ptr{ImGuiInputTextFlags}(x + 12)
+    f === :UserData && return Ptr{Ptr{Cvoid}}(x + 16)
+    f === :EventChar && return Ptr{ImWchar}(x + 24)
+    f === :EventKey && return Ptr{ImGuiKey}(x + 28)
+    f === :Buf && return Ptr{Ptr{Cchar}}(x + 32)
+    f === :BufTextLen && return Ptr{Cint}(x + 40)
+    f === :BufSize && return Ptr{Cint}(x + 44)
+    f === :BufDirty && return Ptr{Bool}(x + 48)
+    f === :CursorPos && return Ptr{Cint}(x + 52)
+    f === :SelectionStart && return Ptr{Cint}(x + 56)
+    f === :SelectionEnd && return Ptr{Cint}(x + 60)
+    return getfield(x, f)
+end
+
+function Base.setproperty!(x::Ptr{ImGuiInputTextCallbackData}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
 
 struct ImGuiOnceUponAFrame
     RefFrame::Cint
