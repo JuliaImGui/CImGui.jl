@@ -168,6 +168,8 @@ function ig.MakieFigure(title_id::String, f::GLMakie.Figure;
         imfigure.render_times[idx] = @elapsed GLMakie.render_frame(imfigure.screen; resize_buffers=false)
     end
 
+    gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0) # Unbind the framebuffer to avoid issues with ImGui rendering
+
     # The color texture is what we need to render as an image. We add it to the
     # drawlist and then create an InvisibleButton of the same size to create a
     # space in the layout that can respond to key presses and clicks etc (which
