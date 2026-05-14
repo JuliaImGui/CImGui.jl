@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v7.1.1] - 2026-05-14
+
+### Fixed
+- Fixed a rendering issue with the GLMakie integration ([#194]).
+
 ## [v7.1.0] - 2026-04-01
 
 ### Added
