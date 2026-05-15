@@ -182,6 +182,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                 @ccall jl_gc_safe_leave()::Int8
             end
 
+            # Advance test engine's screen-capture state.
+            if !isnothing(engine)
+                ig._post_swap(engine)
+            end
+
             if (unsafe_load(ig.GetIO().ConfigFlags) & lib.ImGuiConfigFlags_ViewportsEnable) == lib.ImGuiConfigFlags_ViewportsEnable
                 backup_current_context = GLFW.GetCurrentContext()
                 lib.igUpdatePlatformWindows()
