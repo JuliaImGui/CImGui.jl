@@ -23,7 +23,7 @@ MakieIntegration = ["GLFW", "ModernGL", "GLMakie"]
 
 [compat]
 CEnum = "0.4, 0.5"
-CImGuiPack_jll = "0.11.0"
+CImGuiPack_jll = "0.12"
 CSyntax = "0.4"
 DocStringExtensions = "0.9.3"
 GLFW = "3"
