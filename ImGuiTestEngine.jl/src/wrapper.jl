@@ -175,7 +175,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L221).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L221).
 """
 FindItemInfo(engine::Engine, id, debug_id) = lib.cImGuiTestEngine_FindItemInfo(engine.ptr, id, debug_id)
 
@@ -185,7 +185,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L222).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L222).
 """
 Yield(engine::Engine) = lib.cImGuiTestEngine_Yield(engine.ptr)
 
@@ -195,7 +195,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L223).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L223).
 """
 SetDeltaTime(engine::Engine, delta_time) = lib.cImGuiTestEngine_SetDeltaTime(engine.ptr, delta_time)
 
@@ -205,7 +205,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L224).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L224).
 """
 GetFrameCount(engine::Engine) = lib.cImGuiTestEngine_GetFrameCount(engine.ptr)
 
@@ -215,7 +215,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L225).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L225).
 """
 PassFilter(test::ImGuiTest, filter) = lib.cImGuiTestEngine_PassFilter(test.ptr, filter)
 
@@ -225,7 +225,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L226).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L226).
 """
 RunTest(engine::Engine, ctx::VoidablePtrOrRef{lib.ImGuiTestContext}, test::ImGuiTest, run_flags) =
     lib.cImGuiTestEngine_RunTest(engine.ptr, ctx, test.ptr, run_flags)
@@ -236,7 +236,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L228).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L228).
 """
 BindImGuiContext(engine::Engine, ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}) =
     lib.cImGuiTestEngine_BindImGuiContext(engine.ptr, ui_ctx)
@@ -247,7 +247,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L229).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L229).
 """
 UnbindImGuiContext(engine::Engine, ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}) =
     lib.cImGuiTestEngine_UnbindImGuiContext(engine.ptr, ui_ctx)
@@ -258,7 +258,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L231).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L231).
 """
 RebootUiContext(engine::Engine) = lib.cImGuiTestEngine_RebootUiContext(engine.ptr)
 
@@ -268,7 +268,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L232).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L232).
 """
 GetPerfTool(engine::Engine) = lib.cImGuiTestEngine_GetPerfTool(engine.ptr)
 
@@ -278,7 +278,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L233).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L233).
 """
 UpdateTestsSourceLines(engine::Engine) = lib.cImGuiTestEngine_UpdateTestsSourceLines(engine.ptr)
 
@@ -288,7 +288,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L236).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L236).
 """
 CaptureScreenshot(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.cImGuiTestEngine_CaptureScreenshot(engine.ptr, args)
@@ -299,7 +299,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L237).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L237).
 """
 CaptureBeginVideo(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.cImGuiTestEngine_CaptureBeginVideo(engine.ptr, args)
@@ -310,7 +310,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L238).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L238).
 """
 CaptureEndVideo(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.cImGuiTestEngine_CaptureEndVideo(engine.ptr, args)
@@ -321,7 +321,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L241).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L241).
 """
 GetStatusName(v::lib.ImGuiTestStatus) = lib.cImGuiTestEngine_GetStatusName(v)
 
@@ -331,7 +331,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L242).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L242).
 """
 GetRunSpeedName(v::lib.ImGuiTestRunSpeed) = lib.cImGuiTestEngine_GetRunSpeedName(v)
 
@@ -341,56 +341,56 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L243).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L243).
 """
 GetVerboseLevelName(v::lib.ImGuiTestVerboseLevel) = lib.cImGuiTestEngine_GetVerboseLevelName(v)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L23).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L23).
 """
 ImHashDecoratedPath(str, str_end = C_NULL, seed = 0) = lib.cImHashDecoratedPath(str, str_end, seed)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L24).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L24).
 """
 ImFindNextDecoratedPartInPath(str, str_end = C_NULL) = lib.cImFindNextDecoratedPartInPath(str, str_end)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L30).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L30).
 """
 ImFileExist(filename) = lib.cImFileExist(filename)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L31).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L31).
 """
 ImFileDelete(filename) = lib.cImFileDelete(filename)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L32).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L32).
 """
 ImFileCreateDirectoryChain(path, path_end = C_NULL) = lib.cImFileCreateDirectoryChain(path, path_end)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L33).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L33).
 """
 ImFileFindInParents(sub_path, max_parent_count, output) = lib.cImFileFindInParents(sub_path, max_parent_count, output)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L34).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L34).
 """
 ImFileLoadSourceBlurb(filename, line_no_start, line_no_end, out_buf::VoidablePtrOrRef{libig.ImGuiTextBuffer}) =
     lib.cImFileLoadSourceBlurb(filename, line_no_start, line_no_end, out_buf)
@@ -400,7 +400,7 @@ $(TYPEDSIGNATURES)
 
 Return value always between path and path_end.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L41).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L41).
 """
 ImPathFindFilename(path, path_end = C_NULL) = lib.cImPathFindFilename(path, path_end)
 
@@ -409,56 +409,56 @@ $(TYPEDSIGNATURES)
 
 Return value always between path and path_end.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L42).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L42).
 """
 ImPathFindExtension(path, path_end = C_NULL) = lib.cImPathFindExtension(path, path_end)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L43).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L43).
 """
 ImPathFixSeparatorsForCurrentOS(buf) = lib.cImPathFixSeparatorsForCurrentOS(buf)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L49).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L49).
 """
 ImStrReplace(s, find, repl) = lib.cImStrReplace(s, find, repl)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L50).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L50).
 """
 ImStrchrRangeWithEscaping(str, str_end, find_c) = lib.cImStrchrRangeWithEscaping(str, str_end, find_c)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L51).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L51).
 """
 ImStrXmlEscape(s) = lib.cImStrXmlEscape(s)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L52).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L52).
 """
 ImStrBase64Encode(src, dst, length) = lib.cImStrBase64Encode(src, dst, length)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L53).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L53).
 """
 ImStrTrimTrailingZeroesFromFloat(buf, buf_end) = lib.cImStrTrimTrailingZeroesFromFloat(buf, buf_end)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L59).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L59).
 """
 ImParseExtractArgcArgvFromCommandLine(out_argc, out_argv, cmd_line) =
     lib.cImParseExtractArgcArgvFromCommandLine(out_argc, out_argv, cmd_line)
@@ -466,7 +466,7 @@ ImParseExtractArgcArgvFromCommandLine(out_argc, out_argv, cmd_line) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L60).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L60).
 """
 ImParseFindIniSection(ini_config, header, result::VoidablePtrOrRef{libig.ImVector_char}) =
     lib.cImParseFindIniSection(ini_config, header, result)
@@ -474,91 +474,91 @@ ImParseFindIniSection(ini_config, header, result::VoidablePtrOrRef{libig.ImVecto
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L66).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L66).
 """
 ImTimeGetInMicroseconds() = lib.cImTimeGetInMicroseconds()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L67).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L67).
 """
 ImTimestampToISO8601(timestamp, out_date) = lib.cImTimestampToISO8601(timestamp, out_date)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L73).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L73).
 """
 ImThreadSleepInMilliseconds(ms) = lib.cImThreadSleepInMilliseconds(ms)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L74).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L74).
 """
 ImThreadSetCurrentThreadDescription(description) = lib.cImThreadSetCurrentThreadDescription(description)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L91).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L91).
 """
 ImBuildGetCompilationInfo() = lib.cImBuildGetCompilationInfo()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L92).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L92).
 """
 ImBuildFindGitBranchName(git_repo_path, branch_name) = lib.cImBuildFindGitBranchName(git_repo_path, branch_name)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L115).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L115).
 """
 ImOsCreateProcess(cmd_line) = lib.cImOsCreateProcess(cmd_line)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L116).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L116).
 """
 ImOsPOpen(cmd_line, mode) = lib.cImOsPOpen(cmd_line, mode)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L117).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L117).
 """
 ImOsPClose(fp) = lib.cImOsPClose(fp)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L118).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L118).
 """
 ImOsOpenInShell(path) = lib.cImOsOpenInShell(path)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L119).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L119).
 """
 ImOsIsDebuggerPresent() = lib.cImOsIsDebuggerPresent()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L120).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L120).
 """
 ImOsOutputDebugString(message) = lib.cImOsOutputDebugString(message)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L121).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L121).
 """
 ImOsConsoleSetTextColor(stream::lib.ImOsConsoleStream, color::lib.ImOsConsoleTextColor) =
     lib.cImOsConsoleSetTextColor(stream, color)
@@ -566,7 +566,7 @@ ImOsConsoleSetTextColor(stream::lib.ImOsConsoleStream, color::lib.ImOsConsoleTex
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L129).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L129).
 """
 TableGetHeaderID(
     table::VoidablePtrOrRef{libig.ImGuiTable},
@@ -577,7 +577,7 @@ TableGetHeaderID(
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L130).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L130).
 """
 TableGetHeaderID(table::VoidablePtrOrRef{libig.ImGuiTable}, column_n::Integer, instance_no::Integer = 0) =
     lib.cTableGetHeaderID_int(table, column_n, instance_no)
@@ -585,14 +585,14 @@ TableGetHeaderID(table::VoidablePtrOrRef{libig.ImGuiTable}, column_n::Integer, i
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L131).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L131).
 """
 TableDiscardInstanceAndSettings(table_id) = lib.cTableDiscardInstanceAndSettings(table_id)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L134).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L134).
 """
 DrawDataVerifyMatchingBufferCount(draw_data::VoidablePtrOrRef{libig.ImDrawData}) =
     lib.cDrawDataVerifyMatchingBufferCount(draw_data)
@@ -600,21 +600,21 @@ DrawDataVerifyMatchingBufferCount(draw_data::VoidablePtrOrRef{libig.ImDrawData})
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_exporters.h#L59).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_exporters.h#L59).
 """
 PrintResultSummary(engine::Engine) = lib.cImGuiTestEngine_PrintResultSummary(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_exporters.h#L61).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_exporters.h#L61).
 """
 Export(engine::Engine) = lib.cImGuiTestEngine_Export(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_exporters.h#L62).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_exporters.h#L62).
 """
 ExportEx(engine::Engine, format::lib.ImGuiTestEngineExportFormat, filename) =
     lib.cImGuiTestEngine_ExportEx(engine.ptr, format, filename)
@@ -622,14 +622,14 @@ ExportEx(engine::Engine, format::lib.ImGuiTestEngineExportFormat, filename) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_ui.h#L24).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_ui.h#L24).
 """
 ShowTestEngineWindows(engine::Engine, p_open) = lib.cImGuiTestEngine_ShowTestEngineWindows(engine.ptr, p_open)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_ui.h#L25).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_ui.h#L25).
 """
 OpenSourceFile(engine::Engine, source_filename, source_line_no) =
     lib.cImGuiTestEngine_OpenSourceFile(engine.ptr, source_filename, source_line_no)
@@ -637,7 +637,7 @@ OpenSourceFile(engine::Engine, source_filename, source_line_no) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L175).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L175).
 """
 ImGuiTestEngineHook_ItemAdd(
     ui_ctx::VoidablePtrOrRef{libig.ImGuiContext},
@@ -649,7 +649,7 @@ ImGuiTestEngineHook_ItemAdd(
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L182).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L182).
 """
 ImGuiTestEngineHook_ItemInfo(ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}, id, label, flags) =
     lib.cImGuiTestEngineHook_ItemInfo(ui_ctx, id, label, flags)
@@ -657,14 +657,14 @@ ImGuiTestEngineHook_ItemInfo(ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}, id, l
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L184).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L184).
 """
 ImGuiTestEngineHook_Log(ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}, fmt) = lib.cImGuiTestEngineHook_Log(ui_ctx, fmt)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L185).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L185).
 """
 FindItemDebugLabel(ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}, id) =
     lib.cImGuiTestEngine_FindItemDebugLabel(ui_ctx, id)
@@ -672,14 +672,14 @@ FindItemDebugLabel(ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}, id) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L188).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L188).
 """
 Check(file, func, line, flags, result, expr) = lib.cImGuiTestEngine_Check(file, func, line, flags, result, expr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L189).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L189).
 """
 CheckOpStr(file, func, line, flags, op, lhs_desc, lhs_value, rhs_desc, rhs_value, out_result) =
     lib.cImGuiTestEngine_CheckOpStr(file, func, line, flags, op, lhs_desc, lhs_value, rhs_desc, rhs_value, out_result)
@@ -687,21 +687,21 @@ CheckOpStr(file, func, line, flags, op, lhs_desc, lhs_value, rhs_desc, rhs_value
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L190).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L190).
 """
 Error(file, func, line, flags, fmt) = lib.cImGuiTestEngine_Error(file, func, line, flags, fmt)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L191).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L191).
 """
 AssertLog(expr, file, _function, line) = lib.cImGuiTestEngine_AssertLog(expr, file, _function, line)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L192).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L192).
 """
 GetTempStringBuilder() = lib.cImGuiTestEngine_GetTempStringBuilder()
 
@@ -710,7 +710,7 @@ $(TYPEDSIGNATURES)
 
 Bind to a dear imgui context. Start coroutine.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L201).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L201).
 """
 Start(engine::Engine, ui_ctx::VoidablePtrOrRef{libig.ImGuiContext}) = lib.cImGuiTestEngine_Start(engine.ptr, ui_ctx)
 
@@ -719,7 +719,7 @@ $(TYPEDSIGNATURES)
 
 Stop coroutine and export if any. (Unbind will lazily happen on context shutdown).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L202).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L202).
 """
 Stop(engine::Engine) = lib.cImGuiTestEngine_Stop(engine.ptr)
 
@@ -728,14 +728,14 @@ $(TYPEDSIGNATURES)
 
 Call every frame after framebuffer swap, will process screen capture and call test_io.ScreenCaptureFunc().
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L203).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L203).
 """
 PostSwap(engine::Engine) = lib.cImGuiTestEngine_PostSwap(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L204).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L204).
 """
 GetIO(engine::Engine) = lib.cImGuiTestEngine_GetIO(engine.ptr)
 
@@ -744,7 +744,7 @@ $(TYPEDSIGNATURES)
 
 Prefer calling IM_REGISTER_TEST().
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L208).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L208).
 """
 RegisterTest(engine::Engine, category, name, src_file = C_NULL, src_line = 0) =
     lib.cImGuiTestEngine_RegisterTest(engine.ptr, category, name, src_file, src_line)
@@ -752,21 +752,21 @@ RegisterTest(engine::Engine, category, name, src_file = C_NULL, src_line = 0) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L209).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L209).
 """
 UnregisterTest(engine::Engine, test::ImGuiTest) = lib.cImGuiTestEngine_UnregisterTest(engine.ptr, test.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L210).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L210).
 """
 UnregisterAllTests(engine::Engine) = lib.cImGuiTestEngine_UnregisterAllTests(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L213).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L213).
 """
 QueueTest(engine::Engine, test::ImGuiTest, run_flags = 0) =
     lib.cImGuiTestEngine_QueueTest(engine.ptr, test.ptr, run_flags)
@@ -774,7 +774,7 @@ QueueTest(engine::Engine, test::ImGuiTest, run_flags = 0) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L214).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L214).
 """
 QueueTests(engine::Engine, group::lib.ImGuiTestGroup, filter = C_NULL, run_flags = 0) =
     lib.cImGuiTestEngine_QueueTests(engine.ptr, group, filter, run_flags)
@@ -782,42 +782,42 @@ QueueTests(engine::Engine, group::lib.ImGuiTestGroup, filter = C_NULL, run_flags
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L215).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L215).
 """
 TryAbortEngine(engine::Engine) = lib.cImGuiTestEngine_TryAbortEngine(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L216).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L216).
 """
 AbortCurrentTest(engine::Engine) = lib.cImGuiTestEngine_AbortCurrentTest(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L217).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L217).
 """
 FindTestByName(engine::Engine, category, name) = lib.cImGuiTestEngine_FindTestByName(engine.ptr, category, name)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L221).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L221).
 """
 IsTestQueueEmpty(engine::Engine) = lib.cImGuiTestEngine_IsTestQueueEmpty(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L222).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L222).
 """
 IsUsingSimulatedInputs(engine::Engine) = lib.cImGuiTestEngine_IsUsingSimulatedInputs(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L223).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L223).
 """
 GetResultSummary(engine::Engine, out_results::VoidablePtrOrRef{lib.ImGuiTestEngineResultSummary}) =
     lib.cImGuiTestEngine_GetResultSummary(engine.ptr, out_results)
@@ -825,7 +825,7 @@ GetResultSummary(engine::Engine, out_results::VoidablePtrOrRef{lib.ImGuiTestEngi
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L224).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L224).
 """
 GetTestList(engine::Engine, out_tests::VoidablePtrOrRef{lib.ImVector_ImGuiTest_Ptr}) =
     lib.cImGuiTestEngine_GetTestList(engine.ptr, out_tests)
@@ -833,7 +833,7 @@ GetTestList(engine::Engine, out_tests::VoidablePtrOrRef{lib.ImVector_ImGuiTest_P
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L225).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L225).
 """
 GetTestQueue(engine::Engine, out_tests::VoidablePtrOrRef{lib.ImVector_ImGuiTestRunTask}) =
     lib.cImGuiTestEngine_GetTestQueue(engine.ptr, out_tests)
@@ -843,7 +843,7 @@ $(TYPEDSIGNATURES)
 
 Install default crash handler (if you don't have one).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L234).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L234).
 """
 InstallDefaultCrashHandler() = lib.cImGuiTestEngine_InstallDefaultCrashHandler()
 
@@ -852,14 +852,14 @@ $(TYPEDSIGNATURES)
 
 Default crash handler, should be called from a custom crash handler if such exists.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L235).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L235).
 """
 CrashHandler() = lib.cImGuiTestEngine_CrashHandler()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L134).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L134).
 """
 PerfToolAppendToCSV(
     perf_log::VoidablePtrOrRef{lib.ImGuiPerfTool},
@@ -870,7 +870,7 @@ PerfToolAppendToCSV(
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L40).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L40).
 """
 ImGuiCaptureImageBuf() = lib.ImGuiCaptureImageBuf_ImGuiCaptureImageBuf()
 
@@ -884,7 +884,7 @@ $(TYPEDSIGNATURES)
 
 Free allocated memory buffer if such exists.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L43).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L43).
 """
 Clear(self::Ptr{lib.ImGuiCaptureImageBuf}) = lib.ImGuiCaptureImageBuf_Clear(self)
 
@@ -893,7 +893,7 @@ $(TYPEDSIGNATURES)
 
 Reallocate buffer for pixel data and zero it.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L44).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L44).
 """
 CreateEmpty(self::Ptr{lib.ImGuiCaptureImageBuf}, w, h) = lib.ImGuiCaptureImageBuf_CreateEmpty(self, w, h)
 
@@ -902,7 +902,7 @@ $(TYPEDSIGNATURES)
 
 Save pixel data to specified image file.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L45).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L45).
 """
 SaveFile(self::Ptr{lib.ImGuiCaptureImageBuf}, filename) = lib.ImGuiCaptureImageBuf_SaveFile(self, filename)
 
@@ -911,14 +911,14 @@ $(TYPEDSIGNATURES)
 
 Clear alpha channel from all pixels.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L46).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L46).
 """
 RemoveAlpha(self::Ptr{lib.ImGuiCaptureImageBuf}) = lib.ImGuiCaptureImageBuf_RemoveAlpha(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L130).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L130).
 """
 ImGuiCaptureContext(capture_func::VoidablePtrOrRef{lib.ImGuiScreenCaptureFunc} = C_NULL) =
     lib.ImGuiCaptureContext_ImGuiCaptureContext(capture_func)
@@ -926,28 +926,28 @@ ImGuiCaptureContext(capture_func::VoidablePtrOrRef{lib.ImGuiScreenCaptureFunc} =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L134).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L134).
 """
 PreNewFrame(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_PreNewFrame(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L135).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L135).
 """
 PreRender(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_PreRender(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L136).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L136).
 """
 PostRender(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_PostRender(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L139).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L139).
 """
 CaptureUpdate(self::Ptr{lib.ImGuiCaptureContext}, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.ImGuiCaptureContext_CaptureUpdate(self, args)
@@ -955,21 +955,21 @@ CaptureUpdate(self::Ptr{lib.ImGuiCaptureContext}, args::VoidablePtrOrRef{lib.ImG
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L140).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L140).
 """
 RestoreBackedUpData(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_RestoreBackedUpData(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L141).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L141).
 """
 ClearState(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_ClearState(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L144).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L144).
 """
 BeginVideoCapture(self::Ptr{lib.ImGuiCaptureContext}, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.ImGuiCaptureContext_BeginVideoCapture(self, args)
@@ -977,21 +977,21 @@ BeginVideoCapture(self::Ptr{lib.ImGuiCaptureContext}, args::VoidablePtrOrRef{lib
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L145).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L145).
 """
 EndVideoCapture(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_EndVideoCapture(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L146).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L146).
 """
 IsCapturingVideo(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_IsCapturingVideo(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L147).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L147).
 """
 IsCapturing(self::Ptr{lib.ImGuiCaptureContext}) = lib.ImGuiCaptureContext_IsCapturing(self)
 
@@ -1003,7 +1003,7 @@ Destroy(self::Ptr{lib.ImGuiCaptureContext}) = ImGuiCaptureContext_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L171).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L171).
 """
 ImGuiCaptureToolUI() = lib.ImGuiCaptureToolUI_ImGuiCaptureToolUI()
 
@@ -1012,7 +1012,7 @@ $(TYPEDSIGNATURES)
 
 Render a capture tool window with various options and utilities.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L172).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L172).
 """
 ShowCaptureToolWindow(
     self::Ptr{lib.ImGuiCaptureToolUI},
@@ -1028,7 +1028,7 @@ Render a window picker that captures picked window to file specified in file_nam
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L175).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L175).
 """
 _CaptureWindowPicker(self::Ptr{lib.ImGuiCaptureToolUI}, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
     lib.ImGuiCaptureToolUI__CaptureWindowPicker(self, args)
@@ -1041,7 +1041,7 @@ Render a selector for selecting multiple windows for capture.
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L176).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L176).
 """
 _CaptureWindowsSelector(
     self::Ptr{lib.ImGuiCaptureToolUI},
@@ -1057,7 +1057,7 @@ Snap edges of all visible windows to a virtual grid.
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L177).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L177).
 """
 _SnapWindowsToGrid(self::Ptr{lib.ImGuiCaptureToolUI}, cell_size) =
     lib.ImGuiCaptureToolUI__SnapWindowsToGrid(self, cell_size)
@@ -1070,7 +1070,7 @@ Format output file template into capture args struct and ensure target directory
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L178).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L178).
 """
 _InitializeOutputFile(self::Ptr{lib.ImGuiCaptureToolUI}) = lib.ImGuiCaptureToolUI__InitializeOutputFile(self)
 
@@ -1080,7 +1080,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_capture_tool.h#L179).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_capture_tool.h#L179).
 """
 _ShowEncoderConfigFields(self::Ptr{lib.ImGuiCaptureToolUI}, context::VoidablePtrOrRef{lib.ImGuiCaptureContext}) =
     lib.ImGuiCaptureToolUI__ShowEncoderConfigFields(self, context)
@@ -1093,7 +1093,7 @@ Destroy(self::Ptr{lib.ImGuiCaptureToolUI}) = ImGuiCaptureToolUI_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L344).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L344).
 """
 ImGuiTestItemInfo() = lib.ImGuiTestItemInfo_ImGuiTestItemInfo()
 
@@ -1105,98 +1105,98 @@ Destroy(self::Ptr{lib.ImGuiTestItemInfo}) = ImGuiTestItemInfo_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L352).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L352).
 """
 Clear(self::Ptr{lib.ImGuiTestItemList}) = lib.ImGuiTestItemList_Clear(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L353).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L353).
 """
 Reserve(self::Ptr{lib.ImGuiTestItemList}, capacity) = lib.ImGuiTestItemList_Reserve(self, capacity)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L354).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L354).
 """
 GetSize(self::Ptr{lib.ImGuiTestItemList}) = lib.ImGuiTestItemList_GetSize(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L355).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L355).
 """
 GetByIndex(self::Ptr{lib.ImGuiTestItemList}, n) = lib.ImGuiTestItemList_GetByIndex(self, n)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L356).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L356).
 """
 GetByID(self::Ptr{lib.ImGuiTestItemList}, id) = lib.ImGuiTestItemList_GetByID(self, id)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L359).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L359).
 """
 Size(self::Ptr{lib.ImGuiTestItemList}) = lib.ImGuiTestItemList_size(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L360).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L360).
 """
 Begin(self::Ptr{lib.ImGuiTestItemList}) = lib.ImGuiTestItemList_begin(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L361).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L361).
 """
 End(self::Ptr{lib.ImGuiTestItemList}) = lib.ImGuiTestItemList_end(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L382).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L382).
 """
 ImGuiTestLog() = lib.ImGuiTestLog_ImGuiTestLog()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L383).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L383).
 """
 IsEmpty(self::Ptr{lib.ImGuiTestLog}) = lib.ImGuiTestLog_IsEmpty(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L384).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L384).
 """
 GetText(self::Ptr{lib.ImGuiTestLog}) = lib.ImGuiTestLog_GetText(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L385).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L385).
 """
 GetTextLen(self::Ptr{lib.ImGuiTestLog}) = lib.ImGuiTestLog_GetTextLen(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L386).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L386).
 """
 Clear(self::Ptr{lib.ImGuiTestLog}) = lib.ImGuiTestLog_Clear(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L397).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L397).
 """
 ExtractLinesForVerboseLevels(
     self::Ptr{lib.ImGuiTestLog},
@@ -1208,7 +1208,7 @@ ExtractLinesForVerboseLevels(
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L400).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L400).
 """
 UpdateLineOffsets(
     self::Ptr{lib.ImGuiTestLog},
@@ -1225,7 +1225,7 @@ Destroy(self::Ptr{lib.ImGuiTestLog}) = ImGuiTestLog_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L459).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L459).
 """
 ImGuiTest() = lib.ImGuiTest_ImGuiTest()
 
@@ -1237,14 +1237,14 @@ Destroy(self::Ptr{ImGuiTest}) = ImGuiTest_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_engine.h#L462).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L462).
 """
 SetOwnedName(self::Ptr{ImGuiTest}, name) = lib.ImGuiTest_SetOwnedName(self, name)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L83).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L83).
 """
 function ImGuiTestRef()
     pOut = Ref{ImGuiTestRef}()
@@ -1255,7 +1255,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L84).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L84).
 """
 function ImGuiTestRef(id::Integer)
     pOut = Ref{ImGuiTestRef}()
@@ -1266,7 +1266,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L85).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L85).
 """
 function ImGuiTestRef(path::Union{String,Ptr{Cchar},Ptr{Cvoid}})
     pOut = Ref{ImGuiTestRef}()
@@ -1277,7 +1277,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L86).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L86).
 """
 IsEmpty(self::Ptr{lib.ImGuiTestRef}) = lib.ImGuiTestRef_IsEmpty(self)
 
@@ -1289,14 +1289,14 @@ Destroy(self::Ptr{lib.ImGuiTestRef}) = ImGuiTestRef_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L95).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L95).
 """
 C_str(self::Ptr{lib.ImGuiTestRefDesc}) = lib.ImGuiTestRefDesc_c_str(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L96).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L96).
 """
 function ImGuiTestRefDesc(ref::VoidablePtrOrRef{lib.ImGuiTestRef})
     pOut = Ref{ImGuiTestRefDesc}()
@@ -1307,7 +1307,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L97).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L97).
 """
 function ImGuiTestRefDesc(ref::VoidablePtrOrRef{lib.ImGuiTestRef}, item::VoidablePtrOrRef{lib.ImGuiTestItemInfo})
     pOut = Ref{ImGuiTestRefDesc}()
@@ -1323,7 +1323,7 @@ Destroy(self::Ptr{lib.ImGuiTestRefDesc}) = ImGuiTestRefDesc_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L148).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L148).
 """
 ImGuiTestActionFilter() = lib.ImGuiTestActionFilter_ImGuiTestActionFilter()
 
@@ -1335,21 +1335,21 @@ Destroy(self::Ptr{lib.ImGuiTestActionFilter}) = ImGuiTestActionFilter_destroy(se
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L171).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L171).
 """
 ImGuiTestGenericItemStatus() = lib.ImGuiTestGenericItemStatus_ImGuiTestGenericItemStatus()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L172).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L172).
 """
 Clear(self::Ptr{lib.ImGuiTestGenericItemStatus}) = lib.ImGuiTestGenericItemStatus_Clear(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L173).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L173).
 """
 QuerySet(self::Ptr{lib.ImGuiTestGenericItemStatus}, ret_val = false) =
     lib.ImGuiTestGenericItemStatus_QuerySet(self, ret_val)
@@ -1357,7 +1357,7 @@ QuerySet(self::Ptr{lib.ImGuiTestGenericItemStatus}, ret_val = false) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L174).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L174).
 """
 QueryInc(self::Ptr{lib.ImGuiTestGenericItemStatus}, ret_val = false) =
     lib.ImGuiTestGenericItemStatus_QueryInc(self, ret_val)
@@ -1365,7 +1365,7 @@ QueryInc(self::Ptr{lib.ImGuiTestGenericItemStatus}, ret_val = false) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L175).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L175).
 """
 Draw(self::Ptr{lib.ImGuiTestGenericItemStatus}) = lib.ImGuiTestGenericItemStatus_Draw(self)
 
@@ -1377,14 +1377,14 @@ Destroy(self::Ptr{lib.ImGuiTestGenericItemStatus}) = ImGuiTestGenericItemStatus_
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L210).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L210).
 """
 ImGuiTestGenericVars() = lib.ImGuiTestGenericVars_ImGuiTestGenericVars()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L211).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L211).
 """
 Clear(self::Ptr{lib.ImGuiTestGenericVars}) = lib.ImGuiTestGenericVars_Clear(self)
 
@@ -1398,7 +1398,7 @@ $(TYPEDSIGNATURES)
 
 Set test status and stop running. Usually called when running test logic from GuiFunc() only.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L269).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L269).
 """
 function Finish(status::lib.ImGuiTestStatus = lib.ImGuiTestStatus_Success)
     self = _current_test_context[]
@@ -1410,7 +1410,7 @@ $(TYPEDSIGNATURES)
 
 [Experimental] Run another test from the current test.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L270).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L270).
 """
 function RunChildTest(test_name, flags = 0)
     self = _current_test_context[]
@@ -1420,7 +1420,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L274).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L274).
 """
 function IsError()
     self = _current_test_context[]
@@ -1432,7 +1432,7 @@ $(TYPEDSIGNATURES)
 
 Unless test->Flags has ImGuiTestFlags_NoGuiWarmUp, we run GuiFunc() twice before running TestFunc(). Those frames are called "WarmUp" frames.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L275).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L275).
 """
 function IsWarmUpGuiFrame()
     self = _current_test_context[]
@@ -1442,7 +1442,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L276).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L276).
 """
 function IsFirstGuiFrame()
     self = _current_test_context[]
@@ -1454,7 +1454,7 @@ $(TYPEDSIGNATURES)
 
 First frame where TestFunc is running (after warm-up frame).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L277).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L277).
 """
 function IsFirstTestFrame()
     self = _current_test_context[]
@@ -1464,7 +1464,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L278).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L278).
 """
 function IsGuiFuncOnly()
     self = _current_test_context[]
@@ -1476,7 +1476,7 @@ $(TYPEDSIGNATURES)
 
 [DEBUG] Generally called via IM_SUSPEND_TESTFUNC.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L281).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L281).
 """
 function SuspendTestFunc(file = C_NULL, line = 0)
     self = _current_test_context[]
@@ -1486,7 +1486,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L284).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L284).
 """
 function LogEx(level::lib.ImGuiTestVerboseLevel, flags, fmt)
     self = _current_test_context[]
@@ -1496,7 +1496,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L286).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L286).
 """
 function LogToTTY(level::lib.ImGuiTestVerboseLevel, message, message_end = C_NULL)
     self = _current_test_context[]
@@ -1506,7 +1506,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L287).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L287).
 """
 function LogToDebugger(level::lib.ImGuiTestVerboseLevel, message)
     self = _current_test_context[]
@@ -1518,7 +1518,7 @@ $(TYPEDSIGNATURES)
 
 ImGuiTestVerboseLevel_Debug or ImGuiTestVerboseLevel_Trace depending on context depth.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L288).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L288).
 """
 function LogDebug(fmt)
     self = _current_test_context[]
@@ -1530,7 +1530,7 @@ $(TYPEDSIGNATURES)
 
 ImGuiTestVerboseLevel_Info.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L289).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L289).
 """
 function LogInfo(fmt)
     self = _current_test_context[]
@@ -1542,7 +1542,7 @@ $(TYPEDSIGNATURES)
 
 ImGuiTestVerboseLevel_Warning.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L290).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L290).
 """
 function LogWarning(fmt)
     self = _current_test_context[]
@@ -1554,7 +1554,7 @@ $(TYPEDSIGNATURES)
 
 ImGuiTestVerboseLevel_Error.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L291).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L291).
 """
 function LogError(fmt)
     self = _current_test_context[]
@@ -1564,7 +1564,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L292).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L292).
 """
 function LogBasicUiState()
     self = _current_test_context[]
@@ -1574,7 +1574,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L293).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L293).
 """
 function LogItemList(list::VoidablePtrOrRef{lib.ImGuiTestItemList})
     self = _current_test_context[]
@@ -1584,7 +1584,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L296).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L296).
 """
 function Yield(count = 1)
     self = _current_test_context[]
@@ -1596,7 +1596,7 @@ $(TYPEDSIGNATURES)
 
 Sleep for a given simulation time, unless in Fast mode.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L297).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L297).
 """
 function Sleep(time_in_second)
     self = _current_test_context[]
@@ -1608,7 +1608,7 @@ $(TYPEDSIGNATURES)
 
 Standard short delay of io.ActionDelayShort (~0.15f), unless in Fast mode.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L298).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L298).
 """
 function SleepShort()
     self = _current_test_context[]
@@ -1620,7 +1620,7 @@ $(TYPEDSIGNATURES)
 
 Standard regular delay of io.ActionDelayStandard (~0.40f), unless in Fast mode.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L299).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L299).
 """
 function SleepStandard()
     self = _current_test_context[]
@@ -1630,7 +1630,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L300).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L300).
 """
 function SleepNoSkip(time_in_second, framestep_in_second)
     self = _current_test_context[]
@@ -1640,7 +1640,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L311).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L311).
 """
 function SetRef(ref::TestRef)
     self = _current_test_context[]
@@ -1652,7 +1652,7 @@ $(TYPEDSIGNATURES)
 
 Shortcut to SetRef(window->Name) which works for ChildWindow (see code).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L312).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L312).
 """
 function SetRef(window::PtrOrRef{libig.ImGuiWindow})
     self = _current_test_context[]
@@ -1662,7 +1662,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L313).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L313).
 """
 function GetRef()
     self = _current_test_context[]
@@ -1674,7 +1674,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L318).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L318).
 """
 function WindowInfo(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -1686,7 +1686,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L319).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L319).
 """
 function WindowClose(window_ref::TestRef)
     self = _current_test_context[]
@@ -1696,7 +1696,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L320).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L320).
 """
 function WindowCollapse(window_ref::TestRef, collapsed)
     self = _current_test_context[]
@@ -1706,7 +1706,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L321).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L321).
 """
 function WindowFocus(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -1716,7 +1716,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L322).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L322).
 """
 function WindowBringToFront(window_ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -1726,7 +1726,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L323).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L323).
 """
 function WindowMove(
     window_ref::TestRef,
@@ -1741,7 +1741,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L324).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L324).
 """
 function WindowResize(window_ref::TestRef, sz::Union{libig.ImVec2,NTuple{2}})
     self = _current_test_context[]
@@ -1751,7 +1751,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L325).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L325).
 """
 function WindowTeleportToMakePosVisible(window_ref::TestRef, pos_in_window::Union{libig.ImVec2,NTuple{2}})
     self = _current_test_context[]
@@ -1765,7 +1765,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L326).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L326).
 """
 function GetWindowByRef(window_ref::TestRef)
     self = _current_test_context[]
@@ -1775,7 +1775,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L329).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L329).
 """
 function PopupCloseOne()
     self = _current_test_context[]
@@ -1785,7 +1785,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L330).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L330).
 """
 function PopupCloseAll()
     self = _current_test_context[]
@@ -1795,7 +1795,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L331).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L331).
 """
 function PopupGetWindowID(ref::TestRef)
     self = _current_test_context[]
@@ -1805,7 +1805,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L335).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L335).
 """
 function GetID(ref::TestRef)
     self = _current_test_context[]
@@ -1815,7 +1815,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L336).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L336).
 """
 function GetID(ref::TestRef, seed_ref::TestRef)
     self = _current_test_context[]
@@ -1831,7 +1831,7 @@ $(TYPEDSIGNATURES)
 
 Find a point that has no windows // FIXME: This needs error return and flag to enable/disable forcefully finding void.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L339).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L339).
 """
 function GetPosOnVoid(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
     self = _current_test_context[]
@@ -1845,7 +1845,7 @@ $(TYPEDSIGNATURES)
 
 Return a clickable point on window title-bar (window tab for docked windows) that will e.g. move this single window.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L340).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L340).
 """
 function GetWindowTitlebarPoint(window_ref::TestRef)
     self = _current_test_context[]
@@ -1859,7 +1859,7 @@ $(TYPEDSIGNATURES)
 
 Work pos and size of main viewport when viewports are disabled, or work pos and size of monitor containing main viewport when viewports are enabled.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L341).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L341).
 """
 function GetMainMonitorWorkPos()
     self = _current_test_context[]
@@ -1871,7 +1871,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L342).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L342).
 """
 function GetMainMonitorWorkSize()
     self = _current_test_context[]
@@ -1885,7 +1885,7 @@ $(TYPEDSIGNATURES)
 
 Reset state (use when doing multiple captures).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L345).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L345).
 """
 function CaptureReset()
     self = _current_test_context[]
@@ -1897,7 +1897,7 @@ $(TYPEDSIGNATURES)
 
 Set capture file format (otherwise for video this default to EngineIO->VideoCaptureExtension).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L346).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L346).
 """
 function CaptureSetExtension(ext)
     self = _current_test_context[]
@@ -1909,7 +1909,7 @@ $(TYPEDSIGNATURES)
 
 Add window to be captured (default to capture everything).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L347).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L347).
 """
 function CaptureAddWindow(ref::TestRef)
     self = _current_test_context[]
@@ -1921,7 +1921,7 @@ $(TYPEDSIGNATURES)
 
 Trigger a screen capture of a single window (== CaptureAddWindow() + CaptureScreenshot()).
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L348).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L348).
 """
 function CaptureScreenshotWindow(ref::TestRef, capture_flags = 0)
     self = _current_test_context[]
@@ -1933,7 +1933,7 @@ $(TYPEDSIGNATURES)
 
 Trigger a screen capture.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L349).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L349).
 """
 function CaptureScreenshot(capture_flags = 0)
     self = _current_test_context[]
@@ -1945,7 +1945,7 @@ $(TYPEDSIGNATURES)
 
 Start a video capture.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L350).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L350).
 """
 function CaptureBeginVideo()
     self = _current_test_context[]
@@ -1955,7 +1955,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L351).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L351).
 """
 function CaptureEndVideo()
     self = _current_test_context[]
@@ -1965,7 +1965,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L354).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L354).
 """
 function MouseMove(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -1975,7 +1975,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L355).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L355).
 """
 function MouseMoveToPos(pos::Union{libig.ImVec2,NTuple{2}})
     self = _current_test_context[]
@@ -1985,7 +1985,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L356).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L356).
 """
 function MouseTeleportToPos(pos::Union{libig.ImVec2,NTuple{2}}, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -1995,7 +1995,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L357).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L357).
 """
 function MouseClick(button = 0)
     self = _current_test_context[]
@@ -2005,7 +2005,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L358).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L358).
 """
 function MouseClickMulti(button, count)
     self = _current_test_context[]
@@ -2015,7 +2015,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L359).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L359).
 """
 function MouseDoubleClick(button = 0)
     self = _current_test_context[]
@@ -2025,7 +2025,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L360).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L360).
 """
 function MouseDown(button = 0)
     self = _current_test_context[]
@@ -2035,7 +2035,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L361).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L361).
 """
 function MouseUp(button = 0)
     self = _current_test_context[]
@@ -2045,7 +2045,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L362).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L362).
 """
 function MouseLiftDragThreshold(button = 0)
     self = _current_test_context[]
@@ -2055,7 +2055,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L363).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L363).
 """
 function MouseDragWithDelta(delta::Union{libig.ImVec2,NTuple{2}}, button = 0)
     self = _current_test_context[]
@@ -2065,7 +2065,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L364).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L364).
 """
 function MouseWheel(delta::Union{libig.ImVec2,NTuple{2}})
     self = _current_test_context[]
@@ -2075,7 +2075,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L365).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L365).
 """
 function MouseWheelX(dx)
     self = _current_test_context[]
@@ -2087,7 +2087,7 @@ $(TYPEDSIGNATURES)
 
 +1: up, -1: down.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L366).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L366).
 """
 function MouseWheelY(dy)
     self = _current_test_context[]
@@ -2097,7 +2097,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L367).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L367).
 """
 function MouseMoveToVoid(viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL)
     self = _current_test_context[]
@@ -2107,7 +2107,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L368).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L368).
 """
 function MouseClickOnVoid(button = 0, viewport::VoidablePtrOrRef{libig.ImGuiViewport} = C_NULL)
     self = _current_test_context[]
@@ -2117,7 +2117,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L369).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L369).
 """
 function FindHoveredWindowAtPos(pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}})
     self = _current_test_context[]
@@ -2127,7 +2127,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L370).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L370).
 """
 function FindExistingVoidPosOnViewport(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
@@ -2140,7 +2140,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L375).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L375).
 """
 function MouseSetViewport(window::VoidablePtrOrRef{libig.ImGuiWindow})
     self = _current_test_context[]
@@ -2150,7 +2150,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L376).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L376).
 """
 function MouseSetViewportID(viewport_id)
     self = _current_test_context[]
@@ -2160,7 +2160,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L379).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L379).
 """
 function KeyDown(key_chord)
     self = _current_test_context[]
@@ -2170,7 +2170,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L380).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L380).
 """
 function KeyUp(key_chord)
     self = _current_test_context[]
@@ -2180,7 +2180,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L381).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L381).
 """
 function KeyPress(key_chord, count = 1)
     self = _current_test_context[]
@@ -2190,7 +2190,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L382).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L382).
 """
 function KeyHold(key_chord, time)
     self = _current_test_context[]
@@ -2200,7 +2200,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L383).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L383).
 """
 function KeySetEx(key_chord, is_down, time)
     self = _current_test_context[]
@@ -2212,7 +2212,7 @@ $(TYPEDSIGNATURES)
 
 Input characters.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L384).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L384).
 """
 function KeyChars(chars)
     self = _current_test_context[]
@@ -2224,7 +2224,7 @@ $(TYPEDSIGNATURES)
 
 Input characters at end of field.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L385).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L385).
 """
 function KeyCharsAppend(chars)
     self = _current_test_context[]
@@ -2236,7 +2236,7 @@ $(TYPEDSIGNATURES)
 
 Input characters at end of field, press Enter.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L386).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L386).
 """
 function KeyCharsAppendEnter(chars)
     self = _current_test_context[]
@@ -2248,7 +2248,7 @@ $(TYPEDSIGNATURES)
 
 Delete existing field then input characters.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L387).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L387).
 """
 function KeyCharsReplace(chars)
     self = _current_test_context[]
@@ -2260,7 +2260,7 @@ $(TYPEDSIGNATURES)
 
 Delete existing field then input characters, press Enter.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L388).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L388).
 """
 function KeyCharsReplaceEnter(chars)
     self = _current_test_context[]
@@ -2272,7 +2272,7 @@ $(TYPEDSIGNATURES)
 
 Mouse or Keyboard or Gamepad. In Keyboard or Gamepad mode, actions such as ItemClick or ItemInput are using nav facilities instead of Mouse.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L395).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L395).
 """
 function SetInputMode(input_mode::libig.ImGuiInputSource)
     self = _current_test_context[]
@@ -2282,7 +2282,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L396).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L396).
 """
 function NavMoveTo(ref::TestRef)
     self = _current_test_context[]
@@ -2294,7 +2294,7 @@ $(TYPEDSIGNATURES)
 
 Activate current selected item: activate button, tweak sliders/drags. Equivalent of pressing Space on keyboard, ImGuiKey_GamepadFaceUp on a gamepad.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L397).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L397).
 """
 function NavActivate()
     self = _current_test_context[]
@@ -2306,7 +2306,7 @@ $(TYPEDSIGNATURES)
 
 Input into select item: input sliders/drags. Equivalent of pressing Enter on keyboard, ImGuiKey_GamepadFaceDown on a gamepad.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L398).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L398).
 """
 function NavInput()
     self = _current_test_context[]
@@ -2316,7 +2316,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L401).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L401).
 """
 function ScrollTo(ref::TestRef, axis::libig.ImGuiAxis, scroll_v, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2326,7 +2326,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L402).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L402).
 """
 function ScrollToX(ref::TestRef, scroll_x)
     self = _current_test_context[]
@@ -2336,7 +2336,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L403).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L403).
 """
 function ScrollToY(ref::TestRef, scroll_y)
     self = _current_test_context[]
@@ -2346,7 +2346,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L404).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L404).
 """
 function ScrollToTop(ref::TestRef)
     self = _current_test_context[]
@@ -2356,7 +2356,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L405).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L405).
 """
 function ScrollToBottom(ref::TestRef)
     self = _current_test_context[]
@@ -2366,7 +2366,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L406).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L406).
 """
 function ScrollToPos(window_ref::TestRef, pos_v, axis::libig.ImGuiAxis, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2376,7 +2376,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L407).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L407).
 """
 function ScrollToPosX(window_ref::TestRef, pos_x)
     self = _current_test_context[]
@@ -2386,7 +2386,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L408).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L408).
 """
 function ScrollToPosY(window_ref::TestRef, pos_y)
     self = _current_test_context[]
@@ -2396,7 +2396,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L409).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L409).
 """
 function ScrollToItem(ref::TestRef, axis::libig.ImGuiAxis, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2406,7 +2406,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L410).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L410).
 """
 function ScrollToItemX(ref::TestRef)
     self = _current_test_context[]
@@ -2416,7 +2416,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L411).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L411).
 """
 function ScrollToItemY(ref::TestRef)
     self = _current_test_context[]
@@ -2426,7 +2426,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L412).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L412).
 """
 function ScrollToTabItem(tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar}, tab_id)
     self = _current_test_context[]
@@ -2436,7 +2436,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L417).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L417).
 """
 function ItemInfo(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2448,7 +2448,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L418).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L418).
 """
 function ItemInfoOpenFullPath(ref::TestRef, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2460,7 +2460,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L419).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L419).
 """
 function ItemInfoHandleWildcardSearch(wildcard_prefix_start, wildcard_prefix_end, wildcard_suffix_start)
     self = _current_test_context[]
@@ -2475,7 +2475,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L420).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L420).
 """
 function ItemInfoNull()
     self = _current_test_context[]
@@ -2487,7 +2487,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L421).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L421).
 """
 function GatherItems(out_list::VoidablePtrOrRef{lib.ImGuiTestItemList}, parent::TestRef, depth = -1)
     self = _current_test_context[]
@@ -2497,7 +2497,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L424).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L424).
 """
 function ItemAction(action::lib.ImGuiTestAction, ref::TestRef, flags = 0, action_arg = C_NULL)
     self = _current_test_context[]
@@ -2507,7 +2507,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L425).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L425).
 """
 function ItemClick(ref::TestRef, button = 0, flags = 0)
     self = _current_test_context[]
@@ -2517,7 +2517,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L426).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L426).
 """
 function ItemDoubleClick(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2527,7 +2527,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L427).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L427).
 """
 function ItemCheck(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2537,7 +2537,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L428).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L428).
 """
 function ItemUncheck(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2547,7 +2547,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L429).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L429).
 """
 function ItemOpen(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2557,7 +2557,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L430).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L430).
 """
 function ItemClose(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2567,7 +2567,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L431).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L431).
 """
 function ItemInput(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2577,7 +2577,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L432).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L432).
 """
 function ItemNavActivate(ref::TestRef, flags = 0)
     self = _current_test_context[]
@@ -2587,7 +2587,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L435).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L435).
 """
 function ItemActionAll(
     action::lib.ImGuiTestAction,
@@ -2601,7 +2601,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L436).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L436).
 """
 function ItemOpenAll(ref_parent::TestRef, depth = -1, passes = -1)
     self = _current_test_context[]
@@ -2611,7 +2611,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L437).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L437).
 """
 function ItemCloseAll(ref_parent::TestRef, depth = -1, passes = -1)
     self = _current_test_context[]
@@ -2621,7 +2621,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L440).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L440).
 """
 function ItemInputValue(ref::TestRef, v::Integer)
     self = _current_test_context[]
@@ -2631,7 +2631,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L441).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L441).
 """
 function ItemInputValue(ref::TestRef, f::Real)
     self = _current_test_context[]
@@ -2641,7 +2641,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L442).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L442).
 """
 function ItemInputValue(ref::TestRef, str::Union{String,Ptr{Cchar},Ptr{Cvoid}})
     self = _current_test_context[]
@@ -2651,7 +2651,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L448).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L448).
 """
 function ItemReadAsInt(ref::TestRef)
     self = _current_test_context[]
@@ -2661,7 +2661,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L449).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L449).
 """
 function ItemReadAsFloat(ref::TestRef)
     self = _current_test_context[]
@@ -2671,7 +2671,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L450).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L450).
 """
 function ItemReadAsScalar(ref::TestRef, data_type, out_data, flags = lib.ImGuiTestOpFlags_None)
     self = _current_test_context[]
@@ -2681,7 +2681,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L451).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L451).
 """
 function ItemReadAsString(ref::TestRef)
     self = _current_test_context[]
@@ -2691,7 +2691,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L452).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L452).
 """
 function ItemReadAsString(ref::TestRef, out_buf::Union{String,Ptr{Cchar},Ptr{Cvoid}}, out_buf_size::Real)
     self = _current_test_context[]
@@ -2706,7 +2706,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L455).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L455).
 """
 function ItemExists(ref::TestRef)
     self = _current_test_context[]
@@ -2716,7 +2716,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L456).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L456).
 """
 function ItemIsChecked(ref::TestRef)
     self = _current_test_context[]
@@ -2726,7 +2726,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L457).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L457).
 """
 function ItemIsOpened(ref::TestRef)
     self = _current_test_context[]
@@ -2736,7 +2736,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L458).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L458).
 """
 function ItemIsVisible(ref::TestRef)
     self = _current_test_context[]
@@ -2746,7 +2746,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L459).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L459).
 """
 function ItemVerifyCheckedIfAlive(ref::TestRef, checked)
     self = _current_test_context[]
@@ -2756,7 +2756,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L462).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L462).
 """
 function ItemHold(ref::TestRef, time)
     self = _current_test_context[]
@@ -2766,7 +2766,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L463).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L463).
 """
 function ItemHoldForFrames(ref::TestRef, frames)
     self = _current_test_context[]
@@ -2776,7 +2776,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L464).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L464).
 """
 function ItemDragOverAndHold(ref_src::TestRef, ref_dst::TestRef)
     self = _current_test_context[]
@@ -2790,7 +2790,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L465).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L465).
 """
 function ItemDragAndDrop(ref_src::TestRef, ref_dst::TestRef, button = 0)
     self = _current_test_context[]
@@ -2805,7 +2805,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L466).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L466).
 """
 function ItemDragWithDelta(ref_src::TestRef, pos_delta::Union{libig.ImVec2,NTuple{2}})
     self = _current_test_context[]
@@ -2815,7 +2815,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L469).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L469).
 """
 function TabClose(ref::TestRef)
     self = _current_test_context[]
@@ -2825,7 +2825,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L470).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L470).
 """
 function TabBarCompareOrder(tab_bar::VoidablePtrOrRef{libig.ImGuiTabBar}, tab_order)
     self = _current_test_context[]
@@ -2835,7 +2835,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L475).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L475).
 """
 function MenuAction(action::lib.ImGuiTestAction, ref::TestRef)
     self = _current_test_context[]
@@ -2845,7 +2845,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L476).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L476).
 """
 function MenuActionAll(action::lib.ImGuiTestAction, ref_parent::TestRef)
     self = _current_test_context[]
@@ -2855,7 +2855,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L477).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L477).
 """
 function MenuClick(ref::TestRef)
     self = _current_test_context[]
@@ -2865,7 +2865,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L478).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L478).
 """
 function MenuCheck(ref::TestRef)
     self = _current_test_context[]
@@ -2875,7 +2875,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L479).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L479).
 """
 function MenuUncheck(ref::TestRef)
     self = _current_test_context[]
@@ -2885,7 +2885,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L480).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L480).
 """
 function MenuCheckAll(ref_parent::TestRef)
     self = _current_test_context[]
@@ -2895,7 +2895,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L481).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L481).
 """
 function MenuUncheckAll(ref_parent::TestRef)
     self = _current_test_context[]
@@ -2905,7 +2905,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L484).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L484).
 """
 function ComboClick(ref::TestRef)
     self = _current_test_context[]
@@ -2915,7 +2915,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L485).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L485).
 """
 function ComboClickAll(ref::TestRef)
     self = _current_test_context[]
@@ -2925,7 +2925,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L488).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L488).
 """
 function TableOpenContextMenu(ref::TestRef, column_n = -1)
     self = _current_test_context[]
@@ -2935,7 +2935,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L489).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L489).
 """
 function TableClickHeader(ref::TestRef, label, key_mods = 0)
     self = _current_test_context[]
@@ -2945,7 +2945,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L490).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L490).
 """
 function TableSetColumnEnabled(ref::TestRef, column_n::Integer, enabled::Bool)
     self = _current_test_context[]
@@ -2955,7 +2955,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L491).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L491).
 """
 function TableSetColumnEnabled(ref::TestRef, label::Union{String,Ptr{Cchar},Ptr{Cvoid}}, enabled::Bool)
     self = _current_test_context[]
@@ -2965,7 +2965,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L492).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L492).
 """
 function TableResizeColumn(ref::TestRef, column_n, width)
     self = _current_test_context[]
@@ -2975,7 +2975,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L493).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L493).
 """
 function TableGetSortSpecs(ref::TestRef)
     self = _current_test_context[]
@@ -2985,7 +2985,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L499).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L499).
 """
 function ViewportPlatform_SetWindowPos(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
@@ -2998,7 +2998,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L500).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L500).
 """
 function ViewportPlatform_SetWindowSize(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
@@ -3011,7 +3011,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L501).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L501).
 """
 function ViewportPlatform_SetWindowFocus(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
     self = _current_test_context[]
@@ -3021,7 +3021,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L502).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L502).
 """
 function ViewportPlatform_CloseWindow(viewport::VoidablePtrOrRef{libig.ImGuiViewport})
     self = _current_test_context[]
@@ -3031,7 +3031,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L507).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L507).
 """
 function DockClear(window_name)
     self = _current_test_context[]
@@ -3041,7 +3041,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L508).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L508).
 """
 function DockInto(
     src_id::TestRef,
@@ -3064,7 +3064,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L509).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L509).
 """
 function UndockNode(dock_id)
     self = _current_test_context[]
@@ -3074,7 +3074,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L510).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L510).
 """
 function UndockWindow(window_name)
     self = _current_test_context[]
@@ -3084,7 +3084,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L511).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L511).
 """
 function WindowIsUndockedOrStandalone(window::VoidablePtrOrRef{libig.ImGuiWindow})
     self = _current_test_context[]
@@ -3094,7 +3094,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L512).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L512).
 """
 function DockIdIsUndockedOrStandalone(dock_id)
     self = _current_test_context[]
@@ -3104,7 +3104,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L513).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L513).
 """
 function DockNodeHideTabBar(node::VoidablePtrOrRef{libig.ImGuiDockNode}, hidden)
     self = _current_test_context[]
@@ -3114,7 +3114,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L518).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L518).
 """
 function PerfCalcRef()
     self = _current_test_context[]
@@ -3124,7 +3124,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L519).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L519).
 """
 function PerfCapture(category = C_NULL, test_name = C_NULL, csv_file = C_NULL)
     self = _current_test_context[]
@@ -3137,7 +3137,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L541).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L541).
 """
 function _ScrollVerifyScrollMax(ref::TestRef)
     self = _current_test_context[]
@@ -3152,7 +3152,7 @@ Move windows covering 'window' at pos.
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L542).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L542).
 """
 function _MakeAimingSpaceOverPos(
     viewport::VoidablePtrOrRef{libig.ImGuiViewport},
@@ -3171,7 +3171,7 @@ FIXME: Aim to remove this system...
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L543).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L543).
 """
 function _ForeignWindowsHideOverPos(
     pos::Union{VoidablePtrOrRef{libig.ImVec2},VoidablePtrOrRef{NTuple{2}}},
@@ -3189,7 +3189,7 @@ FIXME: Aim to remove this system...
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_context.h#L544).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_context.h#L544).
 """
 function _ForeignWindowsUnhideAll()
     self = _current_test_context[]
@@ -3199,7 +3199,7 @@ end
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L173).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L173).
 """
 ImGuiCsvParser(columns = -1) = lib.ImGuiCsvParser_ImGuiCsvParser(columns)
 
@@ -3213,7 +3213,7 @@ $(TYPEDSIGNATURES)
 
 Open and parse a CSV file.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L175).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L175).
 """
 Load(self::Ptr{lib.ImGuiCsvParser}, file_name) = lib.ImGuiCsvParser_Load(self, file_name)
 
@@ -3222,14 +3222,14 @@ $(TYPEDSIGNATURES)
 
 Free allocated buffers.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L176).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L176).
 """
 Clear(self::Ptr{lib.ImGuiCsvParser}) = lib.ImGuiCsvParser_Clear(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_utils.h#L177).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_utils.h#L177).
 """
 GetCell(self::Ptr{lib.ImGuiCsvParser}, row, col) = lib.ImGuiCsvParser_GetCell(self, row, col)
 
@@ -3239,7 +3239,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L48).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L48).
 """
 Clear(self::Ptr{lib.ImGuiTestGatherTask}) = lib.ImGuiTestGatherTask_Clear(self)
 
@@ -3249,7 +3249,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L88).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L88).
 """
 function ForKeyChord(self::Ptr{lib.ImGuiTestInput}, key_chord, down)
     pOut = Ref{ImGuiTestInput}()
@@ -3263,7 +3263,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L97).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L97).
 """
 function ForChar(self::Ptr{lib.ImGuiTestInput}, v)
     pOut = Ref{ImGuiTestInput}()
@@ -3277,7 +3277,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L105).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L105).
 """
 function ForViewportFocus(self::Ptr{lib.ImGuiTestInput}, viewport_id)
     pOut = Ref{ImGuiTestInput}()
@@ -3291,7 +3291,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L113).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L113).
 """
 function ForViewportSetPos(
     self::Ptr{lib.ImGuiTestInput},
@@ -3309,7 +3309,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L122).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L122).
 """
 function ForViewportSetSize(
     self::Ptr{lib.ImGuiTestInput},
@@ -3327,7 +3327,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L131).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L131).
 """
 function ForViewportClose(self::Ptr{lib.ImGuiTestInput}, viewport_id)
     pOut = Ref{ImGuiTestInput}()
@@ -3341,14 +3341,14 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_internal.h#L213).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L213).
 """
 TestEngine() = lib.ImGuiTestEngine_ImGuiTestEngine()
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L48).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L48).
 """
 ImGuiPerfToolEntry(rhs::VoidablePtrOrRef{lib.ImGuiPerfToolEntry}) =
     lib.ImGuiPerfToolEntry_ImGuiPerfToolEntry_constPerfToolEntryPtr(rhs)
@@ -3356,7 +3356,7 @@ ImGuiPerfToolEntry(rhs::VoidablePtrOrRef{lib.ImGuiPerfToolEntry}) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L50).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L50).
 """
 function Set end
 Set(self::Ptr{lib.ImGuiPerfToolEntry}, rhs::VoidablePtrOrRef{lib.ImGuiPerfToolEntry}) =
@@ -3375,7 +3375,7 @@ Destroy(self::Ptr{lib.ImGuiPerfToolBatch}) = ImGuiPerfToolBatch_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L108).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L108).
 """
 ImGuiPerfTool() = lib.ImGuiPerfTool_ImGuiPerfTool()
 
@@ -3387,21 +3387,21 @@ Destroy(self::Ptr{lib.ImGuiPerfTool}) = ImGuiPerfTool_destroy(self)
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L111).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L111).
 """
 Clear(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool_Clear(self)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L112).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L112).
 """
 LoadCSV(self::Ptr{lib.ImGuiPerfTool}, filename = C_NULL) = lib.ImGuiPerfTool_LoadCSV(self, filename)
 
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L113).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L113).
 """
 AddEntry(self::Ptr{lib.ImGuiPerfTool}, entry::VoidablePtrOrRef{lib.ImGuiPerfToolEntry}) =
     lib.ImGuiPerfTool_AddEntry(self, entry)
@@ -3409,7 +3409,7 @@ AddEntry(self::Ptr{lib.ImGuiPerfTool}, entry::VoidablePtrOrRef{lib.ImGuiPerfTool
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L115).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L115).
 """
 ShowPerfToolWindow(self::Ptr{lib.ImGuiPerfTool}, engine::Engine, p_open) =
     lib.ImGuiPerfTool_ShowPerfToolWindow(self, engine.ptr, p_open)
@@ -3417,7 +3417,7 @@ ShowPerfToolWindow(self::Ptr{lib.ImGuiPerfTool}, engine::Engine, p_open) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L116).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L116).
 """
 ViewOnly(self::Ptr{lib.ImGuiPerfTool}, perf_name::Union{String,Ptr{Cchar}}) =
     lib.ImGuiPerfTool_ViewOnly_Str(self, perf_name)
@@ -3425,7 +3425,7 @@ ViewOnly(self::Ptr{lib.ImGuiPerfTool}, perf_name::Union{String,Ptr{Cchar}}) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L117).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L117).
 """
 ViewOnly(self::Ptr{lib.ImGuiPerfTool}, perf_names::PtrOrRef{Vector{String}}) =
     lib.ImGuiPerfTool_ViewOnly_StrPtr(self, perf_names)
@@ -3433,7 +3433,7 @@ ViewOnly(self::Ptr{lib.ImGuiPerfTool}, perf_names::PtrOrRef{Vector{String}}) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L118).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L118).
 """
 GetEntryByBatchIdx(self::Ptr{lib.ImGuiPerfTool}, idx, perf_name = C_NULL) =
     lib.ImGuiPerfTool_GetEntryByBatchIdx(self, idx, perf_name)
@@ -3441,7 +3441,7 @@ GetEntryByBatchIdx(self::Ptr{lib.ImGuiPerfTool}, idx, perf_name = C_NULL) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L119).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L119).
 """
 SaveHtmlReport(self::Ptr{lib.ImGuiPerfTool}, file_name, image_file = C_NULL) =
     lib.ImGuiPerfTool_SaveHtmlReport(self, file_name, image_file)
@@ -3449,7 +3449,7 @@ SaveHtmlReport(self::Ptr{lib.ImGuiPerfTool}, file_name, image_file = C_NULL) =
 """
 $(TYPEDSIGNATURES)
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L120).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L120).
 """
 Empty(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool_Empty(self)
 
@@ -3459,7 +3459,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L122).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L122).
 """
 _Rebuild(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__Rebuild(self)
 
@@ -3469,7 +3469,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L123).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L123).
 """
 _IsVisibleBuild(self::Ptr{lib.ImGuiPerfTool}, batch::PtrOrRef{lib.ImGuiPerfToolBatch}) =
     lib.ImGuiPerfTool__IsVisibleBuild_PerfToolBatchPtr(self, batch)
@@ -3480,7 +3480,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L124).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L124).
 """
 _IsVisibleBuild(self::Ptr{lib.ImGuiPerfTool}, batch::PtrOrRef{lib.ImGuiPerfToolEntry}) =
     lib.ImGuiPerfTool__IsVisibleBuild_PerfToolEntryPtr(self, batch)
@@ -3491,7 +3491,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L125).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L125).
 """
 _IsVisibleTest(self::Ptr{lib.ImGuiPerfTool}, test_name) = lib.ImGuiPerfTool__IsVisibleTest(self, test_name)
 
@@ -3501,7 +3501,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L126).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L126).
 """
 _CalculateLegendAlignment(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__CalculateLegendAlignment(self)
 
@@ -3511,7 +3511,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L127).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L127).
 """
 _ShowEntriesPlot(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__ShowEntriesPlot(self)
 
@@ -3521,7 +3521,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L128).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L128).
 """
 _ShowEntriesTable(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__ShowEntriesTable(self)
 
@@ -3531,7 +3531,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L129).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L129).
 """
 _SetBaseline(self::Ptr{lib.ImGuiPerfTool}, batch_index) = lib.ImGuiPerfTool__SetBaseline(self, batch_index)
 
@@ -3541,7 +3541,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L130).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L130).
 """
 _AddSettingsHandler(self::Ptr{lib.ImGuiPerfTool}) = lib.ImGuiPerfTool__AddSettingsHandler(self)
 
@@ -3551,7 +3551,7 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.5/imgui_test_engine/imgui_te_perftool.h#L131).
+[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_perftool.h#L131).
 """
 _UnpackSortedKey(self::Ptr{lib.ImGuiPerfTool}, key, batch_index, entry_index, monotonic_index = C_NULL) =
     lib.ImGuiPerfTool__UnpackSortedKey(self, key, batch_index, entry_index, monotonic_index)

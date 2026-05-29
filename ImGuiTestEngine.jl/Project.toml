@@ -13,7 +13,7 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 CEnum = "0.5.0"
-CImGui = "7"
+CImGui = "8"
 CImGuiPack_jll = "0.12"
 DocStringExtensions = "0.9.3"
 ScopedValues = "1.2.1"
