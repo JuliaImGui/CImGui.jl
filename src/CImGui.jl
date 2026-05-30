@@ -264,6 +264,7 @@ end
 function _test_engine_is_running end
 function _start_test_engine end
 function _show_test_window end
+function _post_swap end
 
 
 function __init__()
