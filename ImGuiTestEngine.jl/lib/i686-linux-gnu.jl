@@ -1,6 +1,6 @@
 module lib
 
-using CEnum
+using CEnum: CEnum, @cenum
 
 to_c_type(t::Type) = t
 to_c_type_pairs(va_list) = map(enumerate(to_c_type.(va_list))) do (ind, type)
