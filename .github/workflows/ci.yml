@@ -29,12 +29,12 @@ jobs:
           # For some reason GLFW won't let us create a window on 32 bit ubuntu
           # - x86
     steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
+      - uses: actions/checkout@v6
+      - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
       - name: Set the number of threads for the tests
         run: |
           echo "JULIA_NUM_THREADS=5,5" >> "$GITHUB_ENV"
@@ -42,7 +42,7 @@ jobs:
         with:
           prefix: xvfb-run -a -s '-screen 0 1024x768x24'
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v6
         with:
           files: lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -51,9 +51,9 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
-      - uses: julia-actions/cache@v2
+      - uses: actions/checkout@v6
+      - uses: julia-actions/setup-julia@v3
+      - uses: julia-actions/cache@v3
       - run: |
           julia --project=docs -e '
             using Pkg
