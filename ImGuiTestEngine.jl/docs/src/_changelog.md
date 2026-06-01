@@ -7,6 +7,11 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [Unreleased]
+
+### Changed
+- Updated for ImGui 1.92.8 / ImPlot 1.0 ([#18]).
+
 ## [v1.0.3] - 2026-01-05
 
 ### Changed
