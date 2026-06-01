@@ -9,7 +9,13 @@ Changelog](https://keepachangelog.com).
 ## [v8.0.0]
 
 ### Changed
-- **Breaking**: updated to [Dear ImGui 1.92.8](https://github.com/ocornut/imgui/releases/tag/v1.92.8) ([#197]).
+- **Breaking**: updated to [Dear ImGui
+  1.92.8](https://github.com/ocornut/imgui/releases/tag/v1.92.8) ([#197]). All
+  the changes from 1.92.6 - 1.92.8 apply to this release.
+
+  A particularly breaking change is to the argument order of
+  [`AddRect()`](@ref)/[`AddPolyline()`](@ref)/[`PathStroke()`](@ref), see the
+  1.92.8 release notes for more details.
 
 ## [v7.1.1] - 2026-05-14
 

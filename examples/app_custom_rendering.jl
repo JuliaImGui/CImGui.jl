@@ -33,9 +33,9 @@ function ShowExampleAppCustomRendering(p_open::Ref{Bool})
             th::Cfloat = (n == 0) ? 1.0 : thickness
             CImGui.AddCircle(draw_list, ImVec2(x+sz*0.5, y+sz*0.5), sz*0.5, col32, 6, th); x += sz + spacing; # hexagon
             CImGui.AddCircle(draw_list, ImVec2(x+sz*0.5, y+sz*0.5), sz*0.5, col32, 20, th); x += sz + spacing; # circle
-            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 0.0, CImGui.ImDrawFlags_RoundCornersAll, th); x += sz + spacing;
-            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 10.0, CImGui.ImDrawFlags_RoundCornersAll, th); x += sz + spacing;
-            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 10.0, CImGui.ImDrawFlags_RoundCornersTopLeft | CImGui.ImDrawFlags_RoundCornersBottomRight, th); x += sz + spacing;
+            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 0.0, th, CImGui.ImDrawFlags_RoundCornersAll); x += sz + spacing;
+            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 10.0, th, CImGui.ImDrawFlags_RoundCornersAll); x += sz + spacing;
+            CImGui.AddRect(draw_list, ImVec2(x, y), ImVec2(x+sz, y+sz), col32, 10.0, th, CImGui.ImDrawFlags_RoundCornersTopLeft | CImGui.ImDrawFlags_RoundCornersBottomRight); x += sz + spacing;
             CImGui.AddTriangle(draw_list, ImVec2(x+sz*0.5, y), ImVec2(x+sz,y+sz-0.5), ImVec2(x,y+sz-0.5), col32, th); x += sz + spacing;
             CImGui.AddLine(draw_list, ImVec2(x, y), ImVec2(x+sz,    y), col32, th); x += sz + spacing;  # horizontal line (note: drawing a filled rectangle will be faster!)
             CImGui.AddLine(draw_list, ImVec2(x, y), ImVec2(x,    y+sz), col32, th); x += spacing;       # vertical line (note: drawing a filled rectangle will be faster!)
