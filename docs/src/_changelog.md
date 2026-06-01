@@ -6,7 +6,7 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
-## [v8.0.0]
+## [v8.0.0] - 2026-06-01
 
 ### Changed
 - **Breaking**: updated to [Dear ImGui
