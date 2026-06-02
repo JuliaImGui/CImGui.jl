@@ -288,28 +288,6 @@ $(TYPEDSIGNATURES)
 !!! warning
     This function is internal, it may change in the future.
 
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L236).
-"""
-CaptureScreenshot(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
-    lib.cImGuiTestEngine_CaptureScreenshot(engine.ptr, args)
-
-"""
-$(TYPEDSIGNATURES)
-
-!!! warning
-    This function is internal, it may change in the future.
-
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L237).
-"""
-CaptureBeginVideo(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
-    lib.cImGuiTestEngine_CaptureBeginVideo(engine.ptr, args)
-
-"""
-$(TYPEDSIGNATURES)
-
-!!! warning
-    This function is internal, it may change in the future.
-
 [Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_internal.h#L238).
 """
 CaptureEndVideo(engine::Engine, args::VoidablePtrOrRef{lib.ImGuiCaptureArgs}) =
@@ -748,20 +726,6 @@ Prefer calling IM_REGISTER_TEST().
 """
 RegisterTest(engine::Engine, category, name, src_file = C_NULL, src_line = 0) =
     lib.cImGuiTestEngine_RegisterTest(engine.ptr, category, name, src_file, src_line)
-
-"""
-$(TYPEDSIGNATURES)
-
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L209).
-"""
-UnregisterTest(engine::Engine, test::ImGuiTest) = lib.cImGuiTestEngine_UnregisterTest(engine.ptr, test.ptr)
-
-"""
-$(TYPEDSIGNATURES)
-
-[Upstream link](https://github.com/ocornut/imgui_test_engine/blob/v1.92.8/imgui_test_engine/imgui_te_engine.h#L210).
-"""
-UnregisterAllTests(engine::Engine) = lib.cImGuiTestEngine_UnregisterAllTests(engine.ptr)
 
 """
 $(TYPEDSIGNATURES)
@@ -3559,7 +3523,7 @@ _UnpackSortedKey(self::Ptr{lib.ImGuiPerfTool}, key, batch_index, entry_index, mo
 @static if VERSION >= v"1.11"
     eval(
         Meta.parse(
-            "public ImHashDecoratedPath, ImFindNextDecoratedPartInPath, ImFileExist, ImFileDelete, ImFileCreateDirectoryChain, ImFileFindInParents, ImFileLoadSourceBlurb, ImPathFindFilename, ImPathFindExtension, ImPathFixSeparatorsForCurrentOS, ImStrReplace, ImStrchrRangeWithEscaping, ImStrXmlEscape, ImStrBase64Encode, ImStrTrimTrailingZeroesFromFloat, ImParseExtractArgcArgvFromCommandLine, ImParseFindIniSection, ImTimeGetInMicroseconds, ImTimestampToISO8601, ImThreadSleepInMilliseconds, ImThreadSetCurrentThreadDescription, ImBuildGetCompilationInfo, ImBuildFindGitBranchName, ImOsCreateProcess, ImOsPOpen, ImOsPClose, ImOsOpenInShell, ImOsIsDebuggerPresent, ImOsOutputDebugString, ImOsConsoleSetTextColor, TableGetHeaderID, TableDiscardInstanceAndSettings, DrawDataVerifyMatchingBufferCount, PrintResultSummary, Export, ExportEx, ShowTestEngineWindows, OpenSourceFile, ImGuiTestEngineHook_ItemAdd, ImGuiTestEngineHook_ItemInfo, ImGuiTestEngineHook_Log, FindItemDebugLabel, Check, CheckOpStr, Error, AssertLog, GetTempStringBuilder, Start, Stop, PostSwap, GetIO, RegisterTest, UnregisterTest, UnregisterAllTests, QueueTest, QueueTests, TryAbortEngine, AbortCurrentTest, FindTestByName, IsTestQueueEmpty, IsUsingSimulatedInputs, GetResultSummary, GetTestList, GetTestQueue, InstallDefaultCrashHandler, CrashHandler, PerfToolAppendToCSV, ImGuiCaptureImageBuf, Destroy, Clear, CreateEmpty, SaveFile, RemoveAlpha, ImGuiCaptureContext, PreNewFrame, PreRender, PostRender, CaptureUpdate, RestoreBackedUpData, ClearState, BeginVideoCapture, EndVideoCapture, IsCapturingVideo, IsCapturing, ImGuiCaptureToolUI, ShowCaptureToolWindow, ImGuiTestItemInfo, Reserve, GetSize, GetByIndex, GetByID, Size, Begin, End, ImGuiTestLog, IsEmpty, GetText, GetTextLen, ExtractLinesForVerboseLevels, UpdateLineOffsets, ImGuiTest, SetOwnedName, ImGuiTestRef, C_str, ImGuiTestRefDesc, ImGuiTestActionFilter, ImGuiTestGenericItemStatus, QuerySet, QueryInc, Draw, ImGuiTestGenericVars, Finish, RunChildTest, IsError, IsWarmUpGuiFrame, IsFirstGuiFrame, IsFirstTestFrame, IsGuiFuncOnly, SuspendTestFunc, LogEx, LogToTTY, LogToDebugger, LogDebug, LogInfo, LogWarning, LogError, LogBasicUiState, LogItemList, Sleep, SleepShort, SleepStandard, SleepNoSkip, WindowInfo, WindowClose, WindowCollapse, WindowFocus, WindowBringToFront, WindowMove, WindowResize, WindowTeleportToMakePosVisible, PopupCloseOne, PopupCloseAll, PopupGetWindowID, GetID, GetPosOnVoid, GetWindowTitlebarPoint, GetMainMonitorWorkPos, GetMainMonitorWorkSize, CaptureReset, CaptureSetExtension, CaptureAddWindow, CaptureScreenshotWindow, CaptureScreenshot, CaptureBeginVideo, CaptureEndVideo, MouseTeleportToPos, MouseClickMulti, MouseDoubleClick, MouseDown, MouseUp, MouseLiftDragThreshold, MouseDragWithDelta, MouseWheel, MouseWheelX, MouseWheelY, MouseMoveToVoid, MouseClickOnVoid, FindHoveredWindowAtPos, FindExistingVoidPosOnViewport, MouseSetViewport, MouseSetViewportID, KeyDown, KeyUp, KeyPress, KeyHold, KeySetEx, KeyChars, KeyCharsAppend, KeyCharsAppendEnter, KeyCharsReplace, KeyCharsReplaceEnter, SetInputMode, NavMoveTo, NavActivate, NavInput, ScrollTo, ScrollToX, ScrollToY, ScrollToTop, ScrollToBottom, ScrollToPos, ScrollToPosX, ScrollToPosY, ScrollToItem, ScrollToItemX, ScrollToItemY, ScrollToTabItem, ItemInfo, ItemInfoOpenFullPath, ItemInfoHandleWildcardSearch, ItemInfoNull, GatherItems, ItemAction, ItemUncheck, ItemInput, ItemNavActivate, ItemActionAll, ItemOpenAll, ItemCloseAll, ItemInputValue, ItemReadAsInt, ItemReadAsFloat, ItemReadAsScalar, ItemReadAsString, ItemExists, ItemIsChecked, ItemIsOpened, ItemIsVisible, ItemVerifyCheckedIfAlive, ItemHold, ItemHoldForFrames, ItemDragOverAndHold, ItemDragAndDrop, ItemDragWithDelta, TabClose, TabBarCompareOrder, MenuAction, MenuActionAll, MenuCheck, MenuUncheck, MenuCheckAll, MenuUncheckAll, TableOpenContextMenu, TableClickHeader, TableSetColumnEnabled, TableResizeColumn, TableGetSortSpecs, ViewportPlatform_SetWindowPos, ViewportPlatform_SetWindowSize, ViewportPlatform_SetWindowFocus, ViewportPlatform_CloseWindow, DockClear, DockInto, UndockNode, UndockWindow, WindowIsUndockedOrStandalone, DockIdIsUndockedOrStandalone, DockNodeHideTabBar, PerfCalcRef, PerfCapture, ImGuiCsvParser, Load, GetCell, ImGuiPerfToolEntry, Set, ImGuiPerfTool, LoadCSV, AddEntry, ShowPerfToolWindow, ViewOnly, GetEntryByBatchIdx, SaveHtmlReport, Empty",
+            "public ImHashDecoratedPath, ImFindNextDecoratedPartInPath, ImFileExist, ImFileDelete, ImFileCreateDirectoryChain, ImFileFindInParents, ImFileLoadSourceBlurb, ImPathFindFilename, ImPathFindExtension, ImPathFixSeparatorsForCurrentOS, ImStrReplace, ImStrchrRangeWithEscaping, ImStrXmlEscape, ImStrBase64Encode, ImStrTrimTrailingZeroesFromFloat, ImParseExtractArgcArgvFromCommandLine, ImParseFindIniSection, ImTimeGetInMicroseconds, ImTimestampToISO8601, ImThreadSleepInMilliseconds, ImThreadSetCurrentThreadDescription, ImBuildGetCompilationInfo, ImBuildFindGitBranchName, ImOsCreateProcess, ImOsPOpen, ImOsPClose, ImOsOpenInShell, ImOsIsDebuggerPresent, ImOsOutputDebugString, ImOsConsoleSetTextColor, TableGetHeaderID, TableDiscardInstanceAndSettings, DrawDataVerifyMatchingBufferCount, PrintResultSummary, Export, ExportEx, ShowTestEngineWindows, OpenSourceFile, ImGuiTestEngineHook_ItemAdd, ImGuiTestEngineHook_ItemInfo, ImGuiTestEngineHook_Log, FindItemDebugLabel, Check, CheckOpStr, Error, AssertLog, GetTempStringBuilder, Start, Stop, PostSwap, GetIO, RegisterTest, QueueTest, QueueTests, TryAbortEngine, AbortCurrentTest, FindTestByName, IsTestQueueEmpty, IsUsingSimulatedInputs, GetResultSummary, GetTestList, GetTestQueue, InstallDefaultCrashHandler, CrashHandler, PerfToolAppendToCSV, ImGuiCaptureImageBuf, Destroy, Clear, CreateEmpty, SaveFile, RemoveAlpha, ImGuiCaptureContext, PreNewFrame, PreRender, PostRender, CaptureUpdate, RestoreBackedUpData, ClearState, BeginVideoCapture, EndVideoCapture, IsCapturingVideo, IsCapturing, ImGuiCaptureToolUI, ShowCaptureToolWindow, ImGuiTestItemInfo, Reserve, GetSize, GetByIndex, GetByID, Size, Begin, End, ImGuiTestLog, IsEmpty, GetText, GetTextLen, ExtractLinesForVerboseLevels, UpdateLineOffsets, ImGuiTest, SetOwnedName, ImGuiTestRef, C_str, ImGuiTestRefDesc, ImGuiTestActionFilter, ImGuiTestGenericItemStatus, QuerySet, QueryInc, Draw, ImGuiTestGenericVars, Finish, RunChildTest, IsError, IsWarmUpGuiFrame, IsFirstGuiFrame, IsFirstTestFrame, IsGuiFuncOnly, SuspendTestFunc, LogEx, LogToTTY, LogToDebugger, LogDebug, LogInfo, LogWarning, LogError, LogBasicUiState, LogItemList, Sleep, SleepShort, SleepStandard, SleepNoSkip, WindowInfo, WindowClose, WindowCollapse, WindowFocus, WindowBringToFront, WindowMove, WindowResize, WindowTeleportToMakePosVisible, PopupCloseOne, PopupCloseAll, PopupGetWindowID, GetID, GetPosOnVoid, GetWindowTitlebarPoint, GetMainMonitorWorkPos, GetMainMonitorWorkSize, CaptureReset, CaptureSetExtension, CaptureAddWindow, CaptureScreenshotWindow, CaptureScreenshot, CaptureBeginVideo, CaptureEndVideo, MouseTeleportToPos, MouseClickMulti, MouseDoubleClick, MouseDown, MouseUp, MouseLiftDragThreshold, MouseDragWithDelta, MouseWheel, MouseWheelX, MouseWheelY, MouseMoveToVoid, MouseClickOnVoid, FindHoveredWindowAtPos, FindExistingVoidPosOnViewport, MouseSetViewport, MouseSetViewportID, KeyDown, KeyUp, KeyPress, KeyHold, KeySetEx, KeyChars, KeyCharsAppend, KeyCharsAppendEnter, KeyCharsReplace, KeyCharsReplaceEnter, SetInputMode, NavMoveTo, NavActivate, NavInput, ScrollTo, ScrollToX, ScrollToY, ScrollToTop, ScrollToBottom, ScrollToPos, ScrollToPosX, ScrollToPosY, ScrollToItem, ScrollToItemX, ScrollToItemY, ScrollToTabItem, ItemInfo, ItemInfoOpenFullPath, ItemInfoHandleWildcardSearch, ItemInfoNull, GatherItems, ItemAction, ItemUncheck, ItemInput, ItemNavActivate, ItemActionAll, ItemOpenAll, ItemCloseAll, ItemInputValue, ItemReadAsInt, ItemReadAsFloat, ItemReadAsScalar, ItemReadAsString, ItemExists, ItemIsChecked, ItemIsOpened, ItemIsVisible, ItemVerifyCheckedIfAlive, ItemHold, ItemHoldForFrames, ItemDragOverAndHold, ItemDragAndDrop, ItemDragWithDelta, TabClose, TabBarCompareOrder, MenuAction, MenuActionAll, MenuCheck, MenuUncheck, MenuCheckAll, MenuUncheckAll, TableOpenContextMenu, TableClickHeader, TableSetColumnEnabled, TableResizeColumn, TableGetSortSpecs, ViewportPlatform_SetWindowPos, ViewportPlatform_SetWindowSize, ViewportPlatform_SetWindowFocus, ViewportPlatform_CloseWindow, DockClear, DockInto, UndockNode, UndockWindow, WindowIsUndockedOrStandalone, DockIdIsUndockedOrStandalone, DockNodeHideTabBar, PerfCalcRef, PerfCapture, ImGuiCsvParser, Load, GetCell, ImGuiPerfToolEntry, Set, ImGuiPerfTool, LoadCSV, AddEntry, ShowPerfToolWindow, ViewOnly, GetEntryByBatchIdx, SaveHtmlReport, Empty",
         ),
     )
 end

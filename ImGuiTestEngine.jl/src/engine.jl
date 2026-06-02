@@ -20,9 +20,7 @@ mutable struct ImGuiTest
     ptr::Union{Ptr{lib.ImGuiTest}, Nothing}
 
     _gui_func::Union{Function, Nothing}
-    _gui_cfunction::Union{Base.CFunction, Nothing}
     _test_func::Union{Function, Nothing}
-    _test_cfunction::Union{Base.CFunction, Nothing}
 end
 
 """
@@ -36,8 +34,7 @@ mutable struct Engine
     exit_on_completion::Bool
     show_test_window::Bool
 
-    # This field is meant to prevent ImGuiTest objects from being garbage
-    # collected along with their functions/CFunction's.
+    # Keep ImGuiTest wrappers alive while the engine is.
     tests::Vector{ImGuiTest}
 end
 
@@ -126,9 +123,76 @@ function DestroyContext(engine::Engine; throw=true)
 
     lib.cImGuiTestEngine_DestroyContext(engine.ptr)
     engine.ptr = nothing
+
+    # Drop registry entries owned by this engine's tests.
+    for t in engine.tests
+        delete!(TEST_REGISTRY, t.ptr)
+    end
     empty!(engine.tests)
 
     return nothing
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Unregister a test from the engine. This removes the C-side test object and the
+Julia wrapper's bookkeeping (registry + engine.tests). After this call, the
+`ImGuiTest` wrapper is dead — using it is undefined behavior.
+"""
+function UnregisterTest(engine::Engine, test::ImGuiTest)
+    lib.cImGuiTestEngine_UnregisterTest(engine.ptr, test.ptr)
+    delete!(TEST_REGISTRY, test.ptr)
+    filter!(t -> t !== test, engine.tests)
+    # C side freed it; null to fail-fast on later access.
+    test.ptr = nothing
+    return nothing
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+Unregister all tests from the engine. After this call, any Julia `ImGuiTest`
+wrappers previously registered with this engine are dead.
+"""
+function UnregisterAllTests(engine::Engine)
+    lib.cImGuiTestEngine_UnregisterAllTests(engine.ptr)
+    for t in engine.tests
+        delete!(TEST_REGISTRY, t.ptr)
+        t.ptr = nothing
+    end
+    empty!(engine.tests)
+    return nothing
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
+"""
+function CaptureScreenshot(engine::Engine, args::Union{Ptr{lib.ImGuiCaptureArgs}, Ref{lib.ImGuiCaptureArgs}, Ptr{Cvoid}})
+    ok = lib.cImGuiTestEngine_CaptureScreenshot(engine.ptr, args)
+    if !ok
+        @warn "ImGuiTestEngine_CaptureScreenshot returned false — capture skipped. \
+               Likely cause: engine_io.ScreenCaptureFunc is not installed."
+    end
+    return ok
+end
+
+"""
+$(TYPEDSIGNATURES)
+
+!!! warning
+    This function is internal, it may change in the future.
+"""
+function CaptureBeginVideo(engine::Engine, args::Union{Ptr{lib.ImGuiCaptureArgs}, Ref{lib.ImGuiCaptureArgs}, Ptr{Cvoid}})
+    ok = lib.cImGuiTestEngine_CaptureBeginVideo(engine.ptr, args)
+    if !ok
+        @warn "ImGuiTestEngine_CaptureBeginVideo returned false — capture skipped. \
+               Likely cause: engine_io.ScreenCaptureFunc is not installed."
+    end
+    return ok
 end
 
 function GetResultSummary(engine::Engine)
@@ -162,24 +226,42 @@ function Base.getproperty(test::ImGuiTest, name::Symbol)
     end
 end
 
+# Map C ImGuiTest* → Julia wrapper so static cfunctions can recover the
+# running test without a closure-cfunction (unsupported on aarch64-darwin).
+const TEST_REGISTRY = Dict{Ptr{lib.ImGuiTest}, ImGuiTest}()
+
+function _runner_static(ctx::Ptr{Cvoid}, kind::Symbol)
+    test_ctx_ptr = Ptr{lib.ImGuiTestContext}(ctx)
+    test_ptr = unsafe_load(test_ctx_ptr.Test)
+    test = get(TEST_REGISTRY, test_ptr, nothing)
+    test === nothing ? nothing : _test_runner(test, kind, ctx)
+end
+_gui_runner_static(ctx::Ptr{Cvoid})  = _runner_static(ctx, :GuiFunc)
+_test_runner_static(ctx::Ptr{Cvoid}) = _runner_static(ctx, :TestFunc)
+
+# Initialize in __init__: @cfunction at module-load freezes trampoline
+# addresses into the precompile image, causing bus errors on use.
+_GUI_CFN::Ptr{Cvoid}  = C_NULL
+_TEST_CFN::Ptr{Cvoid} = C_NULL
+
+function __init__()
+    global _GUI_CFN  = @cfunction(_gui_runner_static,  Cvoid, (Ptr{Cvoid},))
+    global _TEST_CFN = @cfunction(_test_runner_static, Cvoid, (Ptr{Cvoid},))
+end
+
 function Base.setproperty!(test::ImGuiTest, name::Symbol, value)
     if name in fieldnames(ImGuiTest)
         return setfield!(test, name, value)
     end
 
     if name == :GuiFunc || name == :TestFunc
-        func = ctx -> _test_runner(test, name, ctx)
-        func_cfunction = @cfunction($func, Cvoid, (Ptr{Cvoid},))
-        func_ptr = Base.unsafe_convert(Ptr{Cvoid}, func_cfunction)
-
+        TEST_REGISTRY[getfield(test, :ptr)] = test
         if name == :GuiFunc
-            test.ptr.GuiFunc = func_ptr
-            test._gui_func = value
-            test._gui_cfunction = func_cfunction
-        elseif name == :TestFunc
-            test.ptr.TestFunc = func_ptr
-            test._test_func = value
-            test._test_cfunction = func_cfunction
+            test.ptr.GuiFunc = _GUI_CFN
+            setfield!(test, :_gui_func, value)
+        else
+            test.ptr.TestFunc = _TEST_CFN
+            setfield!(test, :_test_func, value)
         end
     else
         setproperty!(test.ptr, name, value)
@@ -241,7 +323,7 @@ macro register_test(engine, category::AbstractString, name::AbstractString)
 
     quote
         local ptr = RegisterTest($(esc(engine)), $category, $name, $file, $line)
-        local test = ImGuiTest(ptr, nothing, nothing, nothing, nothing)
+        local test = ImGuiTest(ptr, nothing, nothing)
         push!($(esc(engine)).tests, test)
 
         test
@@ -267,3 +349,6 @@ function ig._start_test_engine(engine::Engine, ctx::Ptr{libig.ImGuiContext})
 end
 
 ig._show_test_window(engine::Engine) = ShowTestEngineWindows(engine, C_NULL)
+
+# Called by GLFW backend per frame to advance screen-capture state.
+ig._post_swap(engine::Engine) = PostSwap(engine)

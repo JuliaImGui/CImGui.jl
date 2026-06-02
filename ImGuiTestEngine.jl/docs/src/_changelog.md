@@ -9,6 +9,9 @@ This documents notable changes in ImGuiTestEngine.jl. The format is based on
 
 ## [Unreleased]
 
+### Added
+- Support for Apple Silicon: the `GuiFunc`/`TestFunc` wiring now uses static `@cfunction` trampolines with a process-global `TEST_REGISTRY`, working around a [Julia limitation on aarch64-darwin where closures are not supported in `@cfunction`](https://github.com/JuliaLang/julia/issues/27174) ([#19]).
+- A per-frame post-swap hook (`CImGui._post_swap`) is now defined for `Engine` so the GLFW backend can advance screen-capture and video-capture state ([#19]).
 ### Changed
 - Updated for ImGui 1.92.8 / ImPlot 1.0 ([#18]).
 

@@ -71,10 +71,6 @@
         "line": 493,
         "class": "ImGuiTestContext"
     },
-    "UnregisterAllTests": {
-        "line": 210,
-        "class": "ImGuiTestEngine"
-    },
     "ItemHoldForFrames": {
         "line": 463,
         "class": "ImGuiTestContext"
@@ -1066,10 +1062,6 @@
     "MenuUncheck": {
         "line": 479,
         "class": "ImGuiTestContext"
-    },
-    "UnregisterTest": {
-        "line": 209,
-        "class": "ImGuiTestEngine"
     },
     "ImTimeGetInMicroseconds": {
         "line": 66,
