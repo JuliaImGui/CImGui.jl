@@ -2,6 +2,7 @@ const PtrOrRef{T} = Union{Ptr{T},Ref{T}} where {T}
 const VoidablePtrOrRef{T} = Union{Ptr{T},Ref{T},Ptr{Cvoid}} where {T}
 
 const TestRef = Union{String,Int,lib.ImGuiTestRef}
+const ImVec2 = libig.ImVec2
 
 const ImGuiCaptureImageBuf = lib.ImGuiCaptureImageBuf
 const ImGuiCaptureArgs = lib.ImGuiCaptureArgs

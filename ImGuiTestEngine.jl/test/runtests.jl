@@ -249,6 +249,18 @@ end
                 @imcheck te.GetWindowByRef("Nope") == C_NULL
             end
 
+            t = @register_test(engine, "Context", "pOut wrappers returning ImVec2")
+            t.GuiFunc = () -> begin
+                ig.Begin("Titlebar")
+                ig.End()
+            end
+            t.TestFunc = () -> begin
+                @imcheck te.GetWindowTitlebarPoint("Titlebar") isa ig.ImVec2
+                @imcheck te.GetPosOnVoid(ig.GetMainViewport()) isa ig.ImVec2
+                @imcheck te.GetMainMonitorWorkPos() isa ig.ImVec2
+                @imcheck te.GetMainMonitorWorkSize() isa ig.ImVec2
+            end
+
             menu_item_selected = false
             t = @register_test(engine, "Context", "MenuClick")
             t.GuiFunc = () -> begin
