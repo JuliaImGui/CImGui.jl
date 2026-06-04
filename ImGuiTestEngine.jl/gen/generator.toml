@@ -12,7 +12,7 @@ output_ignorelist = [
 
 auto_mutability = true
 auto_mutability_with_new = false
-auto_mutability_ignorelist = ["ImGuiTestRef", "ImGuiTestRefDesc", "ImGuiTestEngineResultSummary"]
+auto_mutability_ignorelist = ["ImGuiTestRef", "ImGuiTestRefDesc", "ImGuiTestEngineResultSummary", "ImGuiTestGenericVars"]
 auto_mutability_includelist = ["ImGuiTestCoroutineInterface"]
 
 [codegen]

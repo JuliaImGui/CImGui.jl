@@ -14,6 +14,10 @@ This documents notable changes in ImGuiTestEngine.jl. The format is based on
 - A per-frame post-swap hook (`CImGui._post_swap`) is now defined for `Engine` so the GLFW backend can advance screen-capture and video-capture state ([#19]).
 ### Changed
 - Updated for ImGui 1.92.8 / ImPlot 1.0 ([#18]).
+- Bumped the minimum supported Julia version to 1.10 ([#21]).
+### Fixed
+- Fixed an `UndefVarError` for `ImVec2` when calling pOut wrappers that return an `ImVec2` (e.g. `GetWindowTitlebarPoint()`, `GetPosOnVoid()`) ([#20]).
+- Fixed `ItemInfo()` returning a wrong `RectFull` (and other shifted fields): the `ImGuiTestItemInfo` C++ bitfields (`NavLayer`/`Depth`) are now reflected in the generated struct layout. ([#22]).
 
 ## [v1.0.3] - 2026-01-05
 

@@ -441,6 +441,32 @@ end
     end
 end
 
+@testset "ItemInfo struct layout" begin
+    # te.ItemInfo and ig.GetItemRectMin/Max query the same widget, so their
+    # rects must agree. A mismatch means the ImGuiTestItemInfo binding's field
+    # offsets disagree with the compiled C++ struct (packed NavLayer:1 / Depth:16).
+    ctx = ig.CreateContext()
+    imgui_rect = Ref{Tuple{ig.ImVec2, ig.ImVec2}}()
+    te_rect = Ref{Tuple{ig.ImVec2, ig.ImVec2}}()
+    do_engine(; exit_on_completion=true) do engine
+        t = @register_test(engine, "Layout", "ItemInfo.RectFull")
+        t.GuiFunc = () -> begin
+            ig.Begin("W")
+            ig.Button("Hi")
+            imgui_rect[] = (ig.GetItemRectMin(), ig.GetItemRectMax())
+            ig.End()
+        end
+        t.TestFunc = () -> begin
+            info = te.ItemInfo("W/Hi")
+            te_rect[] = (info.RectFull.Min, info.RectFull.Max)
+        end
+
+        ig.render(ctx; engine) do ; end
+    end
+
+    @test te_rect[] == imgui_rect[]
+end
+
 # We only run the Aqua tests in CI because they're kinda slow
 if haskey(ENV, "CI")
     @testset "Aqua.jl" begin

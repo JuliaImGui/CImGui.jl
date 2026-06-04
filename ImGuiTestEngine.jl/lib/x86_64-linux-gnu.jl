@@ -247,39 +247,75 @@ end
 
 
 struct ImGuiTestItemInfo
-    ID::Cuint
-    DebugLabel::NTuple{32, Cchar}
-    Window::Ptr{ImGuiWindow}
-    NavLayer::Cuint
-    Depth::Cint
-    TimestampMain::Cint
-    TimestampStatus::Cint
-    ParentID::Cuint
-    RectFull::ImRect
-    RectClipped::ImRect
-    ItemFlags::Cint
-    StatusFlags::Cint
+    data::NTuple{104, UInt8}
 end
+
 function Base.getproperty(x::Ptr{ImGuiTestItemInfo}, f::Symbol)
     f === :ID && return Ptr{Cuint}(x + 0)
     f === :DebugLabel && return Ptr{NTuple{32, Cchar}}(x + 4)
     f === :Window && return Ptr{Ptr{ImGuiWindow}}(x + 40)
-    f === :NavLayer && return Ptr{Cuint}(x + 48)
-    f === :Depth && return Ptr{Cint}(x + 52)
-    f === :TimestampMain && return Ptr{Cint}(x + 56)
-    f === :TimestampStatus && return Ptr{Cint}(x + 60)
-    f === :ParentID && return Ptr{Cuint}(x + 64)
-    f === :RectFull && return Ptr{ImRect}(x + 68)
-    f === :RectClipped && return Ptr{ImRect}(x + 84)
-    f === :ItemFlags && return Ptr{Cint}(x + 100)
-    f === :StatusFlags && return Ptr{Cint}(x + 104)
+    f === :NavLayer && return (Ptr{Cuint}(x + 48), 0, 1)
+    f === :Depth && return (Ptr{Cint}(x + 48), 1, 16)
+    f === :TimestampMain && return Ptr{Cint}(x + 52)
+    f === :TimestampStatus && return Ptr{Cint}(x + 56)
+    f === :ParentID && return Ptr{Cuint}(x + 60)
+    f === :RectFull && return Ptr{ImRect}(x + 64)
+    f === :RectClipped && return Ptr{ImRect}(x + 80)
+    f === :ItemFlags && return Ptr{Cint}(x + 96)
+    f === :StatusFlags && return Ptr{Cint}(x + 100)
     return getfield(x, f)
 end
 
-function Base.setproperty!(x::Ptr{ImGuiTestItemInfo}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
+function Base.getproperty(x::ImGuiTestItemInfo, f::Symbol)
+    r = Ref{ImGuiTestItemInfo}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiTestItemInfo}, r)
+    fptr = getproperty(ptr, f)
+    begin
+        if fptr isa Ptr
+            return GC.@preserve(r, unsafe_load(fptr))
+        else
+            (baseptr, offset, width) = fptr
+            ty = eltype(baseptr)
+            baseptr32 = convert(Ptr{UInt32}, baseptr)
+            u64 = GC.@preserve(r, unsafe_load(baseptr32))
+            if offset + width > 32
+                u64 |= GC.@preserve(r, unsafe_load(baseptr32 + 4)) << 32
+            end
+            u64 = u64 >> offset & (1 << width - 1)
+            return u64 % ty
+        end
+    end
 end
 
+function Base.setproperty!(x::Ptr{ImGuiTestItemInfo}, f::Symbol, v)
+    fptr = getproperty(x, f)
+    if fptr isa Ptr
+        unsafe_store!(getproperty(x, f), v)
+    else
+        (baseptr, offset, width) = fptr
+        baseptr32 = convert(Ptr{UInt32}, baseptr)
+        u64 = unsafe_load(baseptr32)
+        straddle = offset + width > 32
+        if straddle
+            u64 |= unsafe_load(baseptr32 + 4) << 32
+        end
+        mask = 1 << width - 1
+        u64 &= ~(mask << offset)
+        u64 |= (unsigned(v) & mask) << offset
+        unsafe_store!(baseptr32, u64 & typemax(UInt32))
+        if straddle
+            unsafe_store!(baseptr32 + 4, u64 >> 32)
+        end
+    end
+end
+
+function Base.propertynames(x::ImGuiTestItemInfo, private::Bool = false)
+    (:ID, :DebugLabel, :Window, :NavLayer, :Depth, :TimestampMain, :TimestampStatus, :ParentID, :RectFull, :RectClipped, :ItemFlags, :StatusFlags, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
 
 struct ImVector_ImGuiTestItemInfo
     Size::Cint
@@ -488,10 +524,34 @@ struct ImVector_ImGuiTestRunTask
 end
 
 struct ImGuiTestInfoTask
-    ID::Cuint
-    FrameCount::Cint
-    DebugName::NTuple{64, Cchar}
-    Result::ImGuiTestItemInfo
+    data::NTuple{176, UInt8}
+end
+
+function Base.getproperty(x::Ptr{ImGuiTestInfoTask}, f::Symbol)
+    f === :ID && return Ptr{Cuint}(x + 0)
+    f === :FrameCount && return Ptr{Cint}(x + 4)
+    f === :DebugName && return Ptr{NTuple{64, Cchar}}(x + 8)
+    f === :Result && return Ptr{ImGuiTestItemInfo}(x + 72)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiTestInfoTask, f::Symbol)
+    r = Ref{ImGuiTestInfoTask}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiTestInfoTask}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{ImGuiTestInfoTask}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::ImGuiTestInfoTask, private::Bool = false)
+    (:ID, :FrameCount, :DebugName, :Result, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_ImGuiTestInfoTask_Ptr
@@ -783,40 +843,9 @@ end
 end
 
 struct ImGuiTestContext
-    GenericVars::ImGuiTestGenericVars
-    UserVars::Ptr{Cvoid}
-    UiContext::Ptr{ImGuiContext}
-    EngineIO::Ptr{ImGuiTestEngineIO}
-    Test::Ptr{ImGuiTest}
-    TestOutput::Ptr{ImGuiTestOutput}
-    OpFlags::Cint
-    PerfStressAmount::Cint
-    FrameCount::Cint
-    FirstTestFrameCount::Cint
-    FirstGuiFrame::Bool
-    HasDock::Bool
-    CaptureArgs::Ptr{ImGuiCaptureArgs}
-    Engine::Ptr{ImGuiTestEngine}
-    Inputs::Ptr{ImGuiTestInputs}
-    RunFlags::Cint
-    ActiveFunc::ImGuiTestActiveFunc
-    RunningTime::Cdouble
-    ActionDepth::Cint
-    CaptureCounter::Cint
-    ErrorCounter::Cint
-    Abort::Bool
-    PerfRefDt::Cdouble
-    PerfIterations::Cint
-    RefStr::NTuple{256, Cchar}
-    RefID::Cuint
-    RefWindowID::Cuint
-    InputMode::ImGuiInputSource
-    TempString::ImVector_char
-    Clipboard::ImVector_char
-    ForeignWindowsToHide::ImVector_ImGuiWindowPtr
-    DummyItemInfoNull::ImGuiTestItemInfo
-    CachedLinesPrintedToTTY::Bool
+    data::NTuple{1376, UInt8}
 end
+
 function Base.getproperty(x::Ptr{ImGuiTestContext}, f::Symbol)
     f === :GenericVars && return Ptr{ImGuiTestGenericVars}(x + 0)
     f === :UserVars && return Ptr{Ptr{Cvoid}}(x + 816)
@@ -850,14 +879,28 @@ function Base.getproperty(x::Ptr{ImGuiTestContext}, f::Symbol)
     f === :Clipboard && return Ptr{ImVector_char}(x + 1232)
     f === :ForeignWindowsToHide && return Ptr{ImVector_ImGuiWindowPtr}(x + 1248)
     f === :DummyItemInfoNull && return Ptr{ImGuiTestItemInfo}(x + 1264)
-    f === :CachedLinesPrintedToTTY && return Ptr{Bool}(x + 1376)
+    f === :CachedLinesPrintedToTTY && return Ptr{Bool}(x + 1368)
     return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiTestContext, f::Symbol)
+    r = Ref{ImGuiTestContext}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiTestContext}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
 end
 
 function Base.setproperty!(x::Ptr{ImGuiTestContext}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
+function Base.propertynames(x::ImGuiTestContext, private::Bool = false)
+    (:GenericVars, :UserVars, :UiContext, :EngineIO, :Test, :TestOutput, :OpFlags, :PerfStressAmount, :FrameCount, :FirstTestFrameCount, :FirstGuiFrame, :HasDock, :CaptureArgs, :Engine, :Inputs, :RunFlags, :ActiveFunc, :RunningTime, :ActionDepth, :CaptureCounter, :ErrorCounter, :Abort, :PerfRefDt, :PerfIterations, :RefStr, :RefID, :RefWindowID, :InputMode, :TempString, :Clipboard, :ForeignWindowsToHide, :DummyItemInfoNull, :CachedLinesPrintedToTTY, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
 
 mutable struct ImBuildInfo
     Type::Ptr{Cchar}
