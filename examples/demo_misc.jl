@@ -95,7 +95,8 @@ function ShowDemoWindowMisc()
             for i = navinput_range
                 CImGui.IsKeyDown(CImGui.ImGuiKey(i)) || continue
                 CImGui.SameLine()
-                CImGui.Text(@sprintf("[%d] %.2f", i, nav))
+                analog = unsafe_load(CImGui.GetKeyData(CImGui.ImGuiKey(i))).AnalogValue
+                CImGui.Text(@sprintf("[%d] %.2f", i, analog))
             end
             CImGui.Text("NavInputs pressed:")
             for i = navinput_range

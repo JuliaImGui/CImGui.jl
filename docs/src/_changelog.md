@@ -6,6 +6,17 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v9.0.0] - 2026-08-20
+
+### Changed
+- **Breaking**: updated to [Dear ImGui
+  1.92.9b](https://github.com/ocornut/imgui/releases/tag/v1.92.9b) ([#206]). All
+  changes from 1.92.9 - 1.92.9b apply to this release.
+- The underlying JLL is now built with the Freetype rasterizer and wide
+  characters by default, which means that it should now be possible to display
+  emoji's:
+  https://github.com/ocornut/imgui/blob/master/docs/FONTS.md#using-colorful-glyphsemojis
+
 ## [v8.0.0] - 2026-06-01
 
 ### Changed
