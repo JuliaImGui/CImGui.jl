@@ -7,17 +7,34 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
-## [Unreleased]
+## [v2.0.0] - 2026-08-20
+
+### Changed
+- **Breaking**: updated for ImGui 1.92.9b, we now require CImGui.jl v9
+  ([#23]). In particular, `PerfToolAppendToCSV()` no longer takes a `perf_log`
+  first argument.
+
+## [v1.1.0] - 2026-06-22
 
 ### Added
-- Support for Apple Silicon: the `GuiFunc`/`TestFunc` wiring now uses static `@cfunction` trampolines with a process-global `TEST_REGISTRY`, working around a [Julia limitation on aarch64-darwin where closures are not supported in `@cfunction`](https://github.com/JuliaLang/julia/issues/27174) ([#19]).
-- A per-frame post-swap hook (`CImGui._post_swap`) is now defined for `Engine` so the GLFW backend can advance screen-capture and video-capture state ([#19]).
+- Support for Apple Silicon: the `GuiFunc`/`TestFunc` wiring now uses static
+  `@cfunction` trampolines with a process-global `TEST_REGISTRY`, working around
+  a [Julia limitation on aarch64-darwin where closures are not supported in
+  `@cfunction`](https://github.com/JuliaLang/julia/issues/27174) ([#19]).
+- A per-frame post-swap hook (`CImGui._post_swap`) is now defined for `Engine`
+  so the GLFW backend can advance screen-capture and video-capture state
+  ([#19]).
+
 ### Changed
 - Updated for ImGui 1.92.8 / ImPlot 1.0 ([#18]).
 - Bumped the minimum supported Julia version to 1.10 ([#21]).
+
 ### Fixed
-- Fixed an `UndefVarError` for `ImVec2` when calling pOut wrappers that return an `ImVec2` (e.g. `GetWindowTitlebarPoint()`, `GetPosOnVoid()`) ([#20]).
-- Fixed `ItemInfo()` returning a wrong `RectFull` (and other shifted fields): the `ImGuiTestItemInfo` C++ bitfields (`NavLayer`/`Depth`) are now reflected in the generated struct layout. ([#22]).
+- Fixed an `UndefVarError` for `ImVec2` when calling pOut wrappers that return
+  an `ImVec2` (e.g. `GetWindowTitlebarPoint()`, `GetPosOnVoid()`) ([#20]).
+- Fixed `ItemInfo()` returning a wrong `RectFull` (and other shifted fields):
+  the `ImGuiTestItemInfo` C++ bitfields (`NavLayer`/`Depth`) are now reflected
+  in the generated struct layout. ([#22]).
 
 ## [v1.0.3] - 2026-01-05
 
