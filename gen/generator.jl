@@ -59,9 +59,11 @@ function create_docstring(func_name, overload)
     docstring = "\$(TYPEDSIGNATURES)"
 
     comment = get(overload, :comment, "")
-    if !isempty(comment)
+    if !isempty(comment) && strip(comment) != "//"
         comment = replace(comment, "\\0" => "\\\\0")
-        formatted_comment = chopprefix(comment, "//") |> strip |> uppercasefirst
+        formatted_lines = [chopprefix(line, r"^\s*// ") for line in eachline(IOBuffer(comment))]
+        formatted_comment = join(map(uppercasefirst, formatted_lines), "\n")
+        # formatted_comment = chopprefix(comment, "//") |> strip |> uppercasefirst
         if !isempty(formatted_comment) && formatted_comment[end] ∉ ('.', '!', '?')
             formatted_comment *= "."
         end
@@ -344,7 +346,7 @@ function wrap_function!(methods, func_name, func_def, overloads; with_arg_types=
             end
 
             # Replace all float literals of the form '1f' or '0.0f' etc with '1f0'/'0.0f0'
-            default = replace(default, r"\df" => x -> "$(x[1])f0")
+            default = replace(default, r"\d\.?f" => x -> "$(x[1])f0")
 
             args[i] = Expr(:kw, args[i], Meta.parse(default))
         end

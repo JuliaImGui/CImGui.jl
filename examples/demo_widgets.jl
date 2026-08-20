@@ -689,16 +689,16 @@ function ShowDemoWindowWidgets()
                     if CImGui.BeginDragDropTarget()
                         payload = CImGui.AcceptDragDropPayload(CImGui.IMGUI_PAYLOAD_TYPE_COLOR_3F)
                         if payload != C_NULL
-                            ptr = CImGui.Get(payload, :Data)
+                            ptr = unsafe_load(payload).Data
                             x = unsafe_load(Ptr{Cfloat}(ptr), 1)
                             y = unsafe_load(Ptr{Cfloat}(ptr), 2)
                             z = unsafe_load(Ptr{Cfloat}(ptr), 3)
-                            w = saved_palette[n].w
+                            w = saved_palette[n+1].w
                             saved_palette[n+1] = ImVec4(x,y,z,w)
                         end
                         payload = CImGui.AcceptDragDropPayload(CImGui.IMGUI_PAYLOAD_TYPE_COLOR_4F)
                         if payload != C_NULL
-                            ptr = CImGui.Get(payload, :Data)
+                            ptr = unsafe_load(payload).Data
                             x = unsafe_load(Ptr{Cfloat}(ptr), 1)
                             y = unsafe_load(Ptr{Cfloat}(ptr), 2)
                             z = unsafe_load(Ptr{Cfloat}(ptr), 3)
@@ -747,12 +747,13 @@ function ShowDemoWindowWidgets()
             end
             CImGui.Text("Programmatically set defaults:")
             CImGui.SameLine()
-            CImGui.HelpMarker("SetColorEditOptions() is designed to allow you to set boot-time default.\nWe don't have Push/Pop functions because you can force options on a per-widget basis if needed, and the user can change non-forced ones with the options menu.\nWe don't have a getter to avoid encouraging you to persistently save values that aren't forward-compatible.")
+            CImGui.HelpMarker("Set io.ConfigColorEditFlags to set default color edit options.\nYou can force options on a per-widget basis if needed, and the user can change non-forced ones with the options menu.")
+            io = CImGui.GetIO()
             if CImGui.Button("Default: Uint8 + HSV + Hue Bar")
-                CImGui.SetColorEditOptions(CImGui.ImGuiColorEditFlags_Uint8 | CImGui.ImGuiColorEditFlags_DisplayHSV | CImGui.ImGuiColorEditFlags_PickerHueBar)
+                io.ConfigColorEditFlags = CImGui.ImGuiColorEditFlags_Uint8 | CImGui.ImGuiColorEditFlags_DisplayHSV | CImGui.ImGuiColorEditFlags_PickerHueBar
             end
             if CImGui.Button("Default: Float + HDR + Hue Wheel")
-                CImGui.SetColorEditOptions(CImGui.ImGuiColorEditFlags_Float | CImGui.ImGuiColorEditFlags_HDR | CImGui.ImGuiColorEditFlags_PickerHueWheel)
+                io.ConfigColorEditFlags = CImGui.ImGuiColorEditFlags_Float | CImGui.ImGuiColorEditFlags_HDR | CImGui.ImGuiColorEditFlags_PickerHueWheel
             end
         end # @cstatic
         CImGui.TreePop()

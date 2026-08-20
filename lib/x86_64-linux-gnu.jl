@@ -46,6 +46,34 @@ function Base.setproperty!(x::Ptr{ImVec4}, f::Symbol, v)
 end
 
 
+struct ImColor
+    Value::ImVec4
+end
+
+const ImColor = ImColor
+
+struct ImVec2
+    x::Cfloat
+    y::Cfloat
+end
+function Base.getproperty(x::Ptr{ImVec2}, f::Symbol)
+    f === :x && return Ptr{Cfloat}(x + 0)
+    f === :y && return Ptr{Cfloat}(x + 4)
+    return getfield(x, f)
+end
+
+function Base.setproperty!(x::Ptr{ImVec2}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+
+struct ImRect
+    Min::ImVec2
+    Max::ImVec2
+end
+
+const ImRect = ImRect
+
 @cenum ImTextureStatus::UInt32 begin
     ImTextureStatus_OK = 0
     ImTextureStatus_Destroyed = 1
@@ -76,6 +104,7 @@ struct ImTextureData
     UniqueID::Cint
     Status::ImTextureStatus
     BackendUserData::Ptr{Cvoid}
+    QueueUserData::Ptr{Cvoid}
     TexID::ImTextureID
     Format::ImTextureFormat
     Width::Cint
@@ -94,19 +123,20 @@ function Base.getproperty(x::Ptr{ImTextureData}, f::Symbol)
     f === :UniqueID && return Ptr{Cint}(x + 0)
     f === :Status && return Ptr{ImTextureStatus}(x + 4)
     f === :BackendUserData && return Ptr{Ptr{Cvoid}}(x + 8)
-    f === :TexID && return Ptr{ImTextureID}(x + 16)
-    f === :Format && return Ptr{ImTextureFormat}(x + 24)
-    f === :Width && return Ptr{Cint}(x + 28)
-    f === :Height && return Ptr{Cint}(x + 32)
-    f === :BytesPerPixel && return Ptr{Cint}(x + 36)
-    f === :Pixels && return Ptr{Ptr{Cuchar}}(x + 40)
-    f === :UsedRect && return Ptr{ImTextureRect}(x + 48)
-    f === :UpdateRect && return Ptr{ImTextureRect}(x + 56)
-    f === :Updates && return Ptr{ImVector_ImTextureRect}(x + 64)
-    f === :UnusedFrames && return Ptr{Cint}(x + 80)
-    f === :RefCount && return Ptr{Cushort}(x + 84)
-    f === :UseColors && return Ptr{Bool}(x + 86)
-    f === :WantDestroyNextFrame && return Ptr{Bool}(x + 87)
+    f === :QueueUserData && return Ptr{Ptr{Cvoid}}(x + 16)
+    f === :TexID && return Ptr{ImTextureID}(x + 24)
+    f === :Format && return Ptr{ImTextureFormat}(x + 32)
+    f === :Width && return Ptr{Cint}(x + 36)
+    f === :Height && return Ptr{Cint}(x + 40)
+    f === :BytesPerPixel && return Ptr{Cint}(x + 44)
+    f === :Pixels && return Ptr{Ptr{Cuchar}}(x + 48)
+    f === :UsedRect && return Ptr{ImTextureRect}(x + 56)
+    f === :UpdateRect && return Ptr{ImTextureRect}(x + 64)
+    f === :Updates && return Ptr{ImVector_ImTextureRect}(x + 72)
+    f === :UnusedFrames && return Ptr{Cint}(x + 88)
+    f === :RefCount && return Ptr{Cushort}(x + 92)
+    f === :UseColors && return Ptr{Bool}(x + 94)
+    f === :WantDestroyNextFrame && return Ptr{Bool}(x + 95)
     return getfield(x, f)
 end
 
@@ -119,6 +149,19 @@ struct ImTextureRef
     _TexData::Ptr{ImTextureData}
     _TexID::ImTextureID
 end
+
+const ImTextureRef = ImTextureRef
+
+const ImVec2 = ImVec2
+
+struct ImVec2i
+    x::Cint
+    y::Cint
+end
+
+const ImVec2i = ImVec2i
+
+const ImVec4 = ImVec4
 
 # typedef void ( * ImDrawCallback ) ( const ImDrawList * parent_list , const ImDrawCmd * cmd )
 const ImDrawCallback = Ptr{Cvoid}
@@ -170,21 +213,6 @@ struct ImDrawChannel
     _CmdBuffer::ImVector_ImDrawCmd
     _IdxBuffer::ImVector_ImDrawIdx
 end
-
-struct ImVec2
-    x::Cfloat
-    y::Cfloat
-end
-function Base.getproperty(x::Ptr{ImVec2}, f::Symbol)
-    f === :x && return Ptr{Cfloat}(x + 0)
-    f === :y && return Ptr{Cfloat}(x + 4)
-    return getfield(x, f)
-end
-
-function Base.setproperty!(x::Ptr{ImVec2}, f::Symbol, v)
-    unsafe_store!(getproperty(x, f), v)
-end
-
 
 const ImU32 = Cuint
 
@@ -368,7 +396,7 @@ end
 
 struct ImDrawData
     Valid::Bool
-    CmdListsCount::Cint
+    FrameCount::Cint
     TotalIdxCount::Cint
     TotalVtxCount::Cint
     CmdLists::ImVector_ImDrawListPtr
@@ -380,7 +408,7 @@ struct ImDrawData
 end
 function Base.getproperty(x::Ptr{ImDrawData}, f::Symbol)
     f === :Valid && return Ptr{Bool}(x + 0)
-    f === :CmdListsCount && return Ptr{Cint}(x + 4)
+    f === :FrameCount && return Ptr{Cint}(x + 4)
     f === :TotalIdxCount && return Ptr{Cint}(x + 8)
     f === :TotalVtxCount && return Ptr{Cint}(x + 12)
     f === :CmdLists && return Ptr{ImVector_ImDrawListPtr}(x + 16)
@@ -833,11 +861,6 @@ struct ImVector_unsigned_char
     Data::Ptr{Cuchar}
 end
 
-struct ImVec2i
-    x::Cint
-    y::Cint
-end
-
 struct ImVector_ImFontBakedPtr
     Size::Cint
     Capacity::Cint
@@ -959,7 +982,7 @@ struct ImDrawListSharedData
     FontSize::Cfloat
     FontScale::Cfloat
     CurveTessellationTol::Cfloat
-    CircleSegmentMaxError::Cfloat
+    CircleTessellationMaxError::Cfloat
     InitialFringeScale::Cfloat
     InitialFlags::ImDrawListFlags
     ClipRectFullscreen::ImVec4
@@ -995,13 +1018,11 @@ struct ImFontGlyphRangesBuilder
     UsedChars::ImVector_ImU32
 end
 
-struct ImColor
-    Value::ImVec4
-end
-
 const ImGuiConfigFlags = Cint
 
 const ImGuiBackendFlags = Cint
+
+const ImGuiColorEditFlags = Cint
 
 @cenum ImGuiMouseSource::UInt32 begin
     ImGuiMouseSource_Mouse = 0
@@ -1057,19 +1078,24 @@ struct ImGuiIO
     ConfigViewportsPlatformFocusSetsImGuiFocus::Bool
     ConfigDpiScaleFonts::Bool
     ConfigDpiScaleViewports::Bool
-    MouseDrawCursor::Bool
     ConfigMacOSXBehaviors::Bool
     ConfigInputTrickleEventQueue::Bool
     ConfigInputTextCursorBlink::Bool
     ConfigInputTextEnterKeepActive::Bool
+    ConfigColorEditFlags::ImGuiColorEditFlags
     ConfigDragClickToInputText::Bool
     ConfigWindowsResizeFromEdges::Bool
     ConfigWindowsMoveFromTitleBarOnly::Bool
     ConfigWindowsCopyContentsWithCtrlC::Bool
     ConfigScrollbarScrollByPage::Bool
+    ConfigIniSettingsSaveLastUsedDate::Bool
+    ConfigIniSettingsAutoDiscardMonths::Cint
+    ConfigDebugIniSettings::Bool
+    MouseDrawCursor::Bool
     ConfigMemoryCompactTimer::Cfloat
     MouseDoubleClickTime::Cfloat
     MouseDoubleClickMaxDist::Cfloat
+    MouseSingleClickDelay::Cfloat
     MouseDragThreshold::Cfloat
     KeyRepeatDelay::Cfloat
     KeyRepeatRate::Cfloat
@@ -1083,7 +1109,6 @@ struct ImGuiIO
     ConfigDebugBeginReturnValueOnce::Bool
     ConfigDebugBeginReturnValueLoop::Bool
     ConfigDebugIgnoreFocusLoss::Bool
-    ConfigDebugIniSettings::Bool
     BackendPlatformName::Ptr{Cchar}
     BackendRendererName::Ptr{Cchar}
     BackendPlatformUserData::Ptr{Cvoid}
@@ -1177,87 +1202,91 @@ function Base.getproperty(x::Ptr{ImGuiIO}, f::Symbol)
     f === :ConfigViewportsPlatformFocusSetsImGuiFocus && return Ptr{Bool}(x + 89)
     f === :ConfigDpiScaleFonts && return Ptr{Bool}(x + 90)
     f === :ConfigDpiScaleViewports && return Ptr{Bool}(x + 91)
-    f === :MouseDrawCursor && return Ptr{Bool}(x + 92)
-    f === :ConfigMacOSXBehaviors && return Ptr{Bool}(x + 93)
-    f === :ConfigInputTrickleEventQueue && return Ptr{Bool}(x + 94)
-    f === :ConfigInputTextCursorBlink && return Ptr{Bool}(x + 95)
-    f === :ConfigInputTextEnterKeepActive && return Ptr{Bool}(x + 96)
-    f === :ConfigDragClickToInputText && return Ptr{Bool}(x + 97)
-    f === :ConfigWindowsResizeFromEdges && return Ptr{Bool}(x + 98)
-    f === :ConfigWindowsMoveFromTitleBarOnly && return Ptr{Bool}(x + 99)
-    f === :ConfigWindowsCopyContentsWithCtrlC && return Ptr{Bool}(x + 100)
-    f === :ConfigScrollbarScrollByPage && return Ptr{Bool}(x + 101)
-    f === :ConfigMemoryCompactTimer && return Ptr{Cfloat}(x + 104)
-    f === :MouseDoubleClickTime && return Ptr{Cfloat}(x + 108)
-    f === :MouseDoubleClickMaxDist && return Ptr{Cfloat}(x + 112)
-    f === :MouseDragThreshold && return Ptr{Cfloat}(x + 116)
-    f === :KeyRepeatDelay && return Ptr{Cfloat}(x + 120)
-    f === :KeyRepeatRate && return Ptr{Cfloat}(x + 124)
-    f === :ConfigErrorRecovery && return Ptr{Bool}(x + 128)
-    f === :ConfigErrorRecoveryEnableAssert && return Ptr{Bool}(x + 129)
-    f === :ConfigErrorRecoveryEnableDebugLog && return Ptr{Bool}(x + 130)
-    f === :ConfigErrorRecoveryEnableTooltip && return Ptr{Bool}(x + 131)
-    f === :ConfigDebugIsDebuggerPresent && return Ptr{Bool}(x + 132)
-    f === :ConfigDebugHighlightIdConflicts && return Ptr{Bool}(x + 133)
-    f === :ConfigDebugHighlightIdConflictsShowItemPicker && return Ptr{Bool}(x + 134)
-    f === :ConfigDebugBeginReturnValueOnce && return Ptr{Bool}(x + 135)
-    f === :ConfigDebugBeginReturnValueLoop && return Ptr{Bool}(x + 136)
-    f === :ConfigDebugIgnoreFocusLoss && return Ptr{Bool}(x + 137)
-    f === :ConfigDebugIniSettings && return Ptr{Bool}(x + 138)
-    f === :BackendPlatformName && return Ptr{Ptr{Cchar}}(x + 144)
-    f === :BackendRendererName && return Ptr{Ptr{Cchar}}(x + 152)
-    f === :BackendPlatformUserData && return Ptr{Ptr{Cvoid}}(x + 160)
-    f === :BackendRendererUserData && return Ptr{Ptr{Cvoid}}(x + 168)
-    f === :BackendLanguageUserData && return Ptr{Ptr{Cvoid}}(x + 176)
-    f === :WantCaptureMouse && return Ptr{Bool}(x + 184)
-    f === :WantCaptureKeyboard && return Ptr{Bool}(x + 185)
-    f === :WantTextInput && return Ptr{Bool}(x + 186)
-    f === :WantSetMousePos && return Ptr{Bool}(x + 187)
-    f === :WantSaveIniSettings && return Ptr{Bool}(x + 188)
-    f === :NavActive && return Ptr{Bool}(x + 189)
-    f === :NavVisible && return Ptr{Bool}(x + 190)
-    f === :Framerate && return Ptr{Cfloat}(x + 192)
-    f === :MetricsRenderVertices && return Ptr{Cint}(x + 196)
-    f === :MetricsRenderIndices && return Ptr{Cint}(x + 200)
-    f === :MetricsRenderWindows && return Ptr{Cint}(x + 204)
-    f === :MetricsActiveWindows && return Ptr{Cint}(x + 208)
-    f === :MouseDelta && return Ptr{ImVec2}(x + 212)
-    f === :Ctx && return Ptr{Ptr{ImGuiContext}}(x + 224)
-    f === :MousePos && return Ptr{ImVec2}(x + 232)
-    f === :MouseDown && return Ptr{NTuple{5, Bool}}(x + 240)
-    f === :MouseWheel && return Ptr{Cfloat}(x + 248)
-    f === :MouseWheelH && return Ptr{Cfloat}(x + 252)
-    f === :MouseSource && return Ptr{ImGuiMouseSource}(x + 256)
-    f === :MouseHoveredViewport && return Ptr{ImGuiID}(x + 260)
-    f === :KeyCtrl && return Ptr{Bool}(x + 264)
-    f === :KeyShift && return Ptr{Bool}(x + 265)
-    f === :KeyAlt && return Ptr{Bool}(x + 266)
-    f === :KeySuper && return Ptr{Bool}(x + 267)
-    f === :KeyMods && return Ptr{ImGuiKeyChord}(x + 268)
-    f === :KeysData && return Ptr{NTuple{155, ImGuiKeyData}}(x + 272)
-    f === :WantCaptureMouseUnlessPopupClose && return Ptr{Bool}(x + 2752)
-    f === :MousePosPrev && return Ptr{ImVec2}(x + 2756)
-    f === :MouseClickedPos && return Ptr{NTuple{5, ImVec2}}(x + 2764)
-    f === :MouseClickedTime && return Ptr{NTuple{5, Cdouble}}(x + 2808)
-    f === :MouseClicked && return Ptr{NTuple{5, Bool}}(x + 2848)
-    f === :MouseDoubleClicked && return Ptr{NTuple{5, Bool}}(x + 2853)
-    f === :MouseClickedCount && return Ptr{NTuple{5, ImU16}}(x + 2858)
-    f === :MouseClickedLastCount && return Ptr{NTuple{5, ImU16}}(x + 2868)
-    f === :MouseReleased && return Ptr{NTuple{5, Bool}}(x + 2878)
-    f === :MouseReleasedTime && return Ptr{NTuple{5, Cdouble}}(x + 2888)
-    f === :MouseDownOwned && return Ptr{NTuple{5, Bool}}(x + 2928)
-    f === :MouseDownOwnedUnlessPopupClose && return Ptr{NTuple{5, Bool}}(x + 2933)
-    f === :MouseWheelRequestAxisSwap && return Ptr{Bool}(x + 2938)
-    f === :MouseCtrlLeftAsRightClick && return Ptr{Bool}(x + 2939)
-    f === :MouseDownDuration && return Ptr{NTuple{5, Cfloat}}(x + 2940)
-    f === :MouseDownDurationPrev && return Ptr{NTuple{5, Cfloat}}(x + 2960)
-    f === :MouseDragMaxDistanceAbs && return Ptr{NTuple{5, ImVec2}}(x + 2980)
-    f === :MouseDragMaxDistanceSqr && return Ptr{NTuple{5, Cfloat}}(x + 3020)
-    f === :PenPressure && return Ptr{Cfloat}(x + 3040)
-    f === :AppFocusLost && return Ptr{Bool}(x + 3044)
-    f === :AppAcceptingEvents && return Ptr{Bool}(x + 3045)
-    f === :InputQueueSurrogate && return Ptr{ImWchar16}(x + 3046)
-    f === :InputQueueCharacters && return Ptr{ImVector_ImWchar}(x + 3048)
+    f === :ConfigMacOSXBehaviors && return Ptr{Bool}(x + 92)
+    f === :ConfigInputTrickleEventQueue && return Ptr{Bool}(x + 93)
+    f === :ConfigInputTextCursorBlink && return Ptr{Bool}(x + 94)
+    f === :ConfigInputTextEnterKeepActive && return Ptr{Bool}(x + 95)
+    f === :ConfigColorEditFlags && return Ptr{ImGuiColorEditFlags}(x + 96)
+    f === :ConfigDragClickToInputText && return Ptr{Bool}(x + 100)
+    f === :ConfigWindowsResizeFromEdges && return Ptr{Bool}(x + 101)
+    f === :ConfigWindowsMoveFromTitleBarOnly && return Ptr{Bool}(x + 102)
+    f === :ConfigWindowsCopyContentsWithCtrlC && return Ptr{Bool}(x + 103)
+    f === :ConfigScrollbarScrollByPage && return Ptr{Bool}(x + 104)
+    f === :ConfigIniSettingsSaveLastUsedDate && return Ptr{Bool}(x + 105)
+    f === :ConfigIniSettingsAutoDiscardMonths && return Ptr{Cint}(x + 108)
+    f === :ConfigDebugIniSettings && return Ptr{Bool}(x + 112)
+    f === :MouseDrawCursor && return Ptr{Bool}(x + 113)
+    f === :ConfigMemoryCompactTimer && return Ptr{Cfloat}(x + 116)
+    f === :MouseDoubleClickTime && return Ptr{Cfloat}(x + 120)
+    f === :MouseDoubleClickMaxDist && return Ptr{Cfloat}(x + 124)
+    f === :MouseSingleClickDelay && return Ptr{Cfloat}(x + 128)
+    f === :MouseDragThreshold && return Ptr{Cfloat}(x + 132)
+    f === :KeyRepeatDelay && return Ptr{Cfloat}(x + 136)
+    f === :KeyRepeatRate && return Ptr{Cfloat}(x + 140)
+    f === :ConfigErrorRecovery && return Ptr{Bool}(x + 144)
+    f === :ConfigErrorRecoveryEnableAssert && return Ptr{Bool}(x + 145)
+    f === :ConfigErrorRecoveryEnableDebugLog && return Ptr{Bool}(x + 146)
+    f === :ConfigErrorRecoveryEnableTooltip && return Ptr{Bool}(x + 147)
+    f === :ConfigDebugIsDebuggerPresent && return Ptr{Bool}(x + 148)
+    f === :ConfigDebugHighlightIdConflicts && return Ptr{Bool}(x + 149)
+    f === :ConfigDebugHighlightIdConflictsShowItemPicker && return Ptr{Bool}(x + 150)
+    f === :ConfigDebugBeginReturnValueOnce && return Ptr{Bool}(x + 151)
+    f === :ConfigDebugBeginReturnValueLoop && return Ptr{Bool}(x + 152)
+    f === :ConfigDebugIgnoreFocusLoss && return Ptr{Bool}(x + 153)
+    f === :BackendPlatformName && return Ptr{Ptr{Cchar}}(x + 160)
+    f === :BackendRendererName && return Ptr{Ptr{Cchar}}(x + 168)
+    f === :BackendPlatformUserData && return Ptr{Ptr{Cvoid}}(x + 176)
+    f === :BackendRendererUserData && return Ptr{Ptr{Cvoid}}(x + 184)
+    f === :BackendLanguageUserData && return Ptr{Ptr{Cvoid}}(x + 192)
+    f === :WantCaptureMouse && return Ptr{Bool}(x + 200)
+    f === :WantCaptureKeyboard && return Ptr{Bool}(x + 201)
+    f === :WantTextInput && return Ptr{Bool}(x + 202)
+    f === :WantSetMousePos && return Ptr{Bool}(x + 203)
+    f === :WantSaveIniSettings && return Ptr{Bool}(x + 204)
+    f === :NavActive && return Ptr{Bool}(x + 205)
+    f === :NavVisible && return Ptr{Bool}(x + 206)
+    f === :Framerate && return Ptr{Cfloat}(x + 208)
+    f === :MetricsRenderVertices && return Ptr{Cint}(x + 212)
+    f === :MetricsRenderIndices && return Ptr{Cint}(x + 216)
+    f === :MetricsRenderWindows && return Ptr{Cint}(x + 220)
+    f === :MetricsActiveWindows && return Ptr{Cint}(x + 224)
+    f === :MouseDelta && return Ptr{ImVec2}(x + 228)
+    f === :Ctx && return Ptr{Ptr{ImGuiContext}}(x + 240)
+    f === :MousePos && return Ptr{ImVec2}(x + 248)
+    f === :MouseDown && return Ptr{NTuple{5, Bool}}(x + 256)
+    f === :MouseWheel && return Ptr{Cfloat}(x + 264)
+    f === :MouseWheelH && return Ptr{Cfloat}(x + 268)
+    f === :MouseSource && return Ptr{ImGuiMouseSource}(x + 272)
+    f === :MouseHoveredViewport && return Ptr{ImGuiID}(x + 276)
+    f === :KeyCtrl && return Ptr{Bool}(x + 280)
+    f === :KeyShift && return Ptr{Bool}(x + 281)
+    f === :KeyAlt && return Ptr{Bool}(x + 282)
+    f === :KeySuper && return Ptr{Bool}(x + 283)
+    f === :KeyMods && return Ptr{ImGuiKeyChord}(x + 284)
+    f === :KeysData && return Ptr{NTuple{155, ImGuiKeyData}}(x + 288)
+    f === :WantCaptureMouseUnlessPopupClose && return Ptr{Bool}(x + 2768)
+    f === :MousePosPrev && return Ptr{ImVec2}(x + 2772)
+    f === :MouseClickedPos && return Ptr{NTuple{5, ImVec2}}(x + 2780)
+    f === :MouseClickedTime && return Ptr{NTuple{5, Cdouble}}(x + 2824)
+    f === :MouseClicked && return Ptr{NTuple{5, Bool}}(x + 2864)
+    f === :MouseDoubleClicked && return Ptr{NTuple{5, Bool}}(x + 2869)
+    f === :MouseClickedCount && return Ptr{NTuple{5, ImU16}}(x + 2874)
+    f === :MouseClickedLastCount && return Ptr{NTuple{5, ImU16}}(x + 2884)
+    f === :MouseReleased && return Ptr{NTuple{5, Bool}}(x + 2894)
+    f === :MouseReleasedTime && return Ptr{NTuple{5, Cdouble}}(x + 2904)
+    f === :MouseDownOwned && return Ptr{NTuple{5, Bool}}(x + 2944)
+    f === :MouseDownOwnedUnlessPopupClose && return Ptr{NTuple{5, Bool}}(x + 2949)
+    f === :MouseWheelRequestAxisSwap && return Ptr{Bool}(x + 2954)
+    f === :MouseCtrlLeftAsRightClick && return Ptr{Bool}(x + 2955)
+    f === :MouseDownDuration && return Ptr{NTuple{5, Cfloat}}(x + 2956)
+    f === :MouseDownDurationPrev && return Ptr{NTuple{5, Cfloat}}(x + 2976)
+    f === :MouseDragMaxDistanceAbs && return Ptr{NTuple{5, ImVec2}}(x + 2996)
+    f === :MouseDragMaxDistanceSqr && return Ptr{NTuple{5, Cfloat}}(x + 3036)
+    f === :PenPressure && return Ptr{Cfloat}(x + 3056)
+    f === :AppFocusLost && return Ptr{Bool}(x + 3060)
+    f === :AppAcceptingEvents && return Ptr{Bool}(x + 3061)
+    f === :InputQueueSurrogate && return Ptr{ImWchar16}(x + 3062)
+    f === :InputQueueCharacters && return Ptr{ImVector_ImWchar}(x + 3064)
     return getfield(x, f)
 end
 
@@ -1309,6 +1338,7 @@ struct ImGuiPlatformIO
     Platform_SetImeDataFn::Ptr{Cvoid}
     Platform_ImeUserData::Ptr{Cvoid}
     Platform_LocaleDecimalPoint::ImWchar
+    Platform_SessionDate::Cint
     Renderer_TextureMaxWidth::Cint
     Renderer_TextureMaxHeight::Cint
     Renderer_RenderState::Ptr{Cvoid}
@@ -1353,8 +1383,9 @@ function Base.getproperty(x::Ptr{ImGuiPlatformIO}, f::Symbol)
     f === :Platform_SetImeDataFn && return Ptr{Ptr{Cvoid}}(x + 40)
     f === :Platform_ImeUserData && return Ptr{Ptr{Cvoid}}(x + 48)
     f === :Platform_LocaleDecimalPoint && return Ptr{ImWchar}(x + 56)
-    f === :Renderer_TextureMaxWidth && return Ptr{Cint}(x + 60)
-    f === :Renderer_TextureMaxHeight && return Ptr{Cint}(x + 64)
+    f === :Platform_SessionDate && return Ptr{Cint}(x + 60)
+    f === :Renderer_TextureMaxWidth && return Ptr{Cint}(x + 64)
+    f === :Renderer_TextureMaxHeight && return Ptr{Cint}(x + 68)
     f === :Renderer_RenderState && return Ptr{Ptr{Cvoid}}(x + 72)
     f === :DrawCallback_ResetRenderState && return Ptr{ImDrawCallback}(x + 80)
     f === :DrawCallback_SetSamplerLinear && return Ptr{ImDrawCallback}(x + 88)
@@ -1455,6 +1486,8 @@ struct ImGuiStyle
     TreeLinesFlags::ImGuiTreeNodeFlags
     TreeLinesSize::Cfloat
     TreeLinesRounding::Cfloat
+    MenuItemRounding::Cfloat
+    SelectableRounding::Cfloat
     DragDropTargetRounding::Cfloat
     DragDropTargetBorderSize::Cfloat
     DragDropTargetPadding::Cfloat
@@ -1462,6 +1495,7 @@ struct ImGuiStyle
     ColorButtonPosition::ImGuiDir
     ButtonTextAlign::ImVec2
     SelectableTextAlign::ImVec2
+    InputTextCursorSize::Cfloat
     SeparatorSize::Cfloat
     SeparatorTextBorderSize::Cfloat
     SeparatorTextAlign::ImVec2
@@ -1532,35 +1566,38 @@ function Base.getproperty(x::Ptr{ImGuiStyle}, f::Symbol)
     f === :TreeLinesFlags && return Ptr{ImGuiTreeNodeFlags}(x + 208)
     f === :TreeLinesSize && return Ptr{Cfloat}(x + 212)
     f === :TreeLinesRounding && return Ptr{Cfloat}(x + 216)
-    f === :DragDropTargetRounding && return Ptr{Cfloat}(x + 220)
-    f === :DragDropTargetBorderSize && return Ptr{Cfloat}(x + 224)
-    f === :DragDropTargetPadding && return Ptr{Cfloat}(x + 228)
-    f === :ColorMarkerSize && return Ptr{Cfloat}(x + 232)
-    f === :ColorButtonPosition && return Ptr{ImGuiDir}(x + 236)
-    f === :ButtonTextAlign && return Ptr{ImVec2}(x + 240)
-    f === :SelectableTextAlign && return Ptr{ImVec2}(x + 248)
-    f === :SeparatorSize && return Ptr{Cfloat}(x + 256)
-    f === :SeparatorTextBorderSize && return Ptr{Cfloat}(x + 260)
-    f === :SeparatorTextAlign && return Ptr{ImVec2}(x + 264)
-    f === :SeparatorTextPadding && return Ptr{ImVec2}(x + 272)
-    f === :DisplayWindowPadding && return Ptr{ImVec2}(x + 280)
-    f === :DisplaySafeAreaPadding && return Ptr{ImVec2}(x + 288)
-    f === :DockingNodeHasCloseButton && return Ptr{Bool}(x + 296)
-    f === :DockingSeparatorSize && return Ptr{Cfloat}(x + 300)
-    f === :MouseCursorScale && return Ptr{Cfloat}(x + 304)
-    f === :AntiAliasedLines && return Ptr{Bool}(x + 308)
-    f === :AntiAliasedLinesUseTex && return Ptr{Bool}(x + 309)
-    f === :AntiAliasedFill && return Ptr{Bool}(x + 310)
-    f === :CurveTessellationTol && return Ptr{Cfloat}(x + 312)
-    f === :CircleTessellationMaxError && return Ptr{Cfloat}(x + 316)
-    f === :Colors && return Ptr{NTuple{63, ImVec4}}(x + 320)
-    f === :HoverStationaryDelay && return Ptr{Cfloat}(x + 1328)
-    f === :HoverDelayShort && return Ptr{Cfloat}(x + 1332)
-    f === :HoverDelayNormal && return Ptr{Cfloat}(x + 1336)
-    f === :HoverFlagsForTooltipMouse && return Ptr{ImGuiHoveredFlags}(x + 1340)
-    f === :HoverFlagsForTooltipNav && return Ptr{ImGuiHoveredFlags}(x + 1344)
-    f === :_MainScale && return Ptr{Cfloat}(x + 1348)
-    f === :_NextFrameFontSizeBase && return Ptr{Cfloat}(x + 1352)
+    f === :MenuItemRounding && return Ptr{Cfloat}(x + 220)
+    f === :SelectableRounding && return Ptr{Cfloat}(x + 224)
+    f === :DragDropTargetRounding && return Ptr{Cfloat}(x + 228)
+    f === :DragDropTargetBorderSize && return Ptr{Cfloat}(x + 232)
+    f === :DragDropTargetPadding && return Ptr{Cfloat}(x + 236)
+    f === :ColorMarkerSize && return Ptr{Cfloat}(x + 240)
+    f === :ColorButtonPosition && return Ptr{ImGuiDir}(x + 244)
+    f === :ButtonTextAlign && return Ptr{ImVec2}(x + 248)
+    f === :SelectableTextAlign && return Ptr{ImVec2}(x + 256)
+    f === :InputTextCursorSize && return Ptr{Cfloat}(x + 264)
+    f === :SeparatorSize && return Ptr{Cfloat}(x + 268)
+    f === :SeparatorTextBorderSize && return Ptr{Cfloat}(x + 272)
+    f === :SeparatorTextAlign && return Ptr{ImVec2}(x + 276)
+    f === :SeparatorTextPadding && return Ptr{ImVec2}(x + 284)
+    f === :DisplayWindowPadding && return Ptr{ImVec2}(x + 292)
+    f === :DisplaySafeAreaPadding && return Ptr{ImVec2}(x + 300)
+    f === :DockingNodeHasCloseButton && return Ptr{Bool}(x + 308)
+    f === :DockingSeparatorSize && return Ptr{Cfloat}(x + 312)
+    f === :MouseCursorScale && return Ptr{Cfloat}(x + 316)
+    f === :AntiAliasedLines && return Ptr{Bool}(x + 320)
+    f === :AntiAliasedLinesUseTex && return Ptr{Bool}(x + 321)
+    f === :AntiAliasedFill && return Ptr{Bool}(x + 322)
+    f === :CurveTessellationTol && return Ptr{Cfloat}(x + 324)
+    f === :CircleTessellationMaxError && return Ptr{Cfloat}(x + 328)
+    f === :Colors && return Ptr{NTuple{63, ImVec4}}(x + 332)
+    f === :HoverStationaryDelay && return Ptr{Cfloat}(x + 1340)
+    f === :HoverDelayShort && return Ptr{Cfloat}(x + 1344)
+    f === :HoverDelayNormal && return Ptr{Cfloat}(x + 1348)
+    f === :HoverFlagsForTooltipMouse && return Ptr{ImGuiHoveredFlags}(x + 1352)
+    f === :HoverFlagsForTooltipNav && return Ptr{ImGuiHoveredFlags}(x + 1356)
+    f === :_MainScale && return Ptr{Cfloat}(x + 1360)
+    f === :_NextFrameFontSizeBase && return Ptr{Cfloat}(x + 1364)
     return getfield(x, f)
 end
 
@@ -1739,11 +1776,6 @@ struct ImGuiMenuColumns
 end
 
 const ImGuiOldColumnFlags = Cint
-
-struct ImRect
-    Min::ImVec2
-    Max::ImVec2
-end
 
 struct ImGuiOldColumnData
     OffsetNorm::Cfloat
@@ -1944,8 +1976,6 @@ end
     ImGuiAxis_Y = 1
 end
 
-const ImGuiDataAuthority = Cint
-
 struct ImGuiDockNode
     data::NTuple{216, UInt8}
 end
@@ -1979,20 +2009,20 @@ function Base.getproperty(x::Ptr{ImGuiDockNode}, f::Symbol)
     f === :SelectedTabId && return Ptr{ImGuiID}(x + 196)
     f === :WantCloseTabId && return Ptr{ImGuiID}(x + 200)
     f === :RefViewportId && return Ptr{ImGuiID}(x + 204)
-    f === :AuthorityForPos && return (Ptr{ImGuiDataAuthority}(x + 208), 0, 3)
-    f === :AuthorityForSize && return (Ptr{ImGuiDataAuthority}(x + 208), 3, 3)
-    f === :AuthorityForViewport && return (Ptr{ImGuiDataAuthority}(x + 208), 6, 3)
-    f === :IsVisible && return (Ptr{Bool}(x + 208), 9, 1)
-    f === :IsFocused && return (Ptr{Bool}(x + 208), 10, 1)
-    f === :IsBgDrawnThisFrame && return (Ptr{Bool}(x + 208), 11, 1)
-    f === :HasCloseButton && return (Ptr{Bool}(x + 208), 12, 1)
-    f === :HasWindowMenuButton && return (Ptr{Bool}(x + 208), 13, 1)
-    f === :HasCentralNodeChild && return (Ptr{Bool}(x + 208), 14, 1)
-    f === :WantCloseAll && return (Ptr{Bool}(x + 208), 15, 1)
-    f === :WantLockSizeOnce && return (Ptr{Bool}(x + 208), 16, 1)
-    f === :WantMouseMove && return (Ptr{Bool}(x + 208), 17, 1)
-    f === :WantHiddenTabBarUpdate && return (Ptr{Bool}(x + 208), 18, 1)
-    f === :WantHiddenTabBarToggle && return (Ptr{Bool}(x + 208), 19, 1)
+    f === :AuthorityForPos && return (Ptr{ImU8}(x + 208), 0, 3)
+    f === :AuthorityForSize && return (Ptr{ImU8}(x + 208), 3, 3)
+    f === :AuthorityForViewport && return (Ptr{ImU8}(x + 208), 8, 3)
+    f === :IsVisible && return (Ptr{Bool}(x + 208), 11, 1)
+    f === :IsFocused && return (Ptr{Bool}(x + 208), 12, 1)
+    f === :IsBgDrawnThisFrame && return (Ptr{Bool}(x + 208), 13, 1)
+    f === :HasCloseButton && return (Ptr{Bool}(x + 208), 14, 1)
+    f === :HasWindowMenuButton && return (Ptr{Bool}(x + 208), 15, 1)
+    f === :HasCentralNodeChild && return (Ptr{Bool}(x + 208), 16, 1)
+    f === :WantCloseAll && return (Ptr{Bool}(x + 208), 17, 1)
+    f === :WantLockSizeOnce && return (Ptr{Bool}(x + 208), 18, 1)
+    f === :WantMouseMove && return (Ptr{Bool}(x + 208), 19, 1)
+    f === :WantHiddenTabBarUpdate && return (Ptr{Bool}(x + 208), 20, 1)
+    f === :WantHiddenTabBarToggle && return (Ptr{Bool}(x + 208), 21, 1)
     return getfield(x, f)
 end
 
@@ -2329,7 +2359,7 @@ const ImGuiInputFlags = Cint
 
 struct ImGuiNextItemData
     HasFlags::ImGuiNextItemDataFlags
-    ItemFlags::ImGuiItemFlags
+    ItemFlagsSet::ImGuiItemFlags
     FocusScopeId::ImGuiID
     SelectionUserData::ImGuiSelectionUserData
     Width::Cfloat
@@ -2465,7 +2495,7 @@ struct ImGuiGroupData
     BackupCurrLineSize::ImVec2
     BackupCurrLineTextBaseOffset::Cfloat
     BackupActiveIdIsAlive::ImGuiID
-    BackupActiveIdHasBeenEditedThisFrame::Bool
+    BackupAnyIdHasBeenEditedThisFrame::Bool
     BackupDeactivatedIdIsAlive::Bool
     BackupHoveredIdIsAlive::Bool
     BackupIsSameLine::Bool
@@ -2799,30 +2829,12 @@ struct ImVector_ImGuiTableHeaderData
     Data::Ptr{ImGuiTableHeaderData}
 end
 
-struct ImGuiTableTempData
-    WindowID::ImGuiID
-    TableIndex::Cint
-    LastTimeActive::Cfloat
-    AngledHeadersExtraWidth::Cfloat
-    AngledHeadersRequests::ImVector_ImGuiTableHeaderData
-    UserOuterSize::ImVec2
-    DrawSplitter::ImDrawListSplitter
-    HostBackupWorkRect::ImRect
-    HostBackupParentWorkRect::ImRect
-    HostBackupPrevLineSize::ImVec2
-    HostBackupCurrLineSize::ImVec2
-    HostBackupCursorMaxPos::ImVec2
-    HostBackupColumnsOffset::ImVec1
-    HostBackupItemWidth::Cfloat
-    HostBackupItemWidthStackSize::Cint
-end
-
 const ImGuiTableColumnFlags = Cint
 
 const ImGuiTableDrawChannelIdx = ImU16
 
 struct ImGuiTableColumn
-    data::NTuple{116, UInt8}
+    data::NTuple{120, UInt8}
 end
 
 function Base.getproperty(x::Ptr{ImGuiTableColumn}, f::Symbol)
@@ -2836,38 +2848,43 @@ function Base.getproperty(x::Ptr{ImGuiTableColumn}, f::Symbol)
     f === :StretchWeight && return Ptr{Cfloat}(x + 28)
     f === :InitStretchWeightOrWidth && return Ptr{Cfloat}(x + 32)
     f === :ClipRect && return Ptr{ImRect}(x + 36)
-    f === :UserID && return Ptr{ImGuiID}(x + 52)
-    f === :WorkMinX && return Ptr{Cfloat}(x + 56)
-    f === :WorkMaxX && return Ptr{Cfloat}(x + 60)
-    f === :ItemWidth && return Ptr{Cfloat}(x + 64)
-    f === :ContentMaxXFrozen && return Ptr{Cfloat}(x + 68)
-    f === :ContentMaxXUnfrozen && return Ptr{Cfloat}(x + 72)
-    f === :ContentMaxXHeadersUsed && return Ptr{Cfloat}(x + 76)
-    f === :ContentMaxXHeadersIdeal && return Ptr{Cfloat}(x + 80)
-    f === :NameOffset && return Ptr{ImS16}(x + 84)
-    f === :DisplayOrder && return Ptr{ImGuiTableColumnIdx}(x + 86)
-    f === :IndexWithinEnabledSet && return Ptr{ImGuiTableColumnIdx}(x + 88)
-    f === :PrevEnabledColumn && return Ptr{ImGuiTableColumnIdx}(x + 90)
-    f === :NextEnabledColumn && return Ptr{ImGuiTableColumnIdx}(x + 92)
-    f === :SortOrder && return Ptr{ImGuiTableColumnIdx}(x + 94)
-    f === :DrawChannelCurrent && return Ptr{ImGuiTableDrawChannelIdx}(x + 96)
-    f === :DrawChannelFrozen && return Ptr{ImGuiTableDrawChannelIdx}(x + 98)
-    f === :DrawChannelUnfrozen && return Ptr{ImGuiTableDrawChannelIdx}(x + 100)
-    f === :IsEnabled && return Ptr{Bool}(x + 102)
-    f === :IsUserEnabled && return Ptr{Bool}(x + 103)
-    f === :IsUserEnabledNextFrame && return Ptr{Bool}(x + 104)
-    f === :IsVisibleX && return Ptr{Bool}(x + 105)
-    f === :IsVisibleY && return Ptr{Bool}(x + 106)
-    f === :IsRequestOutput && return Ptr{Bool}(x + 107)
-    f === :IsSkipItems && return Ptr{Bool}(x + 108)
-    f === :IsPreserveWidthAuto && return Ptr{Bool}(x + 109)
-    f === :NavLayerCurrent && return Ptr{ImS8}(x + 110)
-    f === :AutoFitQueue && return Ptr{ImU8}(x + 111)
-    f === :CannotSkipItemsQueue && return Ptr{ImU8}(x + 112)
-    f === :SortDirection && return (Ptr{ImU8}(x + 112), 8, 2)
-    f === :SortDirectionsAvailCount && return (Ptr{ImU8}(x + 112), 10, 2)
-    f === :SortDirectionsAvailMask && return (Ptr{ImU8}(x + 112), 12, 4)
-    f === :SortDirectionsAvailList && return Ptr{ImU8}(x + 114)
+    f === :ID && return Ptr{ImGuiID}(x + 52)
+    f === :UserData && return Ptr{ImGuiID}(x + 56)
+    f === :WorkMinX && return Ptr{Cfloat}(x + 60)
+    f === :WorkMaxX && return Ptr{Cfloat}(x + 64)
+    f === :ItemWidth && return Ptr{Cfloat}(x + 68)
+    f === :ContentMaxXFrozen && return Ptr{Cfloat}(x + 72)
+    f === :ContentMaxXUnfrozen && return Ptr{Cfloat}(x + 76)
+    f === :ContentMaxXHeadersUsed && return Ptr{Cfloat}(x + 80)
+    f === :ContentMaxXHeadersIdeal && return Ptr{Cfloat}(x + 84)
+    f === :NameOffset && return Ptr{ImS16}(x + 88)
+    f === :DisplayOrder && return Ptr{ImGuiTableColumnIdx}(x + 90)
+    f === :IndexWithinEnabledSet && return Ptr{ImGuiTableColumnIdx}(x + 92)
+    f === :PrevEnabledColumn && return Ptr{ImGuiTableColumnIdx}(x + 94)
+    f === :NextEnabledColumn && return Ptr{ImGuiTableColumnIdx}(x + 96)
+    f === :SortOrder && return Ptr{ImGuiTableColumnIdx}(x + 98)
+    f === :DrawChannelCurrent && return Ptr{ImGuiTableDrawChannelIdx}(x + 100)
+    f === :DrawChannelFrozen && return Ptr{ImGuiTableDrawChannelIdx}(x + 102)
+    f === :DrawChannelUnfrozen && return Ptr{ImGuiTableDrawChannelIdx}(x + 104)
+    f === :IsEnabled && return Ptr{Bool}(x + 106)
+    f === :IsUserEnabled && return Ptr{Bool}(x + 107)
+    f === :IsUserEnabledNextFrame && return Ptr{Bool}(x + 108)
+    f === :IsVisibleX && return Ptr{Bool}(x + 109)
+    f === :IsVisibleY && return Ptr{Bool}(x + 110)
+    f === :IsRequestOutput && return Ptr{Bool}(x + 111)
+    f === :IsSkipItems && return Ptr{Bool}(x + 112)
+    f === :IsPreserveWidthAuto && return (Ptr{Bool}(x + 112), 8, 1)
+    f === :IsJustCreated && return (Ptr{Bool}(x + 112), 9, 1)
+    f === :IsLoadedSettings && return (Ptr{Bool}(x + 112), 10, 1)
+    f === :IsNeedReconcileSrc && return (Ptr{Bool}(x + 112), 11, 1)
+    f === :IsNeedReconcileDst && return (Ptr{Bool}(x + 112), 12, 1)
+    f === :NavLayerCurrent && return Ptr{ImS8}(x + 114)
+    f === :AutoFitQueue && return (Ptr{ImU8}(x + 112), 24, 4)
+    f === :CannotSkipItemsQueue && return (Ptr{ImU8}(x + 112), 28, 4)
+    f === :SortDirection && return (Ptr{ImU8}(x + 116), 0, 2)
+    f === :SortDirectionsAvailCount && return (Ptr{ImU8}(x + 116), 2, 2)
+    f === :SortDirectionsAvailMask && return (Ptr{ImU8}(x + 116), 4, 4)
+    f === :SortDirectionsAvailList && return Ptr{ImU8}(x + 117)
     return getfield(x, f)
 end
 
@@ -2915,16 +2932,78 @@ function Base.setproperty!(x::Ptr{ImGuiTableColumn}, f::Symbol, v)
 end
 
 function Base.propertynames(x::ImGuiTableColumn, private::Bool = false)
-    (:Flags, :WidthGiven, :MinX, :MaxX, :WidthRequest, :WidthAuto, :WidthMax, :StretchWeight, :InitStretchWeightOrWidth, :ClipRect, :UserID, :WorkMinX, :WorkMaxX, :ItemWidth, :ContentMaxXFrozen, :ContentMaxXUnfrozen, :ContentMaxXHeadersUsed, :ContentMaxXHeadersIdeal, :NameOffset, :DisplayOrder, :IndexWithinEnabledSet, :PrevEnabledColumn, :NextEnabledColumn, :SortOrder, :DrawChannelCurrent, :DrawChannelFrozen, :DrawChannelUnfrozen, :IsEnabled, :IsUserEnabled, :IsUserEnabledNextFrame, :IsVisibleX, :IsVisibleY, :IsRequestOutput, :IsSkipItems, :IsPreserveWidthAuto, :NavLayerCurrent, :AutoFitQueue, :CannotSkipItemsQueue, :SortDirection, :SortDirectionsAvailCount, :SortDirectionsAvailMask, :SortDirectionsAvailList, if private
+    (:Flags, :WidthGiven, :MinX, :MaxX, :WidthRequest, :WidthAuto, :WidthMax, :StretchWeight, :InitStretchWeightOrWidth, :ClipRect, :ID, :UserData, :WorkMinX, :WorkMaxX, :ItemWidth, :ContentMaxXFrozen, :ContentMaxXUnfrozen, :ContentMaxXHeadersUsed, :ContentMaxXHeadersIdeal, :NameOffset, :DisplayOrder, :IndexWithinEnabledSet, :PrevEnabledColumn, :NextEnabledColumn, :SortOrder, :DrawChannelCurrent, :DrawChannelFrozen, :DrawChannelUnfrozen, :IsEnabled, :IsUserEnabled, :IsUserEnabledNextFrame, :IsVisibleX, :IsVisibleY, :IsRequestOutput, :IsSkipItems, :IsPreserveWidthAuto, :IsJustCreated, :IsLoadedSettings, :IsNeedReconcileSrc, :IsNeedReconcileDst, :NavLayerCurrent, :AutoFitQueue, :CannotSkipItemsQueue, :SortDirection, :SortDirectionsAvailCount, :SortDirectionsAvailMask, :SortDirectionsAvailList, if private
             fieldnames(typeof(x))
         else
             ()
         end...)
 end
 
+struct ImGuiTableReconcileColumnData
+    data::NTuple{144, UInt8}
+end
+
+function Base.getproperty(x::Ptr{ImGuiTableReconcileColumnData}, f::Symbol)
+    f === :ID && return Ptr{ImGuiID}(x + 0)
+    f === :NameOffset && return Ptr{ImS16}(x + 4)
+    f === :Flags && return Ptr{ImGuiTableColumnFlags}(x + 8)
+    f === :InitWidthOrWeight && return Ptr{Cfloat}(x + 12)
+    f === :UserData && return Ptr{ImGuiID}(x + 16)
+    f === :ColumnNewIdx && return Ptr{ImGuiTableColumnIdx}(x + 20)
+    f === :ColumnOldIdx && return Ptr{ImGuiTableColumnIdx}(x + 22)
+    f === :ColumnOldData && return Ptr{ImGuiTableColumn}(x + 24)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiTableReconcileColumnData, f::Symbol)
+    r = Ref{ImGuiTableReconcileColumnData}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiTableReconcileColumnData}, r)
+    fptr = getproperty(ptr, f)
+    GC.@preserve r unsafe_load(fptr)
+end
+
+function Base.setproperty!(x::Ptr{ImGuiTableReconcileColumnData}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
+function Base.propertynames(x::ImGuiTableReconcileColumnData, private::Bool = false)
+    (:ID, :NameOffset, :Flags, :InitWidthOrWeight, :UserData, :ColumnNewIdx, :ColumnOldIdx, :ColumnOldData, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
+end
+
+struct ImVector_ImGuiTableReconcileColumnData
+    Size::Cint
+    Capacity::Cint
+    Data::Ptr{ImGuiTableReconcileColumnData}
+end
+
 struct ImSpan_ImGuiTableColumn
     Data::Ptr{ImGuiTableColumn}
     DataEnd::Ptr{ImGuiTableColumn}
+end
+
+struct ImGuiTableTempData
+    WindowID::ImGuiID
+    TableIndex::Cint
+    LastTimeActive::Cfloat
+    AngledHeadersExtraWidth::Cfloat
+    AngledHeadersRequests::ImVector_ImGuiTableHeaderData
+    ReconcileColumnsRequests::ImVector_ImGuiTableReconcileColumnData
+    OldColumnsRawData::Ptr{Cvoid}
+    OldColumnsData::ImSpan_ImGuiTableColumn
+    UserOuterSize::ImVec2
+    DrawSplitter::ImDrawListSplitter
+    HostBackupWorkRect::ImRect
+    HostBackupParentWorkRect::ImRect
+    HostBackupPrevLineSize::ImVec2
+    HostBackupCurrLineSize::ImVec2
+    HostBackupCursorMaxPos::ImVec2
+    HostBackupColumnsOffset::ImVec1
+    HostBackupItemWidth::Cfloat
+    HostBackupItemWidthStackSize::Cint
 end
 
 struct ImSpan_ImGuiTableColumnIdx
@@ -3088,23 +3167,26 @@ function Base.getproperty(x::Ptr{ImGuiTable}, f::Symbol)
     f === :IsLayoutLocked && return Ptr{Bool}(x + 569)
     f === :IsInsideRow && return Ptr{Bool}(x + 570)
     f === :IsInitializing && return Ptr{Bool}(x + 571)
-    f === :IsSortSpecsDirty && return Ptr{Bool}(x + 572)
-    f === :IsUsingHeaders && return Ptr{Bool}(x + 573)
-    f === :IsContextPopupOpen && return Ptr{Bool}(x + 574)
-    f === :DisableDefaultContextMenu && return Ptr{Bool}(x + 575)
-    f === :IsSettingsRequestLoad && return Ptr{Bool}(x + 576)
-    f === :IsSettingsDirty && return Ptr{Bool}(x + 577)
-    f === :IsDefaultDisplayOrder && return Ptr{Bool}(x + 578)
-    f === :IsResetAllRequest && return Ptr{Bool}(x + 579)
-    f === :IsResetDisplayOrderRequest && return Ptr{Bool}(x + 580)
-    f === :IsUnfrozenRows && return Ptr{Bool}(x + 581)
-    f === :IsDefaultSizingPolicy && return Ptr{Bool}(x + 582)
-    f === :IsActiveIdAliveBeforeTable && return Ptr{Bool}(x + 583)
-    f === :IsActiveIdInTable && return Ptr{Bool}(x + 584)
-    f === :HasScrollbarYCurr && return Ptr{Bool}(x + 585)
-    f === :HasScrollbarYPrev && return Ptr{Bool}(x + 586)
-    f === :MemoryCompacted && return Ptr{Bool}(x + 587)
-    f === :HostSkipItems && return Ptr{Bool}(x + 588)
+    f === :IsReconcileMode && return Ptr{Bool}(x + 572)
+    f === :IsSortSpecsDirty && return Ptr{Bool}(x + 573)
+    f === :IsUsingHeaders && return Ptr{Bool}(x + 574)
+    f === :IsContextPopupOpen && return Ptr{Bool}(x + 575)
+    f === :DisableDefaultContextMenu && return Ptr{Bool}(x + 576)
+    f === :IsSettingsRequestLoad && return Ptr{Bool}(x + 577)
+    f === :IsSettingsDirty && return Ptr{Bool}(x + 578)
+    f === :IsDefaultDisplayOrder && return Ptr{Bool}(x + 579)
+    f === :IsDefaultVisibility && return Ptr{Bool}(x + 580)
+    f === :IsResetAllRequest && return Ptr{Bool}(x + 581)
+    f === :IsResetDisplayOrderRequest && return Ptr{Bool}(x + 582)
+    f === :IsResetVisibilityRequest && return Ptr{Bool}(x + 583)
+    f === :IsUnfrozenRows && return Ptr{Bool}(x + 584)
+    f === :IsDefaultSizingPolicy && return Ptr{Bool}(x + 585)
+    f === :IsActiveIdAliveBeforeTable && return Ptr{Bool}(x + 586)
+    f === :IsActiveIdInTable && return Ptr{Bool}(x + 587)
+    f === :HasScrollbarYCurr && return Ptr{Bool}(x + 588)
+    f === :HasScrollbarYPrev && return Ptr{Bool}(x + 589)
+    f === :MemoryCompacted && return Ptr{Bool}(x + 590)
+    f === :HostSkipItems && return Ptr{Bool}(x + 591)
     return getfield(x, f)
 end
 
@@ -3152,7 +3234,7 @@ function Base.setproperty!(x::Ptr{ImGuiTable}, f::Symbol, v)
 end
 
 function Base.propertynames(x::ImGuiTable, private::Bool = false)
-    (:ID, :Flags, :RawData, :TempData, :Columns, :DisplayOrderToIndex, :RowCellData, :EnabledMaskByDisplayOrder, :EnabledMaskByIndex, :VisibleMaskByIndex, :SettingsLoadedFlags, :SettingsOffset, :LastFrameActive, :ColumnsCount, :CurrentRow, :CurrentColumn, :InstanceCurrent, :InstanceInteracted, :RowPosY1, :RowPosY2, :RowMinHeight, :RowCellPaddingY, :RowTextBaseline, :RowIndentOffsetX, :RowFlags, :LastRowFlags, :RowBgColorCounter, :RowBgColor, :BorderColorStrong, :BorderColorLight, :BorderX1, :BorderX2, :HostIndentX, :MinColumnWidth, :OuterPaddingX, :CellPaddingX, :CellSpacingX1, :CellSpacingX2, :InnerWidth, :ColumnsGivenWidth, :ColumnsAutoFitWidth, :ColumnsStretchSumWeights, :ResizedColumnNextWidth, :ResizeLockMinContentsX2, :RefScale, :AngledHeadersHeight, :AngledHeadersSlope, :OuterRect, :InnerRect, :WorkRect, :InnerClipRect, :BgClipRect, :Bg0ClipRectForDrawCmd, :Bg2ClipRectForDrawCmd, :HostClipRect, :HostBackupInnerClipRect, :OuterWindow, :InnerWindow, :ColumnsNames, :DrawSplitter, :InstanceDataFirst, :InstanceDataExtra, :SortSpecsSingle, :SortSpecsMulti, :SortSpecs, :SortSpecsCount, :ColumnsEnabledCount, :ColumnsEnabledFixedCount, :DeclColumnsCount, :AngledHeadersCount, :HoveredColumnBody, :HoveredColumnBorder, :HighlightColumnHeader, :AutoFitSingleColumn, :ResizedColumn, :LastResizedColumn, :HeldHeaderColumn, :LastHeldHeaderColumn, :ReorderColumn, :ReorderColumnDstOrder, :LeftMostEnabledColumn, :RightMostEnabledColumn, :LeftMostStretchedColumn, :RightMostStretchedColumn, :ContextPopupColumn, :FreezeRowsRequest, :FreezeRowsCount, :FreezeColumnsRequest, :FreezeColumnsCount, :RowCellDataCurrent, :DummyDrawChannel, :Bg2DrawChannelCurrent, :Bg2DrawChannelUnfrozen, :NavLayer, :IsLayoutLocked, :IsInsideRow, :IsInitializing, :IsSortSpecsDirty, :IsUsingHeaders, :IsContextPopupOpen, :DisableDefaultContextMenu, :IsSettingsRequestLoad, :IsSettingsDirty, :IsDefaultDisplayOrder, :IsResetAllRequest, :IsResetDisplayOrderRequest, :IsUnfrozenRows, :IsDefaultSizingPolicy, :IsActiveIdAliveBeforeTable, :IsActiveIdInTable, :HasScrollbarYCurr, :HasScrollbarYPrev, :MemoryCompacted, :HostSkipItems, if private
+    (:ID, :Flags, :RawData, :TempData, :Columns, :DisplayOrderToIndex, :RowCellData, :EnabledMaskByDisplayOrder, :EnabledMaskByIndex, :VisibleMaskByIndex, :SettingsLoadedFlags, :SettingsOffset, :LastFrameActive, :ColumnsCount, :CurrentRow, :CurrentColumn, :InstanceCurrent, :InstanceInteracted, :RowPosY1, :RowPosY2, :RowMinHeight, :RowCellPaddingY, :RowTextBaseline, :RowIndentOffsetX, :RowFlags, :LastRowFlags, :RowBgColorCounter, :RowBgColor, :BorderColorStrong, :BorderColorLight, :BorderX1, :BorderX2, :HostIndentX, :MinColumnWidth, :OuterPaddingX, :CellPaddingX, :CellSpacingX1, :CellSpacingX2, :InnerWidth, :ColumnsGivenWidth, :ColumnsAutoFitWidth, :ColumnsStretchSumWeights, :ResizedColumnNextWidth, :ResizeLockMinContentsX2, :RefScale, :AngledHeadersHeight, :AngledHeadersSlope, :OuterRect, :InnerRect, :WorkRect, :InnerClipRect, :BgClipRect, :Bg0ClipRectForDrawCmd, :Bg2ClipRectForDrawCmd, :HostClipRect, :HostBackupInnerClipRect, :OuterWindow, :InnerWindow, :ColumnsNames, :DrawSplitter, :InstanceDataFirst, :InstanceDataExtra, :SortSpecsSingle, :SortSpecsMulti, :SortSpecs, :SortSpecsCount, :ColumnsEnabledCount, :ColumnsEnabledFixedCount, :DeclColumnsCount, :AngledHeadersCount, :HoveredColumnBody, :HoveredColumnBorder, :HighlightColumnHeader, :AutoFitSingleColumn, :ResizedColumn, :LastResizedColumn, :HeldHeaderColumn, :LastHeldHeaderColumn, :ReorderColumn, :ReorderColumnDstOrder, :LeftMostEnabledColumn, :RightMostEnabledColumn, :LeftMostStretchedColumn, :RightMostStretchedColumn, :ContextPopupColumn, :FreezeRowsRequest, :FreezeRowsCount, :FreezeColumnsRequest, :FreezeColumnsCount, :RowCellDataCurrent, :DummyDrawChannel, :Bg2DrawChannelCurrent, :Bg2DrawChannelUnfrozen, :NavLayer, :IsLayoutLocked, :IsInsideRow, :IsInitializing, :IsReconcileMode, :IsSortSpecsDirty, :IsUsingHeaders, :IsContextPopupOpen, :DisableDefaultContextMenu, :IsSettingsRequestLoad, :IsSettingsDirty, :IsDefaultDisplayOrder, :IsDefaultVisibility, :IsResetAllRequest, :IsResetDisplayOrderRequest, :IsResetVisibilityRequest, :IsUnfrozenRows, :IsDefaultSizingPolicy, :IsActiveIdAliveBeforeTable, :IsActiveIdInTable, :HasScrollbarYCurr, :HasScrollbarYPrev, :MemoryCompacted, :HostSkipItems, if private
             fieldnames(typeof(x))
         else
             ()
@@ -3349,6 +3431,7 @@ struct ImGuiMultiSelectTempData
     NavIdPassedBy::Bool
     RangeSrcPassedBy::Bool
     RangeDstPassedBy::Bool
+    IsSoleOrUnknownSelectionSize::Bool
 end
 
 struct ImVector_ImGuiMultiSelectTempData
@@ -3372,7 +3455,38 @@ end
 
 const ImGuiMouseCursor = Cint
 
-mutable struct STB_TexteditState end
+struct StbUndoRecord
+    where::Cint
+    insert_length::Cint
+    delete_length::Cint
+    char_storage::Cint
+end
+
+struct StbUndoState
+    undo_rec::NTuple{99, StbUndoRecord}
+    undo_char::NTuple{999, Cchar}
+    undo_point::Cshort
+    redo_point::Cshort
+    undo_char_point::Cint
+    redo_char_point::Cint
+end
+
+struct STB_TexteditState
+    cursor::Cint
+    select_start::Cint
+    select_end::Cint
+    insert_mode::Cuchar
+    row_count_per_page::Cint
+    cursor_at_end_of_line::Cuchar
+    initialized::Cuchar
+    has_preferred_x::Cuchar
+    single_line::Cuchar
+    padding1::Cuchar
+    padding2::Cuchar
+    padding3::Cuchar
+    preferred_x::Cfloat
+    undostate::StbUndoState
+end
 
 const ImStbTexteditState = STB_TexteditState
 
@@ -3422,10 +3536,9 @@ end
 
 struct ImGuiInputTextDeactivatedState
     ID::ImGuiID
+    ElapseFrame::Cint
     TextA::ImVector_char
 end
-
-const ImGuiColorEditFlags = Cint
 
 struct ImGuiComboPreviewData
     PreviewRect::ImRect
@@ -3485,6 +3598,68 @@ struct ImGuiDockContext
     Requests::ImVector_ImGuiDockRequest
     NodesSettings::ImVector_ImGuiDockNodeSettings
     WantFullRebuild::Bool
+end
+
+struct ImGuiPackedDate
+    data::NTuple{2, UInt8}
+end
+
+function Base.getproperty(x::Ptr{ImGuiPackedDate}, f::Symbol)
+    f === :Year && return (Ptr{ImU16}(x + 0), 0, 7)
+    f === :Month && return (Ptr{ImU16}(x + 0), 7, 4)
+    f === :Day && return (Ptr{ImU16}(x + 0), 11, 5)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiPackedDate, f::Symbol)
+    r = Ref{ImGuiPackedDate}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiPackedDate}, r)
+    fptr = getproperty(ptr, f)
+    begin
+        if fptr isa Ptr
+            return GC.@preserve(r, unsafe_load(fptr))
+        else
+            (baseptr, offset, width) = fptr
+            ty = eltype(baseptr)
+            baseptr32 = convert(Ptr{UInt32}, baseptr)
+            u64 = GC.@preserve(r, unsafe_load(baseptr32))
+            if offset + width > 32
+                u64 |= GC.@preserve(r, unsafe_load(baseptr32 + 4)) << 32
+            end
+            u64 = u64 >> offset & (1 << width - 1)
+            return u64 % ty
+        end
+    end
+end
+
+function Base.setproperty!(x::Ptr{ImGuiPackedDate}, f::Symbol, v)
+    fptr = getproperty(x, f)
+    if fptr isa Ptr
+        unsafe_store!(getproperty(x, f), v)
+    else
+        (baseptr, offset, width) = fptr
+        baseptr32 = convert(Ptr{UInt32}, baseptr)
+        u64 = unsafe_load(baseptr32)
+        straddle = offset + width > 32
+        if straddle
+            u64 |= unsafe_load(baseptr32 + 4) << 32
+        end
+        mask = 1 << width - 1
+        u64 &= ~(mask << offset)
+        u64 |= (unsigned(v) & mask) << offset
+        unsafe_store!(baseptr32, u64 & typemax(UInt32))
+        if straddle
+            unsafe_store!(baseptr32 + 4, u64 >> 32)
+        end
+    end
+end
+
+function Base.propertynames(x::ImGuiPackedDate, private::Bool = false)
+    (:Year, :Month, :Day, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImGuiSettingsHandler
@@ -3568,6 +3743,8 @@ struct ImGuiMetricsConfig
     ShowTablesRectsType::Cint
     HighlightMonitorIdx::Cint
     HighlightViewportID::ImGuiID
+    SettingsDiscardMonths::Cint
+    SettingsHighlightOldEntries::Bool
     ShowFontPreview::Bool
 end
 
@@ -3616,7 +3793,7 @@ struct ImGuiDebugAllocInfo
 end
 
 struct ImGuiContext
-    data::NTuple{11528, UInt8}
+    data::NTuple{11584, UInt8}
 end
 
 function Base.getproperty(x::Ptr{ImGuiContext}, f::Symbol)
@@ -3631,325 +3808,330 @@ function Base.getproperty(x::Ptr{ImGuiContext}, f::Symbol)
     f === :Time && return Ptr{Cdouble}(x + 24)
     f === :ContextName && return Ptr{NTuple{16, Cchar}}(x + 32)
     f === :IO && return Ptr{ImGuiIO}(x + 48)
-    f === :PlatformIO && return Ptr{ImGuiPlatformIO}(x + 3112)
-    f === :Style && return Ptr{ImGuiStyle}(x + 3464)
-    f === :ConfigFlagsCurrFrame && return Ptr{ImGuiConfigFlags}(x + 4820)
-    f === :ConfigFlagsLastFrame && return Ptr{ImGuiConfigFlags}(x + 4824)
-    f === :FontAtlases && return Ptr{ImVector_ImFontAtlasPtr}(x + 4832)
-    f === :Font && return Ptr{Ptr{ImFont}}(x + 4848)
-    f === :FontBaked && return Ptr{Ptr{ImFontBaked}}(x + 4856)
-    f === :FontSize && return Ptr{Cfloat}(x + 4864)
-    f === :FontSizeBase && return Ptr{Cfloat}(x + 4868)
-    f === :FontBakedScale && return Ptr{Cfloat}(x + 4872)
-    f === :FontRasterizerDensity && return Ptr{Cfloat}(x + 4876)
-    f === :CurrentDpiScale && return Ptr{Cfloat}(x + 4880)
-    f === :DrawListSharedData && return Ptr{ImDrawListSharedData}(x + 4888)
-    f === :WithinEndChildID && return Ptr{ImGuiID}(x + 5456)
-    f === :WithinEndPopupID && return Ptr{ImGuiID}(x + 5460)
-    f === :TestEngine && return Ptr{Ptr{Cvoid}}(x + 5464)
-    f === :InputEventsQueue && return Ptr{ImVector_ImGuiInputEvent}(x + 5472)
-    f === :InputEventsTrail && return Ptr{ImVector_ImGuiInputEvent}(x + 5488)
-    f === :InputEventsNextMouseSource && return Ptr{ImGuiMouseSource}(x + 5504)
-    f === :InputEventsNextEventId && return Ptr{ImU32}(x + 5508)
-    f === :Windows && return Ptr{ImVector_ImGuiWindowPtr}(x + 5512)
-    f === :WindowsFocusOrder && return Ptr{ImVector_ImGuiWindowPtr}(x + 5528)
-    f === :WindowsTempSortBuffer && return Ptr{ImVector_ImGuiWindowPtr}(x + 5544)
-    f === :CurrentWindowStack && return Ptr{ImVector_ImGuiWindowStackData}(x + 5560)
-    f === :WindowsById && return Ptr{ImGuiStorage}(x + 5576)
-    f === :WindowsActiveCount && return Ptr{Cint}(x + 5592)
-    f === :WindowsBorderHoverPadding && return Ptr{Cfloat}(x + 5596)
-    f === :DebugBreakInWindow && return Ptr{ImGuiID}(x + 5600)
-    f === :CurrentWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5608)
-    f === :HoveredWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5616)
-    f === :HoveredWindowUnderMovingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5624)
-    f === :HoveredWindowBeforeClear && return Ptr{Ptr{ImGuiWindow}}(x + 5632)
-    f === :MovingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5640)
-    f === :WheelingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5648)
-    f === :WheelingWindowRefMousePos && return Ptr{ImVec2}(x + 5656)
-    f === :WheelingWindowStartFrame && return Ptr{Cint}(x + 5664)
-    f === :WheelingWindowScrolledFrame && return Ptr{Cint}(x + 5668)
-    f === :WheelingWindowReleaseTimer && return Ptr{Cfloat}(x + 5672)
-    f === :WheelingWindowWheelRemainder && return Ptr{ImVec2}(x + 5676)
-    f === :WheelingAxisAvg && return Ptr{ImVec2}(x + 5684)
-    f === :DebugDrawIdConflictsId && return Ptr{ImGuiID}(x + 5692)
-    f === :DebugHookIdInfoId && return Ptr{ImGuiID}(x + 5696)
-    f === :HoveredId && return Ptr{ImGuiID}(x + 5700)
-    f === :HoveredIdPreviousFrame && return Ptr{ImGuiID}(x + 5704)
-    f === :HoveredIdPreviousFrameItemCount && return Ptr{Cint}(x + 5708)
-    f === :HoveredIdTimer && return Ptr{Cfloat}(x + 5712)
-    f === :HoveredIdNotActiveTimer && return Ptr{Cfloat}(x + 5716)
-    f === :HoveredIdAllowOverlap && return Ptr{Bool}(x + 5720)
-    f === :HoveredIdIsDisabled && return Ptr{Bool}(x + 5721)
-    f === :ItemUnclipByLog && return Ptr{Bool}(x + 5722)
-    f === :ActiveId && return Ptr{ImGuiID}(x + 5724)
-    f === :ActiveIdIsAlive && return Ptr{ImGuiID}(x + 5728)
-    f === :ActiveIdTimer && return Ptr{Cfloat}(x + 5732)
-    f === :ActiveIdIsJustActivated && return Ptr{Bool}(x + 5736)
-    f === :ActiveIdAllowOverlap && return Ptr{Bool}(x + 5737)
-    f === :ActiveIdNoClearOnFocusLoss && return Ptr{Bool}(x + 5738)
-    f === :ActiveIdHasBeenPressedBefore && return Ptr{Bool}(x + 5739)
-    f === :ActiveIdHasBeenEditedBefore && return Ptr{Bool}(x + 5740)
-    f === :ActiveIdHasBeenEditedThisFrame && return Ptr{Bool}(x + 5741)
-    f === :ActiveIdFromShortcut && return Ptr{Bool}(x + 5742)
-    f === :ActiveIdMouseButton && return Ptr{ImS8}(x + 5743)
-    f === :ActiveIdDisabledId && return Ptr{ImGuiID}(x + 5744)
-    f === :ActiveIdClickOffset && return Ptr{ImVec2}(x + 5748)
-    f === :ActiveIdSource && return Ptr{ImGuiInputSource}(x + 5756)
-    f === :ActiveIdWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5760)
-    f === :ActiveIdPreviousFrame && return Ptr{ImGuiID}(x + 5768)
-    f === :DeactivatedItemData && return Ptr{ImGuiDeactivatedItemData}(x + 5772)
-    f === :ActiveIdValueOnActivation && return Ptr{ImGuiDataTypeStorage}(x + 5784)
-    f === :LastActiveId && return Ptr{ImGuiID}(x + 5792)
-    f === :LastActiveIdTimer && return Ptr{Cfloat}(x + 5796)
-    f === :LastKeyModsChangeTime && return Ptr{Cdouble}(x + 5800)
-    f === :LastKeyModsChangeFromNoneTime && return Ptr{Cdouble}(x + 5808)
-    f === :LastKeyboardKeyPressTime && return Ptr{Cdouble}(x + 5816)
-    f === :KeysMayBeCharInput && return Ptr{ImBitArrayForNamedKeys}(x + 5824)
-    f === :KeysOwnerData && return Ptr{NTuple{155, ImGuiKeyOwnerData}}(x + 5844)
-    f === :KeysRoutingTable && return Ptr{ImGuiKeyRoutingTable}(x + 7704)
-    f === :ActiveIdUsingNavDirMask && return Ptr{ImU32}(x + 8048)
-    f === :ActiveIdUsingAllKeyboardKeys && return Ptr{Bool}(x + 8052)
-    f === :DebugBreakInShortcutRouting && return Ptr{ImGuiKeyChord}(x + 8056)
-    f === :CurrentFocusScopeId && return Ptr{ImGuiID}(x + 8060)
-    f === :CurrentItemFlags && return Ptr{ImGuiItemFlags}(x + 8064)
-    f === :DebugLocateId && return Ptr{ImGuiID}(x + 8068)
-    f === :NextItemData && return Ptr{ImGuiNextItemData}(x + 8072)
-    f === :LastItemData && return Ptr{ImGuiLastItemData}(x + 8128)
-    f === :NextWindowData && return Ptr{ImGuiNextWindowData}(x + 8208)
-    f === :DebugShowGroupRects && return Ptr{Bool}(x + 8384)
-    f === :GcCompactAll && return Ptr{Bool}(x + 8385)
-    f === :DebugFlashStyleColorIdx && return Ptr{ImGuiCol}(x + 8388)
-    f === :ColorStack && return Ptr{ImVector_ImGuiColorMod}(x + 8392)
-    f === :StyleVarStack && return Ptr{ImVector_ImGuiStyleMod}(x + 8408)
-    f === :FontStack && return Ptr{ImVector_ImFontStackData}(x + 8424)
-    f === :FocusScopeStack && return Ptr{ImVector_ImGuiFocusScopeData}(x + 8440)
-    f === :ItemFlagsStack && return Ptr{ImVector_ImGuiItemFlags}(x + 8456)
-    f === :GroupStack && return Ptr{ImVector_ImGuiGroupData}(x + 8472)
-    f === :OpenPopupStack && return Ptr{ImVector_ImGuiPopupData}(x + 8488)
-    f === :BeginPopupStack && return Ptr{ImVector_ImGuiPopupData}(x + 8504)
-    f === :TreeNodeStack && return Ptr{ImVector_ImGuiTreeNodeStackData}(x + 8520)
-    f === :Viewports && return Ptr{ImVector_ImGuiViewportPPtr}(x + 8536)
-    f === :CurrentViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8552)
-    f === :MouseViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8560)
-    f === :MouseLastHoveredViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8568)
-    f === :PlatformLastFocusedViewportId && return Ptr{ImGuiID}(x + 8576)
-    f === :FallbackMonitor && return Ptr{ImGuiPlatformMonitor}(x + 8584)
-    f === :PlatformMonitorsFullWorkRect && return Ptr{ImRect}(x + 8632)
-    f === :ViewportCreatedCount && return Ptr{Cint}(x + 8648)
-    f === :PlatformWindowsCreatedCount && return Ptr{Cint}(x + 8652)
-    f === :ViewportFocusedStampCount && return Ptr{Cint}(x + 8656)
-    f === :NavCursorVisible && return Ptr{Bool}(x + 8660)
-    f === :NavHighlightItemUnderNav && return Ptr{Bool}(x + 8661)
-    f === :NavMousePosDirty && return Ptr{Bool}(x + 8662)
-    f === :NavIdIsAlive && return Ptr{Bool}(x + 8663)
-    f === :NavId && return Ptr{ImGuiID}(x + 8664)
-    f === :NavWindow && return Ptr{Ptr{ImGuiWindow}}(x + 8672)
-    f === :NavFocusScopeId && return Ptr{ImGuiID}(x + 8680)
-    f === :NavLayer && return Ptr{ImGuiNavLayer}(x + 8684)
-    f === :NavIdItemFlags && return Ptr{ImGuiItemFlags}(x + 8688)
-    f === :NavActivateId && return Ptr{ImGuiID}(x + 8692)
-    f === :NavActivateDownId && return Ptr{ImGuiID}(x + 8696)
-    f === :NavActivatePressedId && return Ptr{ImGuiID}(x + 8700)
-    f === :NavActivateFlags && return Ptr{ImGuiActivateFlags}(x + 8704)
-    f === :NavFocusRoute && return Ptr{ImVector_ImGuiFocusScopeData}(x + 8712)
-    f === :NavHighlightActivatedId && return Ptr{ImGuiID}(x + 8728)
-    f === :NavHighlightActivatedTimer && return Ptr{Cfloat}(x + 8732)
-    f === :NavOpenContextMenuItemId && return Ptr{ImGuiID}(x + 8736)
-    f === :NavOpenContextMenuWindowId && return Ptr{ImGuiID}(x + 8740)
-    f === :NavNextActivateId && return Ptr{ImGuiID}(x + 8744)
-    f === :NavNextActivateFlags && return Ptr{ImGuiActivateFlags}(x + 8748)
-    f === :NavInputSource && return Ptr{ImGuiInputSource}(x + 8752)
-    f === :NavLastValidSelectionUserData && return Ptr{ImGuiSelectionUserData}(x + 8760)
-    f === :NavCursorHideFrames && return Ptr{ImS8}(x + 8768)
-    f === :NavAnyRequest && return Ptr{Bool}(x + 8769)
-    f === :NavInitRequest && return Ptr{Bool}(x + 8770)
-    f === :NavInitRequestFromMove && return Ptr{Bool}(x + 8771)
-    f === :NavInitResult && return Ptr{ImGuiNavItemData}(x + 8776)
-    f === :NavMoveSubmitted && return Ptr{Bool}(x + 8832)
-    f === :NavMoveScoringItems && return Ptr{Bool}(x + 8833)
-    f === :NavMoveForwardToNextFrame && return Ptr{Bool}(x + 8834)
-    f === :NavMoveFlags && return Ptr{ImGuiNavMoveFlags}(x + 8836)
-    f === :NavMoveScrollFlags && return Ptr{ImGuiScrollFlags}(x + 8840)
-    f === :NavMoveKeyMods && return Ptr{ImGuiKeyChord}(x + 8844)
-    f === :NavMoveDir && return Ptr{ImGuiDir}(x + 8848)
-    f === :NavMoveDirForDebug && return Ptr{ImGuiDir}(x + 8852)
-    f === :NavMoveClipDir && return Ptr{ImGuiDir}(x + 8856)
-    f === :NavScoringRect && return Ptr{ImRect}(x + 8860)
-    f === :NavScoringNoClipRect && return Ptr{ImRect}(x + 8876)
-    f === :NavScoringDebugCount && return Ptr{Cint}(x + 8892)
-    f === :NavTabbingDir && return Ptr{Cint}(x + 8896)
-    f === :NavTabbingCounter && return Ptr{Cint}(x + 8900)
-    f === :NavMoveResultLocal && return Ptr{ImGuiNavItemData}(x + 8904)
-    f === :NavMoveResultLocalVisible && return Ptr{ImGuiNavItemData}(x + 8960)
-    f === :NavMoveResultOther && return Ptr{ImGuiNavItemData}(x + 9016)
-    f === :NavTabbingResultFirst && return Ptr{ImGuiNavItemData}(x + 9072)
-    f === :NavJustMovedFromFocusScopeId && return Ptr{ImGuiID}(x + 9128)
-    f === :NavJustMovedToId && return Ptr{ImGuiID}(x + 9132)
-    f === :NavJustMovedToFocusScopeId && return Ptr{ImGuiID}(x + 9136)
-    f === :NavJustMovedToKeyMods && return Ptr{ImGuiKeyChord}(x + 9140)
-    f === :NavJustMovedToIsTabbing && return Ptr{Bool}(x + 9144)
-    f === :NavJustMovedToHasSelectionData && return Ptr{Bool}(x + 9145)
-    f === :ConfigNavEnableTabbing && return Ptr{Bool}(x + 9146)
-    f === :ConfigNavWindowingWithGamepad && return Ptr{Bool}(x + 9147)
-    f === :ConfigNavWindowingKeyNext && return Ptr{ImGuiKeyChord}(x + 9148)
-    f === :ConfigNavWindowingKeyPrev && return Ptr{ImGuiKeyChord}(x + 9152)
-    f === :NavWindowingTarget && return Ptr{Ptr{ImGuiWindow}}(x + 9160)
-    f === :NavWindowingTargetAnim && return Ptr{Ptr{ImGuiWindow}}(x + 9168)
-    f === :NavWindowingListWindow && return Ptr{Ptr{ImGuiWindow}}(x + 9176)
-    f === :NavWindowingTimer && return Ptr{Cfloat}(x + 9184)
-    f === :NavWindowingHighlightAlpha && return Ptr{Cfloat}(x + 9188)
-    f === :NavWindowingInputSource && return Ptr{ImGuiInputSource}(x + 9192)
-    f === :NavWindowingToggleLayer && return Ptr{Bool}(x + 9196)
-    f === :NavWindowingToggleKey && return Ptr{ImGuiKey}(x + 9200)
-    f === :NavWindowingAccumDeltaPos && return Ptr{ImVec2}(x + 9204)
-    f === :NavWindowingAccumDeltaSize && return Ptr{ImVec2}(x + 9212)
-    f === :DimBgRatio && return Ptr{Cfloat}(x + 9220)
-    f === :DragDropActive && return Ptr{Bool}(x + 9224)
-    f === :DragDropWithinSource && return Ptr{Bool}(x + 9225)
-    f === :DragDropWithinTarget && return Ptr{Bool}(x + 9226)
-    f === :DragDropSourceFlags && return Ptr{ImGuiDragDropFlags}(x + 9228)
-    f === :DragDropSourceFrameCount && return Ptr{Cint}(x + 9232)
-    f === :DragDropMouseButton && return Ptr{Cint}(x + 9236)
-    f === :DragDropPayload && return Ptr{ImGuiPayload}(x + 9240)
-    f === :DragDropTargetRect && return Ptr{ImRect}(x + 9304)
-    f === :DragDropTargetClipRect && return Ptr{ImRect}(x + 9320)
-    f === :DragDropTargetId && return Ptr{ImGuiID}(x + 9336)
-    f === :DragDropTargetFullViewport && return Ptr{ImGuiID}(x + 9340)
-    f === :DragDropAcceptFlagsCurr && return Ptr{ImGuiDragDropFlags}(x + 9344)
-    f === :DragDropAcceptFlagsPrev && return Ptr{ImGuiDragDropFlags}(x + 9348)
-    f === :DragDropAcceptIdCurrRectSurface && return Ptr{Cfloat}(x + 9352)
-    f === :DragDropAcceptIdCurr && return Ptr{ImGuiID}(x + 9356)
-    f === :DragDropAcceptIdPrev && return Ptr{ImGuiID}(x + 9360)
-    f === :DragDropAcceptFrameCount && return Ptr{Cint}(x + 9364)
-    f === :DragDropHoldJustPressedId && return Ptr{ImGuiID}(x + 9368)
-    f === :DragDropPayloadBufHeap && return Ptr{ImVector_unsigned_char}(x + 9376)
-    f === :DragDropPayloadBufLocal && return Ptr{NTuple{16, Cuchar}}(x + 9392)
-    f === :ClipperTempDataStacked && return Ptr{Cint}(x + 9408)
-    f === :ClipperTempData && return Ptr{ImVector_ImGuiListClipperData}(x + 9416)
-    f === :CurrentTable && return Ptr{Ptr{ImGuiTable}}(x + 9432)
-    f === :DebugBreakInTable && return Ptr{ImGuiID}(x + 9440)
-    f === :TablesTempDataStacked && return Ptr{Cint}(x + 9444)
-    f === :TablesTempData && return Ptr{ImVector_ImGuiTableTempData}(x + 9448)
-    f === :Tables && return Ptr{ImPool_ImGuiTable}(x + 9464)
-    f === :TablesLastTimeActive && return Ptr{ImVector_float}(x + 9504)
-    f === :DrawChannelsTempMergeBuffer && return Ptr{ImVector_ImDrawChannel}(x + 9520)
-    f === :CurrentTabBar && return Ptr{Ptr{ImGuiTabBar}}(x + 9536)
-    f === :TabBars && return Ptr{ImPool_ImGuiTabBar}(x + 9544)
-    f === :CurrentTabBarStack && return Ptr{ImVector_ImGuiPtrOrIndex}(x + 9584)
-    f === :ShrinkWidthBuffer && return Ptr{ImVector_ImGuiShrinkWidthItem}(x + 9600)
-    f === :BoxSelectState && return Ptr{ImGuiBoxSelectState}(x + 9616)
-    f === :CurrentMultiSelect && return Ptr{Ptr{ImGuiMultiSelectTempData}}(x + 9752)
-    f === :MultiSelectTempDataStacked && return Ptr{Cint}(x + 9760)
-    f === :MultiSelectTempData && return Ptr{ImVector_ImGuiMultiSelectTempData}(x + 9768)
-    f === :MultiSelectStorage && return Ptr{ImPool_ImGuiMultiSelectState}(x + 9784)
-    f === :HoverItemDelayId && return Ptr{ImGuiID}(x + 9824)
-    f === :HoverItemDelayIdPreviousFrame && return Ptr{ImGuiID}(x + 9828)
-    f === :HoverItemDelayTimer && return Ptr{Cfloat}(x + 9832)
-    f === :HoverItemDelayClearTimer && return Ptr{Cfloat}(x + 9836)
-    f === :HoverItemUnlockedStationaryId && return Ptr{ImGuiID}(x + 9840)
-    f === :HoverWindowUnlockedStationaryId && return Ptr{ImGuiID}(x + 9844)
-    f === :MouseCursor && return Ptr{ImGuiMouseCursor}(x + 9848)
-    f === :MouseStationaryTimer && return Ptr{Cfloat}(x + 9852)
-    f === :MouseLastValidPos && return Ptr{ImVec2}(x + 9856)
-    f === :InputTextState && return Ptr{ImGuiInputTextState}(x + 9864)
-    f === :InputTextLineIndex && return Ptr{ImGuiTextIndex}(x + 9992)
-    f === :InputTextDeactivatedState && return Ptr{ImGuiInputTextDeactivatedState}(x + 10016)
-    f === :InputTextPasswordFontBackupBaked && return Ptr{ImFontBaked}(x + 10040)
-    f === :InputTextPasswordFontBackupFlags && return Ptr{ImFontFlags}(x + 10144)
-    f === :InputTextReactivateId && return Ptr{ImGuiID}(x + 10148)
-    f === :TempInputId && return Ptr{ImGuiID}(x + 10152)
-    f === :DataTypeZeroValue && return Ptr{ImGuiDataTypeStorage}(x + 10156)
-    f === :BeginMenuDepth && return Ptr{Cint}(x + 10164)
-    f === :BeginComboDepth && return Ptr{Cint}(x + 10168)
-    f === :ColorEditOptions && return Ptr{ImGuiColorEditFlags}(x + 10172)
-    f === :ColorEditCurrentID && return Ptr{ImGuiID}(x + 10176)
-    f === :ColorEditSavedID && return Ptr{ImGuiID}(x + 10180)
-    f === :ColorEditSavedHue && return Ptr{Cfloat}(x + 10184)
-    f === :ColorEditSavedSat && return Ptr{Cfloat}(x + 10188)
-    f === :ColorEditSavedColor && return Ptr{ImU32}(x + 10192)
-    f === :ColorPickerRef && return Ptr{ImVec4}(x + 10196)
-    f === :ComboPreviewData && return Ptr{ImGuiComboPreviewData}(x + 10212)
-    f === :WindowResizeBorderExpectedRect && return Ptr{ImRect}(x + 10260)
-    f === :WindowResizeRelativeMode && return Ptr{Bool}(x + 10276)
-    f === :ScrollbarSeekMode && return Ptr{Cshort}(x + 10278)
-    f === :ScrollbarClickDeltaToGrabCenter && return Ptr{Cfloat}(x + 10280)
-    f === :SliderGrabClickOffset && return Ptr{Cfloat}(x + 10284)
-    f === :SliderCurrentAccum && return Ptr{Cfloat}(x + 10288)
-    f === :SliderCurrentAccumDirty && return Ptr{Bool}(x + 10292)
-    f === :DragCurrentAccumDirty && return Ptr{Bool}(x + 10293)
-    f === :DragCurrentAccum && return Ptr{Cfloat}(x + 10296)
-    f === :DragSpeedDefaultRatio && return Ptr{Cfloat}(x + 10300)
-    f === :DisabledAlphaBackup && return Ptr{Cfloat}(x + 10304)
-    f === :DisabledStackSize && return Ptr{Cshort}(x + 10308)
-    f === :TooltipOverrideCount && return Ptr{Cshort}(x + 10310)
-    f === :TooltipPreviousWindow && return Ptr{Ptr{ImGuiWindow}}(x + 10312)
-    f === :ClipboardHandlerData && return Ptr{ImVector_char}(x + 10320)
-    f === :MenusIdSubmittedThisFrame && return Ptr{ImVector_ImGuiID}(x + 10336)
-    f === :TypingSelectState && return Ptr{ImGuiTypingSelectState}(x + 10352)
-    f === :PlatformImeData && return Ptr{ImGuiPlatformImeData}(x + 10456)
-    f === :PlatformImeDataPrev && return Ptr{ImGuiPlatformImeData}(x + 10476)
-    f === :UserTextures && return Ptr{ImVector_ImTextureDataPtr}(x + 10496)
-    f === :DockContext && return Ptr{ImGuiDockContext}(x + 10512)
-    f === :DockNodeWindowMenuHandler && return Ptr{Ptr{Cvoid}}(x + 10568)
-    f === :SettingsLoaded && return Ptr{Bool}(x + 10576)
-    f === :SettingsDirtyTimer && return Ptr{Cfloat}(x + 10580)
-    f === :SettingsIniData && return Ptr{ImGuiTextBuffer}(x + 10584)
-    f === :SettingsHandlers && return Ptr{ImVector_ImGuiSettingsHandler}(x + 10600)
-    f === :SettingsWindows && return Ptr{ImChunkStream_ImGuiWindowSettings}(x + 10616)
-    f === :SettingsTables && return Ptr{ImChunkStream_ImGuiTableSettings}(x + 10632)
-    f === :Hooks && return Ptr{ImVector_ImGuiContextHook}(x + 10648)
-    f === :HookIdNext && return Ptr{ImGuiID}(x + 10664)
-    f === :DemoMarkerCallback && return Ptr{ImGuiDemoMarkerCallback}(x + 10672)
-    f === :LocalizationTable && return Ptr{NTuple{13, Ptr{Cchar}}}(x + 10680)
-    f === :LogEnabled && return Ptr{Bool}(x + 10784)
-    f === :LogLineFirstItem && return Ptr{Bool}(x + 10785)
-    f === :LogFlags && return Ptr{ImGuiLogFlags}(x + 10788)
-    f === :LogWindow && return Ptr{Ptr{ImGuiWindow}}(x + 10792)
-    f === :LogFile && return Ptr{ImFileHandle}(x + 10800)
-    f === :LogBuffer && return Ptr{ImGuiTextBuffer}(x + 10808)
-    f === :LogNextPrefix && return Ptr{Ptr{Cchar}}(x + 10824)
-    f === :LogNextSuffix && return Ptr{Ptr{Cchar}}(x + 10832)
-    f === :LogLinePosY && return Ptr{Cfloat}(x + 10840)
-    f === :LogDepthRef && return Ptr{Cint}(x + 10844)
-    f === :LogDepthToExpand && return Ptr{Cint}(x + 10848)
-    f === :LogDepthToExpandDefault && return Ptr{Cint}(x + 10852)
-    f === :ErrorCallback && return Ptr{ImGuiErrorCallback}(x + 10856)
-    f === :ErrorCallbackUserData && return Ptr{Ptr{Cvoid}}(x + 10864)
-    f === :ErrorTooltipLockedPos && return Ptr{ImVec2}(x + 10872)
-    f === :ErrorFirst && return Ptr{Bool}(x + 10880)
-    f === :ErrorCountCurrentFrame && return Ptr{Cint}(x + 10884)
-    f === :StackSizesInNewFrame && return Ptr{ImGuiErrorRecoveryState}(x + 10888)
-    f === :StackSizesInBeginForCurrentWindow && return Ptr{Ptr{ImGuiErrorRecoveryState}}(x + 10912)
-    f === :DebugDrawIdConflictsCount && return Ptr{Cint}(x + 10920)
-    f === :DebugLogFlags && return Ptr{ImGuiDebugLogFlags}(x + 10924)
-    f === :DebugLogBuf && return Ptr{ImGuiTextBuffer}(x + 10928)
-    f === :DebugLogIndex && return Ptr{ImGuiTextIndex}(x + 10944)
-    f === :DebugLogSkippedErrors && return Ptr{Cint}(x + 10968)
-    f === :DebugLogAutoDisableFlags && return Ptr{ImGuiDebugLogFlags}(x + 10972)
-    f === :DebugLogAutoDisableFrames && return Ptr{ImU8}(x + 10976)
-    f === :DebugLocateFrames && return Ptr{ImU8}(x + 10977)
-    f === :DebugBreakInLocateId && return Ptr{Bool}(x + 10978)
-    f === :DebugBreakKeyChord && return Ptr{ImGuiKeyChord}(x + 10980)
-    f === :DebugBeginReturnValueCullDepth && return Ptr{ImS8}(x + 10984)
-    f === :DebugItemPickerActive && return Ptr{Bool}(x + 10985)
-    f === :DebugItemPickerMouseButton && return Ptr{ImU8}(x + 10986)
-    f === :DebugItemPickerBreakId && return Ptr{ImGuiID}(x + 10988)
-    f === :DebugFlashStyleColorTime && return Ptr{Cfloat}(x + 10992)
-    f === :DebugFlashStyleColorBackup && return Ptr{ImVec4}(x + 10996)
-    f === :DebugMetricsConfig && return Ptr{ImGuiMetricsConfig}(x + 11012)
-    f === :DebugItemPathQuery && return Ptr{ImGuiDebugItemPathQuery}(x + 11048)
-    f === :DebugIDStackTool && return Ptr{ImGuiIDStackTool}(x + 11104)
-    f === :DebugAllocInfo && return Ptr{ImGuiDebugAllocInfo}(x + 11116)
-    f === :DebugHoveredDockNode && return Ptr{Ptr{ImGuiDockNode}}(x + 11176)
-    f === :FramerateSecPerFrame && return Ptr{NTuple{60, Cfloat}}(x + 11184)
-    f === :FramerateSecPerFrameIdx && return Ptr{Cint}(x + 11424)
-    f === :FramerateSecPerFrameCount && return Ptr{Cint}(x + 11428)
-    f === :FramerateSecPerFrameAccum && return Ptr{Cfloat}(x + 11432)
-    f === :WantCaptureMouseNextFrame && return Ptr{Cint}(x + 11436)
-    f === :WantCaptureKeyboardNextFrame && return Ptr{Cint}(x + 11440)
-    f === :WantTextInputNextFrame && return Ptr{Cint}(x + 11444)
-    f === :TempBuffer && return Ptr{ImVector_char}(x + 11448)
-    f === :TempKeychordName && return Ptr{NTuple{64, Cchar}}(x + 11464)
+    f === :PlatformIO && return Ptr{ImGuiPlatformIO}(x + 3128)
+    f === :Style && return Ptr{ImGuiStyle}(x + 3480)
+    f === :ConfigFlagsCurrFrame && return Ptr{ImGuiConfigFlags}(x + 4848)
+    f === :ConfigFlagsLastFrame && return Ptr{ImGuiConfigFlags}(x + 4852)
+    f === :FontAtlases && return Ptr{ImVector_ImFontAtlasPtr}(x + 4856)
+    f === :Font && return Ptr{Ptr{ImFont}}(x + 4872)
+    f === :FontBaked && return Ptr{Ptr{ImFontBaked}}(x + 4880)
+    f === :FontSize && return Ptr{Cfloat}(x + 4888)
+    f === :FontSizeBase && return Ptr{Cfloat}(x + 4892)
+    f === :FontBakedScale && return Ptr{Cfloat}(x + 4896)
+    f === :FontRasterizerDensity && return Ptr{Cfloat}(x + 4900)
+    f === :CurrentDpiScale && return Ptr{Cfloat}(x + 4904)
+    f === :DrawListSharedData && return Ptr{ImDrawListSharedData}(x + 4912)
+    f === :WithinEndChildID && return Ptr{ImGuiID}(x + 5480)
+    f === :WithinEndPopupID && return Ptr{ImGuiID}(x + 5484)
+    f === :TestEngine && return Ptr{Ptr{Cvoid}}(x + 5488)
+    f === :InputEventsQueue && return Ptr{ImVector_ImGuiInputEvent}(x + 5496)
+    f === :InputEventsTrail && return Ptr{ImVector_ImGuiInputEvent}(x + 5512)
+    f === :InputEventsNextMouseSource && return Ptr{ImGuiMouseSource}(x + 5528)
+    f === :InputEventsNextEventId && return Ptr{ImU32}(x + 5532)
+    f === :Windows && return Ptr{ImVector_ImGuiWindowPtr}(x + 5536)
+    f === :WindowsFocusOrder && return Ptr{ImVector_ImGuiWindowPtr}(x + 5552)
+    f === :WindowsTempSortBuffer && return Ptr{ImVector_ImGuiWindowPtr}(x + 5568)
+    f === :CurrentWindowStack && return Ptr{ImVector_ImGuiWindowStackData}(x + 5584)
+    f === :WindowsById && return Ptr{ImGuiStorage}(x + 5600)
+    f === :WindowsActiveCount && return Ptr{Cint}(x + 5616)
+    f === :WindowsBorderHoverPadding && return Ptr{Cfloat}(x + 5620)
+    f === :DebugBreakInWindow && return Ptr{ImGuiID}(x + 5624)
+    f === :CurrentWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5632)
+    f === :HoveredWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5640)
+    f === :HoveredWindowUnderMovingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5648)
+    f === :HoveredWindowBeforeClear && return Ptr{Ptr{ImGuiWindow}}(x + 5656)
+    f === :MovingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5664)
+    f === :WheelingWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5672)
+    f === :WheelingWindowRefMousePos && return Ptr{ImVec2}(x + 5680)
+    f === :WheelingWindowStartFrame && return Ptr{Cint}(x + 5688)
+    f === :WheelingWindowScrolledFrame && return Ptr{Cint}(x + 5692)
+    f === :WheelingWindowReleaseTimer && return Ptr{Cfloat}(x + 5696)
+    f === :WheelingWindowWheelRemainder && return Ptr{ImVec2}(x + 5700)
+    f === :WheelingAxisAvg && return Ptr{ImVec2}(x + 5708)
+    f === :DebugDrawIdConflictsId && return Ptr{ImGuiID}(x + 5716)
+    f === :DebugHookIdInfoId && return Ptr{ImGuiID}(x + 5720)
+    f === :HoveredId && return Ptr{ImGuiID}(x + 5724)
+    f === :HoveredIdPreviousFrame && return Ptr{ImGuiID}(x + 5728)
+    f === :HoveredIdPreviousFrameItemCount && return Ptr{Cint}(x + 5732)
+    f === :HoveredIdTimer && return Ptr{Cfloat}(x + 5736)
+    f === :HoveredIdNotActiveTimer && return Ptr{Cfloat}(x + 5740)
+    f === :HoveredIdAllowOverlap && return Ptr{Bool}(x + 5744)
+    f === :HoveredIdIsDisabled && return Ptr{Bool}(x + 5745)
+    f === :ItemUnclipByLog && return Ptr{Bool}(x + 5746)
+    f === :AnyIdHasBeenEditedThisFrame && return Ptr{Bool}(x + 5747)
+    f === :ActiveId && return Ptr{ImGuiID}(x + 5748)
+    f === :ActiveIdIsAlive && return Ptr{ImGuiID}(x + 5752)
+    f === :ActiveIdTimer && return Ptr{Cfloat}(x + 5756)
+    f === :ActiveIdIsJustActivated && return Ptr{Bool}(x + 5760)
+    f === :ActiveIdWasSelected && return Ptr{Bool}(x + 5761)
+    f === :ActiveIdWasSoleSelected && return Ptr{Bool}(x + 5762)
+    f === :ActiveIdAllowOverlap && return Ptr{Bool}(x + 5763)
+    f === :ActiveIdNoClearOnFocusLoss && return Ptr{Bool}(x + 5764)
+    f === :ActiveIdHasBeenPressedBefore && return Ptr{Bool}(x + 5765)
+    f === :ActiveIdHasBeenEditedBefore && return Ptr{Bool}(x + 5766)
+    f === :ActiveIdHasBeenEditedThisFrame && return Ptr{Bool}(x + 5767)
+    f === :ActiveIdFromShortcut && return Ptr{Bool}(x + 5768)
+    f === :ActiveIdMouseButton && return Ptr{ImS8}(x + 5769)
+    f === :ActiveIdDisabledId && return Ptr{ImGuiID}(x + 5772)
+    f === :ActiveIdClickOffset && return Ptr{ImVec2}(x + 5776)
+    f === :ActiveIdSource && return Ptr{ImGuiInputSource}(x + 5784)
+    f === :ActiveIdWindow && return Ptr{Ptr{ImGuiWindow}}(x + 5792)
+    f === :ActiveIdPreviousFrame && return Ptr{ImGuiID}(x + 5800)
+    f === :DeactivatedItemData && return Ptr{ImGuiDeactivatedItemData}(x + 5804)
+    f === :ActiveIdValueOnActivation && return Ptr{ImGuiDataTypeStorage}(x + 5816)
+    f === :LastActiveId && return Ptr{ImGuiID}(x + 5824)
+    f === :LastActiveIdTimer && return Ptr{Cfloat}(x + 5828)
+    f === :LastActiveIdWasSelected && return Ptr{Bool}(x + 5832)
+    f === :LastActiveIdWasSoleSelected && return Ptr{Bool}(x + 5833)
+    f === :LastKeyModsChangeTime && return Ptr{Cdouble}(x + 5840)
+    f === :LastKeyModsChangeFromNoneTime && return Ptr{Cdouble}(x + 5848)
+    f === :LastKeyboardKeyPressTime && return Ptr{Cdouble}(x + 5856)
+    f === :KeysMayBeCharInput && return Ptr{ImBitArrayForNamedKeys}(x + 5864)
+    f === :KeysOwnerData && return Ptr{NTuple{155, ImGuiKeyOwnerData}}(x + 5884)
+    f === :KeysRoutingTable && return Ptr{ImGuiKeyRoutingTable}(x + 7744)
+    f === :ActiveIdUsingNavDirMask && return Ptr{ImU32}(x + 8088)
+    f === :ActiveIdUsingAllKeyboardKeys && return Ptr{Bool}(x + 8092)
+    f === :DebugBreakInShortcutRouting && return Ptr{ImGuiKeyChord}(x + 8096)
+    f === :CurrentFocusScopeId && return Ptr{ImGuiID}(x + 8100)
+    f === :CurrentItemFlags && return Ptr{ImGuiItemFlags}(x + 8104)
+    f === :DebugLocateId && return Ptr{ImGuiID}(x + 8108)
+    f === :NextItemData && return Ptr{ImGuiNextItemData}(x + 8112)
+    f === :LastItemData && return Ptr{ImGuiLastItemData}(x + 8168)
+    f === :NextWindowData && return Ptr{ImGuiNextWindowData}(x + 8248)
+    f === :DebugShowGroupRects && return Ptr{Bool}(x + 8424)
+    f === :GcCompactAll && return Ptr{Bool}(x + 8425)
+    f === :DebugFlashStyleColorIdx && return Ptr{ImGuiCol}(x + 8428)
+    f === :ColorStack && return Ptr{ImVector_ImGuiColorMod}(x + 8432)
+    f === :StyleVarStack && return Ptr{ImVector_ImGuiStyleMod}(x + 8448)
+    f === :FontStack && return Ptr{ImVector_ImFontStackData}(x + 8464)
+    f === :FocusScopeStack && return Ptr{ImVector_ImGuiFocusScopeData}(x + 8480)
+    f === :ItemFlagsStack && return Ptr{ImVector_ImGuiItemFlags}(x + 8496)
+    f === :GroupStack && return Ptr{ImVector_ImGuiGroupData}(x + 8512)
+    f === :OpenPopupStack && return Ptr{ImVector_ImGuiPopupData}(x + 8528)
+    f === :BeginPopupStack && return Ptr{ImVector_ImGuiPopupData}(x + 8544)
+    f === :TreeNodeStack && return Ptr{ImVector_ImGuiTreeNodeStackData}(x + 8560)
+    f === :Viewports && return Ptr{ImVector_ImGuiViewportPPtr}(x + 8576)
+    f === :CurrentViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8592)
+    f === :MouseViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8600)
+    f === :MouseLastHoveredViewport && return Ptr{Ptr{ImGuiViewportP}}(x + 8608)
+    f === :PlatformLastFocusedViewportId && return Ptr{ImGuiID}(x + 8616)
+    f === :FallbackMonitor && return Ptr{ImGuiPlatformMonitor}(x + 8624)
+    f === :PlatformMonitorsFullWorkRect && return Ptr{ImRect}(x + 8672)
+    f === :ViewportCreatedCount && return Ptr{Cint}(x + 8688)
+    f === :PlatformWindowsCreatedCount && return Ptr{Cint}(x + 8692)
+    f === :ViewportFocusedStampCount && return Ptr{Cint}(x + 8696)
+    f === :NavCursorVisible && return Ptr{Bool}(x + 8700)
+    f === :NavHighlightItemUnderNav && return Ptr{Bool}(x + 8701)
+    f === :NavMousePosDirty && return Ptr{Bool}(x + 8702)
+    f === :NavIdIsAlive && return Ptr{Bool}(x + 8703)
+    f === :NavId && return Ptr{ImGuiID}(x + 8704)
+    f === :NavWindow && return Ptr{Ptr{ImGuiWindow}}(x + 8712)
+    f === :NavFocusScopeId && return Ptr{ImGuiID}(x + 8720)
+    f === :NavLayer && return Ptr{ImGuiNavLayer}(x + 8724)
+    f === :NavIdItemFlags && return Ptr{ImGuiItemFlags}(x + 8728)
+    f === :NavActivateId && return Ptr{ImGuiID}(x + 8732)
+    f === :NavActivateDownId && return Ptr{ImGuiID}(x + 8736)
+    f === :NavActivatePressedId && return Ptr{ImGuiID}(x + 8740)
+    f === :NavActivateFlags && return Ptr{ImGuiActivateFlags}(x + 8744)
+    f === :NavFocusRoute && return Ptr{ImVector_ImGuiFocusScopeData}(x + 8752)
+    f === :NavHighlightActivatedId && return Ptr{ImGuiID}(x + 8768)
+    f === :NavHighlightActivatedTimer && return Ptr{Cfloat}(x + 8772)
+    f === :NavOpenContextMenuItemId && return Ptr{ImGuiID}(x + 8776)
+    f === :NavOpenContextMenuWindowId && return Ptr{ImGuiID}(x + 8780)
+    f === :NavNextActivateId && return Ptr{ImGuiID}(x + 8784)
+    f === :NavNextActivateFlags && return Ptr{ImGuiActivateFlags}(x + 8788)
+    f === :NavInputSource && return Ptr{ImGuiInputSource}(x + 8792)
+    f === :NavLastValidSelectionUserData && return Ptr{ImGuiSelectionUserData}(x + 8800)
+    f === :NavCursorHideFrames && return Ptr{ImS8}(x + 8808)
+    f === :NavAnyRequest && return Ptr{Bool}(x + 8809)
+    f === :NavInitRequest && return Ptr{Bool}(x + 8810)
+    f === :NavInitRequestFromMove && return Ptr{Bool}(x + 8811)
+    f === :NavInitResult && return Ptr{ImGuiNavItemData}(x + 8816)
+    f === :NavMoveSubmitted && return Ptr{Bool}(x + 8872)
+    f === :NavMoveScoringItems && return Ptr{Bool}(x + 8873)
+    f === :NavMoveForwardToNextFrame && return Ptr{Bool}(x + 8874)
+    f === :NavMoveFlags && return Ptr{ImGuiNavMoveFlags}(x + 8876)
+    f === :NavMoveScrollFlags && return Ptr{ImGuiScrollFlags}(x + 8880)
+    f === :NavMoveKeyMods && return Ptr{ImGuiKeyChord}(x + 8884)
+    f === :NavMoveDir && return Ptr{ImGuiDir}(x + 8888)
+    f === :NavMoveDirForDebug && return Ptr{ImGuiDir}(x + 8892)
+    f === :NavMoveClipDir && return Ptr{ImGuiDir}(x + 8896)
+    f === :NavScoringRect && return Ptr{ImRect}(x + 8900)
+    f === :NavScoringNoClipRect && return Ptr{ImRect}(x + 8916)
+    f === :NavScoringDebugCount && return Ptr{Cint}(x + 8932)
+    f === :NavTabbingDir && return Ptr{Cint}(x + 8936)
+    f === :NavTabbingCounter && return Ptr{Cint}(x + 8940)
+    f === :NavMoveResultLocal && return Ptr{ImGuiNavItemData}(x + 8944)
+    f === :NavMoveResultLocalVisible && return Ptr{ImGuiNavItemData}(x + 9000)
+    f === :NavMoveResultOther && return Ptr{ImGuiNavItemData}(x + 9056)
+    f === :NavTabbingResultFirst && return Ptr{ImGuiNavItemData}(x + 9112)
+    f === :NavJustMovedFromFocusScopeId && return Ptr{ImGuiID}(x + 9168)
+    f === :NavJustMovedToId && return Ptr{ImGuiID}(x + 9172)
+    f === :NavJustMovedToFocusScopeId && return Ptr{ImGuiID}(x + 9176)
+    f === :NavJustMovedToKeyMods && return Ptr{ImGuiKeyChord}(x + 9180)
+    f === :NavJustMovedToIsTabbing && return Ptr{Bool}(x + 9184)
+    f === :NavJustMovedToHasSelectionData && return Ptr{Bool}(x + 9185)
+    f === :ConfigNavEnableTabbing && return Ptr{Bool}(x + 9186)
+    f === :ConfigNavWindowingWithGamepad && return Ptr{Bool}(x + 9187)
+    f === :ConfigNavWindowingKeyNext && return Ptr{ImGuiKeyChord}(x + 9188)
+    f === :ConfigNavWindowingKeyPrev && return Ptr{ImGuiKeyChord}(x + 9192)
+    f === :NavWindowingTarget && return Ptr{Ptr{ImGuiWindow}}(x + 9200)
+    f === :NavWindowingTargetAnim && return Ptr{Ptr{ImGuiWindow}}(x + 9208)
+    f === :NavWindowingListWindow && return Ptr{Ptr{ImGuiWindow}}(x + 9216)
+    f === :NavWindowingTimer && return Ptr{Cfloat}(x + 9224)
+    f === :NavWindowingHighlightAlpha && return Ptr{Cfloat}(x + 9228)
+    f === :NavWindowingInputSource && return Ptr{ImGuiInputSource}(x + 9232)
+    f === :NavWindowingToggleLayer && return Ptr{Bool}(x + 9236)
+    f === :NavWindowingToggleKey && return Ptr{ImGuiKey}(x + 9240)
+    f === :NavWindowingAccumDeltaPos && return Ptr{ImVec2}(x + 9244)
+    f === :NavWindowingAccumDeltaSize && return Ptr{ImVec2}(x + 9252)
+    f === :DimBgRatio && return Ptr{Cfloat}(x + 9260)
+    f === :DragDropActive && return Ptr{Bool}(x + 9264)
+    f === :DragDropWithinSource && return Ptr{Bool}(x + 9265)
+    f === :DragDropWithinTarget && return Ptr{Bool}(x + 9266)
+    f === :DragDropSourceFlags && return Ptr{ImGuiDragDropFlags}(x + 9268)
+    f === :DragDropSourceFrameCount && return Ptr{Cint}(x + 9272)
+    f === :DragDropMouseButton && return Ptr{Cint}(x + 9276)
+    f === :DragDropPayload && return Ptr{ImGuiPayload}(x + 9280)
+    f === :DragDropTargetRect && return Ptr{ImRect}(x + 9344)
+    f === :DragDropTargetClipRect && return Ptr{ImRect}(x + 9360)
+    f === :DragDropTargetId && return Ptr{ImGuiID}(x + 9376)
+    f === :DragDropTargetFullViewport && return Ptr{ImGuiID}(x + 9380)
+    f === :DragDropAcceptFlagsCurr && return Ptr{ImGuiDragDropFlags}(x + 9384)
+    f === :DragDropAcceptFlagsPrev && return Ptr{ImGuiDragDropFlags}(x + 9388)
+    f === :DragDropAcceptIdCurrRectSurface && return Ptr{Cfloat}(x + 9392)
+    f === :DragDropAcceptIdCurr && return Ptr{ImGuiID}(x + 9396)
+    f === :DragDropAcceptIdPrev && return Ptr{ImGuiID}(x + 9400)
+    f === :DragDropAcceptFrameCount && return Ptr{Cint}(x + 9404)
+    f === :DragDropHoldJustPressedId && return Ptr{ImGuiID}(x + 9408)
+    f === :DragDropPayloadBufHeap && return Ptr{ImVector_unsigned_char}(x + 9416)
+    f === :DragDropPayloadBufLocal && return Ptr{NTuple{16, Cuchar}}(x + 9432)
+    f === :ClipperTempDataStacked && return Ptr{Cint}(x + 9448)
+    f === :ClipperTempData && return Ptr{ImVector_ImGuiListClipperData}(x + 9456)
+    f === :CurrentTable && return Ptr{Ptr{ImGuiTable}}(x + 9472)
+    f === :DebugBreakInTable && return Ptr{ImGuiID}(x + 9480)
+    f === :TablesTempDataStacked && return Ptr{Cint}(x + 9484)
+    f === :TablesTempData && return Ptr{ImVector_ImGuiTableTempData}(x + 9488)
+    f === :Tables && return Ptr{ImPool_ImGuiTable}(x + 9504)
+    f === :TablesLastTimeActive && return Ptr{ImVector_float}(x + 9544)
+    f === :DrawChannelsTempMergeBuffer && return Ptr{ImVector_ImDrawChannel}(x + 9560)
+    f === :CurrentTabBar && return Ptr{Ptr{ImGuiTabBar}}(x + 9576)
+    f === :TabBars && return Ptr{ImPool_ImGuiTabBar}(x + 9584)
+    f === :CurrentTabBarStack && return Ptr{ImVector_ImGuiPtrOrIndex}(x + 9624)
+    f === :ShrinkWidthBuffer && return Ptr{ImVector_ImGuiShrinkWidthItem}(x + 9640)
+    f === :BoxSelectState && return Ptr{ImGuiBoxSelectState}(x + 9656)
+    f === :CurrentMultiSelect && return Ptr{Ptr{ImGuiMultiSelectTempData}}(x + 9792)
+    f === :MultiSelectTempDataStacked && return Ptr{Cint}(x + 9800)
+    f === :MultiSelectTempData && return Ptr{ImVector_ImGuiMultiSelectTempData}(x + 9808)
+    f === :MultiSelectStorage && return Ptr{ImPool_ImGuiMultiSelectState}(x + 9824)
+    f === :HoverItemDelayId && return Ptr{ImGuiID}(x + 9864)
+    f === :HoverItemDelayIdPreviousFrame && return Ptr{ImGuiID}(x + 9868)
+    f === :HoverItemDelayTimer && return Ptr{Cfloat}(x + 9872)
+    f === :HoverItemDelayClearTimer && return Ptr{Cfloat}(x + 9876)
+    f === :HoverItemUnlockedStationaryId && return Ptr{ImGuiID}(x + 9880)
+    f === :HoverWindowUnlockedStationaryId && return Ptr{ImGuiID}(x + 9884)
+    f === :MouseCursor && return Ptr{ImGuiMouseCursor}(x + 9888)
+    f === :MouseStationaryTimer && return Ptr{Cfloat}(x + 9892)
+    f === :MouseLastValidPos && return Ptr{ImVec2}(x + 9896)
+    f === :InputTextState && return Ptr{ImGuiInputTextState}(x + 9904)
+    f === :InputTextLineIndex && return Ptr{ImGuiTextIndex}(x + 10032)
+    f === :InputTextDeactivatedState && return Ptr{ImGuiInputTextDeactivatedState}(x + 10056)
+    f === :InputTextPasswordFontBackupBaked && return Ptr{ImFontBaked}(x + 10080)
+    f === :InputTextPasswordFontBackupFlags && return Ptr{ImFontFlags}(x + 10184)
+    f === :InputTextReactivateId && return Ptr{ImGuiID}(x + 10188)
+    f === :TempInputId && return Ptr{ImGuiID}(x + 10192)
+    f === :DataTypeZeroValue && return Ptr{ImGuiDataTypeStorage}(x + 10196)
+    f === :BeginMenuDepth && return Ptr{Cint}(x + 10204)
+    f === :BeginComboDepth && return Ptr{Cint}(x + 10208)
+    f === :ColorEditCurrentID && return Ptr{ImGuiID}(x + 10212)
+    f === :ColorEditSavedID && return Ptr{ImGuiID}(x + 10216)
+    f === :ColorEditSavedHue && return Ptr{Cfloat}(x + 10220)
+    f === :ColorEditSavedSat && return Ptr{Cfloat}(x + 10224)
+    f === :ColorEditSavedColor && return Ptr{ImU32}(x + 10228)
+    f === :ColorPickerRef && return Ptr{ImVec4}(x + 10232)
+    f === :ComboPreviewData && return Ptr{ImGuiComboPreviewData}(x + 10248)
+    f === :WindowResizeBorderExpectedRect && return Ptr{ImRect}(x + 10296)
+    f === :WindowResizeRelativeMode && return Ptr{Bool}(x + 10312)
+    f === :ScrollbarSeekMode && return Ptr{Cshort}(x + 10314)
+    f === :ScrollbarClickDeltaToGrabCenter && return Ptr{Cfloat}(x + 10316)
+    f === :SliderGrabClickOffset && return Ptr{Cfloat}(x + 10320)
+    f === :SliderCurrentAccum && return Ptr{Cfloat}(x + 10324)
+    f === :SliderCurrentAccumDirty && return Ptr{Bool}(x + 10328)
+    f === :DragCurrentAccumDirty && return Ptr{Bool}(x + 10329)
+    f === :DragCurrentAccum && return Ptr{Cfloat}(x + 10332)
+    f === :DragSpeedDefaultRatio && return Ptr{Cfloat}(x + 10336)
+    f === :DisabledAlphaBackup && return Ptr{Cfloat}(x + 10340)
+    f === :DisabledStackSize && return Ptr{Cshort}(x + 10344)
+    f === :TooltipOverrideCount && return Ptr{Cshort}(x + 10346)
+    f === :TooltipPreviousWindow && return Ptr{Ptr{ImGuiWindow}}(x + 10352)
+    f === :ClipboardHandlerData && return Ptr{ImVector_char}(x + 10360)
+    f === :MenusIdSubmittedThisFrame && return Ptr{ImVector_ImGuiID}(x + 10376)
+    f === :TypingSelectState && return Ptr{ImGuiTypingSelectState}(x + 10392)
+    f === :PlatformImeData && return Ptr{ImGuiPlatformImeData}(x + 10496)
+    f === :PlatformImeDataPrev && return Ptr{ImGuiPlatformImeData}(x + 10516)
+    f === :UserTextures && return Ptr{ImVector_ImTextureDataPtr}(x + 10536)
+    f === :DockContext && return Ptr{ImGuiDockContext}(x + 10552)
+    f === :DockNodeWindowMenuHandler && return Ptr{Ptr{Cvoid}}(x + 10608)
+    f === :SessionDate && return Ptr{ImGuiPackedDate}(x + 10616)
+    f === :SettingsLoaded && return Ptr{Bool}(x + 10618)
+    f === :SettingsDirtyTimer && return Ptr{Cfloat}(x + 10620)
+    f === :SettingsIniData && return Ptr{ImGuiTextBuffer}(x + 10624)
+    f === :SettingsHandlers && return Ptr{ImVector_ImGuiSettingsHandler}(x + 10640)
+    f === :SettingsWindows && return Ptr{ImChunkStream_ImGuiWindowSettings}(x + 10656)
+    f === :SettingsTables && return Ptr{ImChunkStream_ImGuiTableSettings}(x + 10672)
+    f === :Hooks && return Ptr{ImVector_ImGuiContextHook}(x + 10688)
+    f === :HookIdNext && return Ptr{ImGuiID}(x + 10704)
+    f === :DemoMarkerCallback && return Ptr{ImGuiDemoMarkerCallback}(x + 10712)
+    f === :LocalizationTable && return Ptr{NTuple{15, Ptr{Cchar}}}(x + 10720)
+    f === :LogEnabled && return Ptr{Bool}(x + 10840)
+    f === :LogLineFirstItem && return Ptr{Bool}(x + 10841)
+    f === :LogFlags && return Ptr{ImGuiLogFlags}(x + 10844)
+    f === :LogWindow && return Ptr{Ptr{ImGuiWindow}}(x + 10848)
+    f === :LogFile && return Ptr{ImFileHandle}(x + 10856)
+    f === :LogBuffer && return Ptr{ImGuiTextBuffer}(x + 10864)
+    f === :LogNextPrefix && return Ptr{Ptr{Cchar}}(x + 10880)
+    f === :LogNextSuffix && return Ptr{Ptr{Cchar}}(x + 10888)
+    f === :LogLinePosY && return Ptr{Cfloat}(x + 10896)
+    f === :LogDepthRef && return Ptr{Cint}(x + 10900)
+    f === :LogDepthToExpand && return Ptr{Cint}(x + 10904)
+    f === :LogDepthToExpandDefault && return Ptr{Cint}(x + 10908)
+    f === :ErrorCallback && return Ptr{ImGuiErrorCallback}(x + 10912)
+    f === :ErrorCallbackUserData && return Ptr{Ptr{Cvoid}}(x + 10920)
+    f === :ErrorTooltipLockedPos && return Ptr{ImVec2}(x + 10928)
+    f === :ErrorFirst && return Ptr{Bool}(x + 10936)
+    f === :ErrorCountCurrentFrame && return Ptr{Cint}(x + 10940)
+    f === :StackSizesInNewFrame && return Ptr{ImGuiErrorRecoveryState}(x + 10944)
+    f === :StackSizesInBeginForCurrentWindow && return Ptr{Ptr{ImGuiErrorRecoveryState}}(x + 10968)
+    f === :DebugDrawIdConflictsCount && return Ptr{Cint}(x + 10976)
+    f === :DebugLogFlags && return Ptr{ImGuiDebugLogFlags}(x + 10980)
+    f === :DebugLogBuf && return Ptr{ImGuiTextBuffer}(x + 10984)
+    f === :DebugLogIndex && return Ptr{ImGuiTextIndex}(x + 11000)
+    f === :DebugLogSkippedErrors && return Ptr{Cint}(x + 11024)
+    f === :DebugLogAutoDisableFlags && return Ptr{ImGuiDebugLogFlags}(x + 11028)
+    f === :DebugLogAutoDisableFrames && return Ptr{ImU8}(x + 11032)
+    f === :DebugLocateFrames && return Ptr{ImU8}(x + 11033)
+    f === :DebugBreakInLocateId && return Ptr{Bool}(x + 11034)
+    f === :DebugBreakKeyChord && return Ptr{ImGuiKeyChord}(x + 11036)
+    f === :DebugBeginReturnValueCullDepth && return Ptr{ImS8}(x + 11040)
+    f === :DebugItemPickerActive && return Ptr{Bool}(x + 11041)
+    f === :DebugItemPickerMouseButton && return Ptr{ImU8}(x + 11042)
+    f === :DebugItemPickerBreakId && return Ptr{ImGuiID}(x + 11044)
+    f === :DebugFlashStyleColorTime && return Ptr{Cfloat}(x + 11048)
+    f === :DebugFlashStyleColorBackup && return Ptr{ImVec4}(x + 11052)
+    f === :DebugMetricsConfig && return Ptr{ImGuiMetricsConfig}(x + 11068)
+    f === :DebugItemPathQuery && return Ptr{ImGuiDebugItemPathQuery}(x + 11104)
+    f === :DebugIDStackTool && return Ptr{ImGuiIDStackTool}(x + 11160)
+    f === :DebugAllocInfo && return Ptr{ImGuiDebugAllocInfo}(x + 11172)
+    f === :DebugHoveredDockNode && return Ptr{Ptr{ImGuiDockNode}}(x + 11232)
+    f === :FramerateSecPerFrame && return Ptr{NTuple{60, Cfloat}}(x + 11240)
+    f === :FramerateSecPerFrameIdx && return Ptr{Cint}(x + 11480)
+    f === :FramerateSecPerFrameCount && return Ptr{Cint}(x + 11484)
+    f === :FramerateSecPerFrameAccum && return Ptr{Cfloat}(x + 11488)
+    f === :WantCaptureMouseNextFrame && return Ptr{Cint}(x + 11492)
+    f === :WantCaptureKeyboardNextFrame && return Ptr{Cint}(x + 11496)
+    f === :WantTextInputNextFrame && return Ptr{Cint}(x + 11500)
+    f === :TempBuffer && return Ptr{ImVector_char}(x + 11504)
+    f === :TempKeychordName && return Ptr{NTuple{64, Cchar}}(x + 11520)
     return getfield(x, f)
 end
 
@@ -3965,7 +4147,7 @@ function Base.setproperty!(x::Ptr{ImGuiContext}, f::Symbol, v)
 end
 
 function Base.propertynames(x::ImGuiContext, private::Bool = false)
-    (:Initialized, :WithinFrameScope, :WithinFrameScopeWithImplicitWindow, :TestEngineHookItems, :FrameCount, :FrameCountEnded, :FrameCountPlatformEnded, :FrameCountRendered, :Time, :ContextName, :IO, :PlatformIO, :Style, :ConfigFlagsCurrFrame, :ConfigFlagsLastFrame, :FontAtlases, :Font, :FontBaked, :FontSize, :FontSizeBase, :FontBakedScale, :FontRasterizerDensity, :CurrentDpiScale, :DrawListSharedData, :WithinEndChildID, :WithinEndPopupID, :TestEngine, :InputEventsQueue, :InputEventsTrail, :InputEventsNextMouseSource, :InputEventsNextEventId, :Windows, :WindowsFocusOrder, :WindowsTempSortBuffer, :CurrentWindowStack, :WindowsById, :WindowsActiveCount, :WindowsBorderHoverPadding, :DebugBreakInWindow, :CurrentWindow, :HoveredWindow, :HoveredWindowUnderMovingWindow, :HoveredWindowBeforeClear, :MovingWindow, :WheelingWindow, :WheelingWindowRefMousePos, :WheelingWindowStartFrame, :WheelingWindowScrolledFrame, :WheelingWindowReleaseTimer, :WheelingWindowWheelRemainder, :WheelingAxisAvg, :DebugDrawIdConflictsId, :DebugHookIdInfoId, :HoveredId, :HoveredIdPreviousFrame, :HoveredIdPreviousFrameItemCount, :HoveredIdTimer, :HoveredIdNotActiveTimer, :HoveredIdAllowOverlap, :HoveredIdIsDisabled, :ItemUnclipByLog, :ActiveId, :ActiveIdIsAlive, :ActiveIdTimer, :ActiveIdIsJustActivated, :ActiveIdAllowOverlap, :ActiveIdNoClearOnFocusLoss, :ActiveIdHasBeenPressedBefore, :ActiveIdHasBeenEditedBefore, :ActiveIdHasBeenEditedThisFrame, :ActiveIdFromShortcut, :ActiveIdMouseButton, :ActiveIdDisabledId, :ActiveIdClickOffset, :ActiveIdSource, :ActiveIdWindow, :ActiveIdPreviousFrame, :DeactivatedItemData, :ActiveIdValueOnActivation, :LastActiveId, :LastActiveIdTimer, :LastKeyModsChangeTime, :LastKeyModsChangeFromNoneTime, :LastKeyboardKeyPressTime, :KeysMayBeCharInput, :KeysOwnerData, :KeysRoutingTable, :ActiveIdUsingNavDirMask, :ActiveIdUsingAllKeyboardKeys, :DebugBreakInShortcutRouting, :CurrentFocusScopeId, :CurrentItemFlags, :DebugLocateId, :NextItemData, :LastItemData, :NextWindowData, :DebugShowGroupRects, :GcCompactAll, :DebugFlashStyleColorIdx, :ColorStack, :StyleVarStack, :FontStack, :FocusScopeStack, :ItemFlagsStack, :GroupStack, :OpenPopupStack, :BeginPopupStack, :TreeNodeStack, :Viewports, :CurrentViewport, :MouseViewport, :MouseLastHoveredViewport, :PlatformLastFocusedViewportId, :FallbackMonitor, :PlatformMonitorsFullWorkRect, :ViewportCreatedCount, :PlatformWindowsCreatedCount, :ViewportFocusedStampCount, :NavCursorVisible, :NavHighlightItemUnderNav, :NavMousePosDirty, :NavIdIsAlive, :NavId, :NavWindow, :NavFocusScopeId, :NavLayer, :NavIdItemFlags, :NavActivateId, :NavActivateDownId, :NavActivatePressedId, :NavActivateFlags, :NavFocusRoute, :NavHighlightActivatedId, :NavHighlightActivatedTimer, :NavOpenContextMenuItemId, :NavOpenContextMenuWindowId, :NavNextActivateId, :NavNextActivateFlags, :NavInputSource, :NavLastValidSelectionUserData, :NavCursorHideFrames, :NavAnyRequest, :NavInitRequest, :NavInitRequestFromMove, :NavInitResult, :NavMoveSubmitted, :NavMoveScoringItems, :NavMoveForwardToNextFrame, :NavMoveFlags, :NavMoveScrollFlags, :NavMoveKeyMods, :NavMoveDir, :NavMoveDirForDebug, :NavMoveClipDir, :NavScoringRect, :NavScoringNoClipRect, :NavScoringDebugCount, :NavTabbingDir, :NavTabbingCounter, :NavMoveResultLocal, :NavMoveResultLocalVisible, :NavMoveResultOther, :NavTabbingResultFirst, :NavJustMovedFromFocusScopeId, :NavJustMovedToId, :NavJustMovedToFocusScopeId, :NavJustMovedToKeyMods, :NavJustMovedToIsTabbing, :NavJustMovedToHasSelectionData, :ConfigNavEnableTabbing, :ConfigNavWindowingWithGamepad, :ConfigNavWindowingKeyNext, :ConfigNavWindowingKeyPrev, :NavWindowingTarget, :NavWindowingTargetAnim, :NavWindowingListWindow, :NavWindowingTimer, :NavWindowingHighlightAlpha, :NavWindowingInputSource, :NavWindowingToggleLayer, :NavWindowingToggleKey, :NavWindowingAccumDeltaPos, :NavWindowingAccumDeltaSize, :DimBgRatio, :DragDropActive, :DragDropWithinSource, :DragDropWithinTarget, :DragDropSourceFlags, :DragDropSourceFrameCount, :DragDropMouseButton, :DragDropPayload, :DragDropTargetRect, :DragDropTargetClipRect, :DragDropTargetId, :DragDropTargetFullViewport, :DragDropAcceptFlagsCurr, :DragDropAcceptFlagsPrev, :DragDropAcceptIdCurrRectSurface, :DragDropAcceptIdCurr, :DragDropAcceptIdPrev, :DragDropAcceptFrameCount, :DragDropHoldJustPressedId, :DragDropPayloadBufHeap, :DragDropPayloadBufLocal, :ClipperTempDataStacked, :ClipperTempData, :CurrentTable, :DebugBreakInTable, :TablesTempDataStacked, :TablesTempData, :Tables, :TablesLastTimeActive, :DrawChannelsTempMergeBuffer, :CurrentTabBar, :TabBars, :CurrentTabBarStack, :ShrinkWidthBuffer, :BoxSelectState, :CurrentMultiSelect, :MultiSelectTempDataStacked, :MultiSelectTempData, :MultiSelectStorage, :HoverItemDelayId, :HoverItemDelayIdPreviousFrame, :HoverItemDelayTimer, :HoverItemDelayClearTimer, :HoverItemUnlockedStationaryId, :HoverWindowUnlockedStationaryId, :MouseCursor, :MouseStationaryTimer, :MouseLastValidPos, :InputTextState, :InputTextLineIndex, :InputTextDeactivatedState, :InputTextPasswordFontBackupBaked, :InputTextPasswordFontBackupFlags, :InputTextReactivateId, :TempInputId, :DataTypeZeroValue, :BeginMenuDepth, :BeginComboDepth, :ColorEditOptions, :ColorEditCurrentID, :ColorEditSavedID, :ColorEditSavedHue, :ColorEditSavedSat, :ColorEditSavedColor, :ColorPickerRef, :ComboPreviewData, :WindowResizeBorderExpectedRect, :WindowResizeRelativeMode, :ScrollbarSeekMode, :ScrollbarClickDeltaToGrabCenter, :SliderGrabClickOffset, :SliderCurrentAccum, :SliderCurrentAccumDirty, :DragCurrentAccumDirty, :DragCurrentAccum, :DragSpeedDefaultRatio, :DisabledAlphaBackup, :DisabledStackSize, :TooltipOverrideCount, :TooltipPreviousWindow, :ClipboardHandlerData, :MenusIdSubmittedThisFrame, :TypingSelectState, :PlatformImeData, :PlatformImeDataPrev, :UserTextures, :DockContext, :DockNodeWindowMenuHandler, :SettingsLoaded, :SettingsDirtyTimer, :SettingsIniData, :SettingsHandlers, :SettingsWindows, :SettingsTables, :Hooks, :HookIdNext, :DemoMarkerCallback, :LocalizationTable, :LogEnabled, :LogLineFirstItem, :LogFlags, :LogWindow, :LogFile, :LogBuffer, :LogNextPrefix, :LogNextSuffix, :LogLinePosY, :LogDepthRef, :LogDepthToExpand, :LogDepthToExpandDefault, :ErrorCallback, :ErrorCallbackUserData, :ErrorTooltipLockedPos, :ErrorFirst, :ErrorCountCurrentFrame, :StackSizesInNewFrame, :StackSizesInBeginForCurrentWindow, :DebugDrawIdConflictsCount, :DebugLogFlags, :DebugLogBuf, :DebugLogIndex, :DebugLogSkippedErrors, :DebugLogAutoDisableFlags, :DebugLogAutoDisableFrames, :DebugLocateFrames, :DebugBreakInLocateId, :DebugBreakKeyChord, :DebugBeginReturnValueCullDepth, :DebugItemPickerActive, :DebugItemPickerMouseButton, :DebugItemPickerBreakId, :DebugFlashStyleColorTime, :DebugFlashStyleColorBackup, :DebugMetricsConfig, :DebugItemPathQuery, :DebugIDStackTool, :DebugAllocInfo, :DebugHoveredDockNode, :FramerateSecPerFrame, :FramerateSecPerFrameIdx, :FramerateSecPerFrameCount, :FramerateSecPerFrameAccum, :WantCaptureMouseNextFrame, :WantCaptureKeyboardNextFrame, :WantTextInputNextFrame, :TempBuffer, :TempKeychordName, if private
+    (:Initialized, :WithinFrameScope, :WithinFrameScopeWithImplicitWindow, :TestEngineHookItems, :FrameCount, :FrameCountEnded, :FrameCountPlatformEnded, :FrameCountRendered, :Time, :ContextName, :IO, :PlatformIO, :Style, :ConfigFlagsCurrFrame, :ConfigFlagsLastFrame, :FontAtlases, :Font, :FontBaked, :FontSize, :FontSizeBase, :FontBakedScale, :FontRasterizerDensity, :CurrentDpiScale, :DrawListSharedData, :WithinEndChildID, :WithinEndPopupID, :TestEngine, :InputEventsQueue, :InputEventsTrail, :InputEventsNextMouseSource, :InputEventsNextEventId, :Windows, :WindowsFocusOrder, :WindowsTempSortBuffer, :CurrentWindowStack, :WindowsById, :WindowsActiveCount, :WindowsBorderHoverPadding, :DebugBreakInWindow, :CurrentWindow, :HoveredWindow, :HoveredWindowUnderMovingWindow, :HoveredWindowBeforeClear, :MovingWindow, :WheelingWindow, :WheelingWindowRefMousePos, :WheelingWindowStartFrame, :WheelingWindowScrolledFrame, :WheelingWindowReleaseTimer, :WheelingWindowWheelRemainder, :WheelingAxisAvg, :DebugDrawIdConflictsId, :DebugHookIdInfoId, :HoveredId, :HoveredIdPreviousFrame, :HoveredIdPreviousFrameItemCount, :HoveredIdTimer, :HoveredIdNotActiveTimer, :HoveredIdAllowOverlap, :HoveredIdIsDisabled, :ItemUnclipByLog, :AnyIdHasBeenEditedThisFrame, :ActiveId, :ActiveIdIsAlive, :ActiveIdTimer, :ActiveIdIsJustActivated, :ActiveIdWasSelected, :ActiveIdWasSoleSelected, :ActiveIdAllowOverlap, :ActiveIdNoClearOnFocusLoss, :ActiveIdHasBeenPressedBefore, :ActiveIdHasBeenEditedBefore, :ActiveIdHasBeenEditedThisFrame, :ActiveIdFromShortcut, :ActiveIdMouseButton, :ActiveIdDisabledId, :ActiveIdClickOffset, :ActiveIdSource, :ActiveIdWindow, :ActiveIdPreviousFrame, :DeactivatedItemData, :ActiveIdValueOnActivation, :LastActiveId, :LastActiveIdTimer, :LastActiveIdWasSelected, :LastActiveIdWasSoleSelected, :LastKeyModsChangeTime, :LastKeyModsChangeFromNoneTime, :LastKeyboardKeyPressTime, :KeysMayBeCharInput, :KeysOwnerData, :KeysRoutingTable, :ActiveIdUsingNavDirMask, :ActiveIdUsingAllKeyboardKeys, :DebugBreakInShortcutRouting, :CurrentFocusScopeId, :CurrentItemFlags, :DebugLocateId, :NextItemData, :LastItemData, :NextWindowData, :DebugShowGroupRects, :GcCompactAll, :DebugFlashStyleColorIdx, :ColorStack, :StyleVarStack, :FontStack, :FocusScopeStack, :ItemFlagsStack, :GroupStack, :OpenPopupStack, :BeginPopupStack, :TreeNodeStack, :Viewports, :CurrentViewport, :MouseViewport, :MouseLastHoveredViewport, :PlatformLastFocusedViewportId, :FallbackMonitor, :PlatformMonitorsFullWorkRect, :ViewportCreatedCount, :PlatformWindowsCreatedCount, :ViewportFocusedStampCount, :NavCursorVisible, :NavHighlightItemUnderNav, :NavMousePosDirty, :NavIdIsAlive, :NavId, :NavWindow, :NavFocusScopeId, :NavLayer, :NavIdItemFlags, :NavActivateId, :NavActivateDownId, :NavActivatePressedId, :NavActivateFlags, :NavFocusRoute, :NavHighlightActivatedId, :NavHighlightActivatedTimer, :NavOpenContextMenuItemId, :NavOpenContextMenuWindowId, :NavNextActivateId, :NavNextActivateFlags, :NavInputSource, :NavLastValidSelectionUserData, :NavCursorHideFrames, :NavAnyRequest, :NavInitRequest, :NavInitRequestFromMove, :NavInitResult, :NavMoveSubmitted, :NavMoveScoringItems, :NavMoveForwardToNextFrame, :NavMoveFlags, :NavMoveScrollFlags, :NavMoveKeyMods, :NavMoveDir, :NavMoveDirForDebug, :NavMoveClipDir, :NavScoringRect, :NavScoringNoClipRect, :NavScoringDebugCount, :NavTabbingDir, :NavTabbingCounter, :NavMoveResultLocal, :NavMoveResultLocalVisible, :NavMoveResultOther, :NavTabbingResultFirst, :NavJustMovedFromFocusScopeId, :NavJustMovedToId, :NavJustMovedToFocusScopeId, :NavJustMovedToKeyMods, :NavJustMovedToIsTabbing, :NavJustMovedToHasSelectionData, :ConfigNavEnableTabbing, :ConfigNavWindowingWithGamepad, :ConfigNavWindowingKeyNext, :ConfigNavWindowingKeyPrev, :NavWindowingTarget, :NavWindowingTargetAnim, :NavWindowingListWindow, :NavWindowingTimer, :NavWindowingHighlightAlpha, :NavWindowingInputSource, :NavWindowingToggleLayer, :NavWindowingToggleKey, :NavWindowingAccumDeltaPos, :NavWindowingAccumDeltaSize, :DimBgRatio, :DragDropActive, :DragDropWithinSource, :DragDropWithinTarget, :DragDropSourceFlags, :DragDropSourceFrameCount, :DragDropMouseButton, :DragDropPayload, :DragDropTargetRect, :DragDropTargetClipRect, :DragDropTargetId, :DragDropTargetFullViewport, :DragDropAcceptFlagsCurr, :DragDropAcceptFlagsPrev, :DragDropAcceptIdCurrRectSurface, :DragDropAcceptIdCurr, :DragDropAcceptIdPrev, :DragDropAcceptFrameCount, :DragDropHoldJustPressedId, :DragDropPayloadBufHeap, :DragDropPayloadBufLocal, :ClipperTempDataStacked, :ClipperTempData, :CurrentTable, :DebugBreakInTable, :TablesTempDataStacked, :TablesTempData, :Tables, :TablesLastTimeActive, :DrawChannelsTempMergeBuffer, :CurrentTabBar, :TabBars, :CurrentTabBarStack, :ShrinkWidthBuffer, :BoxSelectState, :CurrentMultiSelect, :MultiSelectTempDataStacked, :MultiSelectTempData, :MultiSelectStorage, :HoverItemDelayId, :HoverItemDelayIdPreviousFrame, :HoverItemDelayTimer, :HoverItemDelayClearTimer, :HoverItemUnlockedStationaryId, :HoverWindowUnlockedStationaryId, :MouseCursor, :MouseStationaryTimer, :MouseLastValidPos, :InputTextState, :InputTextLineIndex, :InputTextDeactivatedState, :InputTextPasswordFontBackupBaked, :InputTextPasswordFontBackupFlags, :InputTextReactivateId, :TempInputId, :DataTypeZeroValue, :BeginMenuDepth, :BeginComboDepth, :ColorEditCurrentID, :ColorEditSavedID, :ColorEditSavedHue, :ColorEditSavedSat, :ColorEditSavedColor, :ColorPickerRef, :ComboPreviewData, :WindowResizeBorderExpectedRect, :WindowResizeRelativeMode, :ScrollbarSeekMode, :ScrollbarClickDeltaToGrabCenter, :SliderGrabClickOffset, :SliderCurrentAccum, :SliderCurrentAccumDirty, :DragCurrentAccumDirty, :DragCurrentAccum, :DragSpeedDefaultRatio, :DisabledAlphaBackup, :DisabledStackSize, :TooltipOverrideCount, :TooltipPreviousWindow, :ClipboardHandlerData, :MenusIdSubmittedThisFrame, :TypingSelectState, :PlatformImeData, :PlatformImeDataPrev, :UserTextures, :DockContext, :DockNodeWindowMenuHandler, :SessionDate, :SettingsLoaded, :SettingsDirtyTimer, :SettingsIniData, :SettingsHandlers, :SettingsWindows, :SettingsTables, :Hooks, :HookIdNext, :DemoMarkerCallback, :LocalizationTable, :LogEnabled, :LogLineFirstItem, :LogFlags, :LogWindow, :LogFile, :LogBuffer, :LogNextPrefix, :LogNextSuffix, :LogLinePosY, :LogDepthRef, :LogDepthToExpand, :LogDepthToExpandDefault, :ErrorCallback, :ErrorCallbackUserData, :ErrorTooltipLockedPos, :ErrorFirst, :ErrorCountCurrentFrame, :StackSizesInNewFrame, :StackSizesInBeginForCurrentWindow, :DebugDrawIdConflictsCount, :DebugLogFlags, :DebugLogBuf, :DebugLogIndex, :DebugLogSkippedErrors, :DebugLogAutoDisableFlags, :DebugLogAutoDisableFrames, :DebugLocateFrames, :DebugBreakInLocateId, :DebugBreakKeyChord, :DebugBeginReturnValueCullDepth, :DebugItemPickerActive, :DebugItemPickerMouseButton, :DebugItemPickerBreakId, :DebugFlashStyleColorTime, :DebugFlashStyleColorBackup, :DebugMetricsConfig, :DebugItemPathQuery, :DebugIDStackTool, :DebugAllocInfo, :DebugHoveredDockNode, :FramerateSecPerFrame, :FramerateSecPerFrameIdx, :FramerateSecPerFrameCount, :FramerateSecPerFrameAccum, :WantCaptureMouseNextFrame, :WantCaptureKeyboardNextFrame, :WantTextInputNextFrame, :TempBuffer, :TempKeychordName, if private
             fieldnames(typeof(x))
         else
             ()
@@ -4098,16 +4280,18 @@ mutable struct ImGuiInputTextDeactivateData end
     ImGuiLocKey_TableSizeOne = 1
     ImGuiLocKey_TableSizeAllFit = 2
     ImGuiLocKey_TableSizeAllDefault = 3
-    ImGuiLocKey_TableResetOrder = 4
-    ImGuiLocKey_WindowingMainMenuBar = 5
-    ImGuiLocKey_WindowingPopup = 6
-    ImGuiLocKey_WindowingUntitled = 7
-    ImGuiLocKey_OpenLink_s = 8
-    ImGuiLocKey_CopyLink = 9
-    ImGuiLocKey_DockingHideTabBar = 10
-    ImGuiLocKey_DockingHoldShiftToDock = 11
-    ImGuiLocKey_DockingDragToUndockOrMoveNode = 12
-    ImGuiLocKey_COUNT = 13
+    ImGuiLocKey_TableReset = 4
+    ImGuiLocKey_TableResetOrder = 5
+    ImGuiLocKey_TableResetVisibility = 6
+    ImGuiLocKey_WindowingMainMenuBar = 7
+    ImGuiLocKey_WindowingPopup = 8
+    ImGuiLocKey_WindowingUntitled = 9
+    ImGuiLocKey_OpenLink_s = 10
+    ImGuiLocKey_CopyLink = 11
+    ImGuiLocKey_DockingHideTabBar = 12
+    ImGuiLocKey_DockingHoldShiftToDock = 13
+    ImGuiLocKey_DockingDragToUndockOrMoveNode = 14
+    ImGuiLocKey_COUNT = 15
 end
 
 struct ImGuiLocEntry
@@ -4180,29 +4364,143 @@ function Base.propertynames(x::ImGuiStyleVarInfo, private::Bool = false)
 end
 
 struct ImGuiTableSettings
-    ID::ImGuiID
-    SaveFlags::ImGuiTableFlags
-    RefScale::Cfloat
-    ColumnsCount::ImGuiTableColumnIdx
-    ColumnsCountMax::ImGuiTableColumnIdx
-    WantApply::Bool
+    data::NTuple{20, UInt8}
+end
+
+function Base.getproperty(x::Ptr{ImGuiTableSettings}, f::Symbol)
+    f === :ID && return Ptr{ImGuiID}(x + 0)
+    f === :SaveFlags && return Ptr{ImGuiTableFlags}(x + 4)
+    f === :RefScale && return Ptr{Cfloat}(x + 8)
+    f === :ColumnsCount && return Ptr{ImGuiTableColumnIdx}(x + 12)
+    f === :ColumnsCountMax && return Ptr{ImGuiTableColumnIdx}(x + 14)
+    f === :LastUsedDate && return Ptr{ImGuiPackedDate}(x + 16)
+    f === :WantApply && return (Ptr{Bool}(x + 16), 16, 1)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiTableSettings, f::Symbol)
+    r = Ref{ImGuiTableSettings}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiTableSettings}, r)
+    fptr = getproperty(ptr, f)
+    begin
+        if fptr isa Ptr
+            return GC.@preserve(r, unsafe_load(fptr))
+        else
+            (baseptr, offset, width) = fptr
+            ty = eltype(baseptr)
+            baseptr32 = convert(Ptr{UInt32}, baseptr)
+            u64 = GC.@preserve(r, unsafe_load(baseptr32))
+            if offset + width > 32
+                u64 |= GC.@preserve(r, unsafe_load(baseptr32 + 4)) << 32
+            end
+            u64 = u64 >> offset & (1 << width - 1)
+            return u64 % ty
+        end
+    end
+end
+
+function Base.setproperty!(x::Ptr{ImGuiTableSettings}, f::Symbol, v)
+    fptr = getproperty(x, f)
+    if fptr isa Ptr
+        unsafe_store!(getproperty(x, f), v)
+    else
+        (baseptr, offset, width) = fptr
+        baseptr32 = convert(Ptr{UInt32}, baseptr)
+        u64 = unsafe_load(baseptr32)
+        straddle = offset + width > 32
+        if straddle
+            u64 |= unsafe_load(baseptr32 + 4) << 32
+        end
+        mask = 1 << width - 1
+        u64 &= ~(mask << offset)
+        u64 |= (unsigned(v) & mask) << offset
+        unsafe_store!(baseptr32, u64 & typemax(UInt32))
+        if straddle
+            unsafe_store!(baseptr32 + 4, u64 >> 32)
+        end
+    end
+end
+
+function Base.propertynames(x::ImGuiTableSettings, private::Bool = false)
+    (:ID, :SaveFlags, :RefScale, :ColumnsCount, :ColumnsCountMax, :LastUsedDate, :WantApply, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 mutable struct ImGuiTableColumnsSettings end
 
 struct ImGuiWindowSettings
-    ID::ImGuiID
-    Pos::ImVec2ih
-    Size::ImVec2ih
-    ViewportPos::ImVec2ih
-    ViewportId::ImGuiID
-    DockId::ImGuiID
-    ClassId::ImGuiID
-    DockOrder::Cshort
-    Collapsed::Bool
-    IsChild::Bool
-    WantApply::Bool
-    WantDelete::Bool
+    data::NTuple{36, UInt8}
+end
+
+function Base.getproperty(x::Ptr{ImGuiWindowSettings}, f::Symbol)
+    f === :ID && return Ptr{ImGuiID}(x + 0)
+    f === :Pos && return Ptr{ImVec2ih}(x + 4)
+    f === :Size && return Ptr{ImVec2ih}(x + 8)
+    f === :ViewportPos && return Ptr{ImVec2ih}(x + 12)
+    f === :ViewportId && return Ptr{ImGuiID}(x + 16)
+    f === :DockId && return Ptr{ImGuiID}(x + 20)
+    f === :ClassId && return Ptr{ImGuiID}(x + 24)
+    f === :DockOrder && return Ptr{Cshort}(x + 28)
+    f === :LastUsedDate && return Ptr{ImGuiPackedDate}(x + 30)
+    f === :Collapsed && return (Ptr{Bool}(x + 32), 0, 1)
+    f === :IsChild && return (Ptr{Bool}(x + 32), 1, 1)
+    f === :WantApply && return (Ptr{Bool}(x + 32), 2, 1)
+    f === :WantDelete && return (Ptr{Bool}(x + 32), 3, 1)
+    return getfield(x, f)
+end
+
+function Base.getproperty(x::ImGuiWindowSettings, f::Symbol)
+    r = Ref{ImGuiWindowSettings}(x)
+    ptr = Base.unsafe_convert(Ptr{ImGuiWindowSettings}, r)
+    fptr = getproperty(ptr, f)
+    begin
+        if fptr isa Ptr
+            return GC.@preserve(r, unsafe_load(fptr))
+        else
+            (baseptr, offset, width) = fptr
+            ty = eltype(baseptr)
+            baseptr32 = convert(Ptr{UInt32}, baseptr)
+            u64 = GC.@preserve(r, unsafe_load(baseptr32))
+            if offset + width > 32
+                u64 |= GC.@preserve(r, unsafe_load(baseptr32 + 4)) << 32
+            end
+            u64 = u64 >> offset & (1 << width - 1)
+            return u64 % ty
+        end
+    end
+end
+
+function Base.setproperty!(x::Ptr{ImGuiWindowSettings}, f::Symbol, v)
+    fptr = getproperty(x, f)
+    if fptr isa Ptr
+        unsafe_store!(getproperty(x, f), v)
+    else
+        (baseptr, offset, width) = fptr
+        baseptr32 = convert(Ptr{UInt32}, baseptr)
+        u64 = unsafe_load(baseptr32)
+        straddle = offset + width > 32
+        if straddle
+            u64 |= unsafe_load(baseptr32 + 4) << 32
+        end
+        mask = 1 << width - 1
+        u64 &= ~(mask << offset)
+        u64 |= (unsigned(v) & mask) << offset
+        unsafe_store!(baseptr32, u64 & typemax(UInt32))
+        if straddle
+            unsafe_store!(baseptr32 + 4, u64 >> 32)
+        end
+    end
+end
+
+function Base.propertynames(x::ImGuiWindowSettings, private::Bool = false)
+    (:ID, :Pos, :Size, :ViewportPos, :ViewportId, :DockId, :ClassId, :DockOrder, :LastUsedDate, :Collapsed, :IsChild, :WantApply, :WantDelete, if private
+            fieldnames(typeof(x))
+        else
+            ()
+        end...)
 end
 
 struct ImVector_const_charPtr
@@ -4297,6 +4595,9 @@ end
     ImGuiItemFlags_AutoClosePopups = 16
     ImGuiItemFlags_AllowDuplicateId = 32
     ImGuiItemFlags_Disabled = 64
+    ImGuiItemFlags_LiveEditOnInputText = 128
+    ImGuiItemFlags_LiveEditOnInputScalar = 256
+    ImGuiItemFlags_LiveEditOnInput = 384
 end
 
 @cenum ImGuiInputTextFlags_::UInt32 begin
@@ -4643,15 +4944,17 @@ end
     ImGuiStyleVar_TableAngledHeadersTextAlign = 32
     ImGuiStyleVar_TreeLinesSize = 33
     ImGuiStyleVar_TreeLinesRounding = 34
-    ImGuiStyleVar_DragDropTargetRounding = 35
-    ImGuiStyleVar_ButtonTextAlign = 36
-    ImGuiStyleVar_SelectableTextAlign = 37
-    ImGuiStyleVar_SeparatorSize = 38
-    ImGuiStyleVar_SeparatorTextBorderSize = 39
-    ImGuiStyleVar_SeparatorTextAlign = 40
-    ImGuiStyleVar_SeparatorTextPadding = 41
-    ImGuiStyleVar_DockingSeparatorSize = 42
-    ImGuiStyleVar_COUNT = 43
+    ImGuiStyleVar_MenuItemRounding = 35
+    ImGuiStyleVar_SelectableRounding = 36
+    ImGuiStyleVar_DragDropTargetRounding = 37
+    ImGuiStyleVar_ButtonTextAlign = 38
+    ImGuiStyleVar_SelectableTextAlign = 39
+    ImGuiStyleVar_SeparatorSize = 40
+    ImGuiStyleVar_SeparatorTextBorderSize = 41
+    ImGuiStyleVar_SeparatorTextAlign = 42
+    ImGuiStyleVar_SeparatorTextPadding = 43
+    ImGuiStyleVar_DockingSeparatorSize = 44
+    ImGuiStyleVar_COUNT = 45
 end
 
 @cenum ImGuiButtonFlags_::UInt32 begin
@@ -4689,14 +4992,15 @@ end
     ImGuiColorEditFlags_Float = 16777216
     ImGuiColorEditFlags_PickerHueBar = 33554432
     ImGuiColorEditFlags_PickerHueWheel = 67108864
-    ImGuiColorEditFlags_InputRGB = 134217728
-    ImGuiColorEditFlags_InputHSV = 268435456
-    ImGuiColorEditFlags_DefaultOptions_ = 177209344
+    ImGuiColorEditFlags_PickerNoRotate = 134217728
+    ImGuiColorEditFlags_InputRGB = 268435456
+    ImGuiColorEditFlags_InputHSV = 536870912
+    ImGuiColorEditFlags_DefaultOptions_ = 311427072
     ImGuiColorEditFlags_AlphaMask_ = 28674
     ImGuiColorEditFlags_DisplayMask_ = 7340032
     ImGuiColorEditFlags_DataTypeMask_ = 25165824
     ImGuiColorEditFlags_PickerMask_ = 100663296
-    ImGuiColorEditFlags_InputMask_ = 402653184
+    ImGuiColorEditFlags_InputMask_ = 805306368
 end
 
 @cenum ImGuiSliderFlags_::UInt32 begin
@@ -4853,6 +5157,7 @@ end
     ImGuiMultiSelectFlags_NavWrapX = 65536
     ImGuiMultiSelectFlags_NoSelectOnRightClick = 131072
     ImGuiMultiSelectFlags_SelectOnMask_ = 57344
+    ImGuiMultiSelectFlags_CheckboxMode_ = 1048576
 end
 
 @cenum ImDrawFlags_::Int32 begin
@@ -4862,14 +5167,14 @@ end
     ImDrawFlags_RoundCornersBottomLeft = 64
     ImDrawFlags_RoundCornersBottomRight = 128
     ImDrawFlags_RoundCornersNone = 256
-    ImDrawFlags_Closed = 512
+    ImDrawFlags_RoundCornersAll = 240
+    ImDrawFlags_RoundCornersDefault_ = 240
     ImDrawFlags_RoundCornersTop = 48
     ImDrawFlags_RoundCornersBottom = 192
     ImDrawFlags_RoundCornersLeft = 80
     ImDrawFlags_RoundCornersRight = 160
-    ImDrawFlags_RoundCornersAll = 240
-    ImDrawFlags_RoundCornersDefault_ = 240
     ImDrawFlags_RoundCornersMask_ = 496
+    ImDrawFlags_Closed = 512
     ImDrawFlags_InvalidMask_ = -2147483633
 end
 
@@ -4879,6 +5184,7 @@ end
     ImDrawListFlags_AntiAliasedLinesUseTex = 2
     ImDrawListFlags_AntiAliasedFill = 4
     ImDrawListFlags_AllowVtxOffset = 8
+    ImDrawListFlags_TextNoPixelSnap = 16
 end
 
 @cenum ImFontAtlasFlags_::UInt32 begin
@@ -4913,6 +5219,8 @@ end
     ImGuiViewportFlags_IsMinimized = 4096
     ImGuiViewportFlags_IsFocused = 8192
 end
+
+const ImGuiDataAuthority = Cuint
 
 const ImGuiFocusRequestFlags = Cint
 
@@ -4953,7 +5261,7 @@ end
     ImGuiItemFlags_Inputable = 1048576
     ImGuiItemFlags_HasSelectionUserData = 2097152
     ImGuiItemFlags_IsMultiSelect = 4194304
-    ImGuiItemFlags_Default_ = 16
+    ImGuiItemFlags_Default_ = 144
 end
 
 @cenum ImGuiItemStatusFlags_::UInt32 begin
@@ -5209,7 +5517,6 @@ end
     ImGuiNavRenderCursorFlags_None = 0
     ImGuiNavRenderCursorFlags_Compact = 2
     ImGuiNavRenderCursorFlags_AlwaysDraw = 4
-    ImGuiNavRenderCursorFlags_NoRounding = 8
 end
 
 @cenum ImGuiNavMoveFlags_::UInt32 begin
@@ -5288,6 +5595,16 @@ end
     ImGuiWindowDockStyleCol_COUNT = 9
 end
 
+struct ImGuiSettingsCleanupArgs
+    TypeHashFilter::ImGuiID
+    DiscardOlderThanMonths::Cint
+    DiscardWhenMissingDate::Bool
+    DiscardAll::Bool
+    SetCurrentSessionDateToAll::Bool
+    SetCurrentSessionDateWhenMissingDate::Bool
+    _DiscardOlderThanDate::Cint
+end
+
 @cenum ImGuiDebugLogFlags_::UInt32 begin
     ImGuiDebugLogFlags_None = 0
     ImGuiDebugLogFlags_EventError = 1
@@ -5302,7 +5619,8 @@ end
     ImGuiDebugLogFlags_EventInputRouting = 512
     ImGuiDebugLogFlags_EventDocking = 1024
     ImGuiDebugLogFlags_EventViewport = 2048
-    ImGuiDebugLogFlags_EventMask_ = 4095
+    ImGuiDebugLogFlags_EventTable = 4096
+    ImGuiDebugLogFlags_EventMask_ = 8191
     ImGuiDebugLogFlags_OutputToTTY = 1048576
     ImGuiDebugLogFlags_OutputToDebugger = 2097152
     ImGuiDebugLogFlags_OutputToTestEngine = 4194304
@@ -5328,13 +5646,14 @@ end
 
 function Base.getproperty(x::Ptr{ImGuiTableColumnSettings}, f::Symbol)
     f === :WidthOrWeight && return Ptr{Cfloat}(x + 0)
-    f === :UserID && return Ptr{ImGuiID}(x + 4)
+    f === :ID && return Ptr{ImGuiID}(x + 4)
     f === :Index && return Ptr{ImGuiTableColumnIdx}(x + 8)
     f === :DisplayOrder && return Ptr{ImGuiTableColumnIdx}(x + 10)
     f === :SortOrder && return Ptr{ImGuiTableColumnIdx}(x + 12)
     f === :SortDirection && return (Ptr{ImU8}(x + 12), 16, 2)
     f === :IsEnabled && return (Ptr{ImS8}(x + 12), 18, 2)
     f === :IsStretch && return (Ptr{ImU8}(x + 12), 20, 1)
+    f === :IsLoaded && return (Ptr{Bool}(x + 12), 21, 1)
     return getfield(x, f)
 end
 
@@ -5382,24 +5701,21 @@ function Base.setproperty!(x::Ptr{ImGuiTableColumnSettings}, f::Symbol, v)
 end
 
 function Base.propertynames(x::ImGuiTableColumnSettings, private::Bool = false)
-    (:WidthOrWeight, :UserID, :Index, :DisplayOrder, :SortOrder, :SortDirection, :IsEnabled, :IsStretch, if private
+    (:WidthOrWeight, :ID, :Index, :DisplayOrder, :SortOrder, :SortDirection, :IsEnabled, :IsStretch, :IsLoaded, if private
             fieldnames(typeof(x))
         else
             ()
         end...)
 end
 
-const ImTextureRef = ImTextureRef
-
-const ImVec2 = ImVec2
-
-const ImVec2i = ImVec2i
-
-const ImVec4 = ImVec4
-
-const ImColor = ImColor
-
-const ImRect = ImRect
+struct StbTexteditRow
+    x0::Cfloat
+    x1::Cfloat
+    baseline_y_delta::Cfloat
+    ymin::Cfloat
+    ymax::Cfloat
+    num_chars::Cint
+end
 
 function ImVec2_ImVec2_Nil()
     ccall((:ImVec2_ImVec2_Nil, libcimgui), Ptr{ImVec2}, ())
@@ -6247,10 +6563,6 @@ function igColorButton(desc_id, col, flags, size)
     ccall((:igColorButton, libcimgui), Bool, (Ptr{Cchar}, ImVec4, ImGuiColorEditFlags, ImVec2), desc_id, col, flags, size)
 end
 
-function igSetColorEditOptions(flags)
-    ccall((:igSetColorEditOptions, libcimgui), Cvoid, (ImGuiColorEditFlags,), flags)
-end
-
 function igTreeNode_Str(label)
     ccall((:igTreeNode_Str, libcimgui), Bool, (Ptr{Cchar},), label)
 end
@@ -6454,15 +6766,15 @@ function igEndPopup()
 end
 
 function igOpenPopup_Str(str_id, popup_flags)
-    ccall((:igOpenPopup_Str, libcimgui), Cvoid, (Ptr{Cchar}, ImGuiPopupFlags), str_id, popup_flags)
+    ccall((:igOpenPopup_Str, libcimgui), Bool, (Ptr{Cchar}, ImGuiPopupFlags), str_id, popup_flags)
 end
 
 function igOpenPopup_ID(id, popup_flags)
-    ccall((:igOpenPopup_ID, libcimgui), Cvoid, (ImGuiID, ImGuiPopupFlags), id, popup_flags)
+    ccall((:igOpenPopup_ID, libcimgui), Bool, (ImGuiID, ImGuiPopupFlags), id, popup_flags)
 end
 
 function igOpenPopupOnItemClick(str_id, popup_flags)
-    ccall((:igOpenPopupOnItemClick, libcimgui), Cvoid, (Ptr{Cchar}, ImGuiPopupFlags), str_id, popup_flags)
+    ccall((:igOpenPopupOnItemClick, libcimgui), Bool, (Ptr{Cchar}, ImGuiPopupFlags), str_id, popup_flags)
 end
 
 function igCloseCurrentPopup()
@@ -6505,8 +6817,8 @@ function igTableSetColumnIndex(column_n)
     ccall((:igTableSetColumnIndex, libcimgui), Bool, (Cint,), column_n)
 end
 
-function igTableSetupColumn(label, flags, init_width_or_weight, user_id)
-    ccall((:igTableSetupColumn, libcimgui), Cvoid, (Ptr{Cchar}, ImGuiTableColumnFlags, Cfloat, ImGuiID), label, flags, init_width_or_weight, user_id)
+function igTableSetupColumn(label, flags, init_width_or_weight, user_data)
+    ccall((:igTableSetupColumn, libcimgui), Cvoid, (Ptr{Cchar}, ImGuiTableColumnFlags, Cfloat, ImGuiID), label, flags, init_width_or_weight, user_data)
 end
 
 function igTableSetupScrollFreeze(cols, rows)
@@ -6796,6 +7108,10 @@ end
 
 function igGetItemFlags()
     ccall((:igGetItemFlags, libcimgui), ImGuiItemFlags, ())
+end
+
+function igGetItemClickedCountWithSingleClickDelay(mouse_button, delay)
+    ccall((:igGetItemClickedCountWithSingleClickDelay, libcimgui), Cint, (ImGuiMouseButton, Cfloat), mouse_button, delay)
 end
 
 function igGetMainViewport()
@@ -8011,20 +8327,20 @@ function ImFontAtlas_RemoveFont(self, font)
     ccall((:ImFontAtlas_RemoveFont, libcimgui), Cvoid, (Ptr{ImFontAtlas}, Ptr{ImFont}), self, font)
 end
 
-function ImFontAtlas_Clear(self)
-    ccall((:ImFontAtlas_Clear, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
-end
-
-function ImFontAtlas_ClearFonts(self)
-    ccall((:ImFontAtlas_ClearFonts, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
-end
-
 function ImFontAtlas_CompactCache(self)
     ccall((:ImFontAtlas_CompactCache, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
 end
 
 function ImFontAtlas_SetFontLoader(self, font_loader)
     ccall((:ImFontAtlas_SetFontLoader, libcimgui), Cvoid, (Ptr{ImFontAtlas}, Ptr{ImFontLoader}), self, font_loader)
+end
+
+function ImFontAtlas_Clear(self)
+    ccall((:ImFontAtlas_Clear, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
+end
+
+function ImFontAtlas_ClearFonts(self)
+    ccall((:ImFontAtlas_ClearFonts, libcimgui), Cvoid, (Ptr{ImFontAtlas},), self)
 end
 
 function ImFontAtlas_ClearInputData(self)
@@ -8521,6 +8837,10 @@ function igImRound64(f)
     ccall((:igImRound64, libcimgui), Cfloat, (Cfloat,), f)
 end
 
+function igImCeilFast(f)
+    ccall((:igImCeilFast, libcimgui), Cfloat, (Cfloat,), f)
+end
+
 function igImModPositive(a, b)
     ccall((:igImModPositive, libcimgui), Cint, (Cint, Cint), a, b)
 end
@@ -8823,6 +9143,30 @@ end
 
 function ImGuiTextIndex_append(self, base, old_size, new_size)
     ccall((:ImGuiTextIndex_append, libcimgui), Cvoid, (Ptr{ImGuiTextIndex}, Ptr{Cchar}, Cint, Cint), self, base, old_size, new_size)
+end
+
+function ImGuiPackedDate_ImGuiPackedDate_Nil()
+    ccall((:ImGuiPackedDate_ImGuiPackedDate_Nil, libcimgui), Ptr{ImGuiPackedDate}, ())
+end
+
+function ImGuiPackedDate_destroy(self)
+    ccall((:ImGuiPackedDate_destroy, libcimgui), Cvoid, (Ptr{ImGuiPackedDate},), self)
+end
+
+function ImGuiPackedDate_ImGuiPackedDate_Int(yyyymmdd)
+    ccall((:ImGuiPackedDate_ImGuiPackedDate_Int, libcimgui), Ptr{ImGuiPackedDate}, (Cint,), yyyymmdd)
+end
+
+function ImGuiPackedDate_IsValid(self)
+    ccall((:ImGuiPackedDate_IsValid, libcimgui), Bool, (Ptr{ImGuiPackedDate},), self)
+end
+
+function ImGuiPackedDate_Unpack(self)
+    ccall((:ImGuiPackedDate_Unpack, libcimgui), Cint, (Ptr{ImGuiPackedDate},), self)
+end
+
+function ImGuiPackedDate_SubtractMonths(self, m)
+    ccall((:ImGuiPackedDate_SubtractMonths, libcimgui), Cvoid, (Ptr{ImGuiPackedDate}, Cint), self, m)
 end
 
 function igImLowerBound(in_begin, in_end, key)
@@ -9453,6 +9797,286 @@ function ImGuiTableSettings_GetColumnSettings(self)
     ccall((:ImGuiTableSettings_GetColumnSettings, libcimgui), Ptr{ImGuiTableColumnSettings}, (Ptr{ImGuiTableSettings},), self)
 end
 
+function igTableOpenContextMenu(column_n)
+    ccall((:igTableOpenContextMenu, libcimgui), Cvoid, (Cint,), column_n)
+end
+
+function igTableSetColumnWidth(column_n, width)
+    ccall((:igTableSetColumnWidth, libcimgui), Cvoid, (Cint, Cfloat), column_n, width)
+end
+
+function igTableSetColumnSortDirection(column_n, sort_direction, append_to_sort_specs)
+    ccall((:igTableSetColumnSortDirection, libcimgui), Cvoid, (Cint, ImGuiSortDirection, Bool), column_n, sort_direction, append_to_sort_specs)
+end
+
+function igTableGetHoveredRow()
+    ccall((:igTableGetHoveredRow, libcimgui), Cint, ())
+end
+
+function igTableGetHeaderRowHeight()
+    ccall((:igTableGetHeaderRowHeight, libcimgui), Cfloat, ())
+end
+
+function igTableGetHeaderAngledMaxLabelWidth()
+    ccall((:igTableGetHeaderAngledMaxLabelWidth, libcimgui), Cfloat, ())
+end
+
+function igTablePushBackgroundChannel()
+    ccall((:igTablePushBackgroundChannel, libcimgui), Cvoid, ())
+end
+
+function igTablePopBackgroundChannel()
+    ccall((:igTablePopBackgroundChannel, libcimgui), Cvoid, ())
+end
+
+function igTablePushColumnChannel(column_n)
+    ccall((:igTablePushColumnChannel, libcimgui), Cvoid, (Cint,), column_n)
+end
+
+function igTablePopColumnChannel()
+    ccall((:igTablePopColumnChannel, libcimgui), Cvoid, ())
+end
+
+function igTableAngledHeadersRowEx(row_id, angle, max_label_width, data, data_count)
+    ccall((:igTableAngledHeadersRowEx, libcimgui), Cvoid, (ImGuiID, Cfloat, Cfloat, Ptr{ImGuiTableHeaderData}, Cint), row_id, angle, max_label_width, data, data_count)
+end
+
+function igGetCurrentTable()
+    ccall((:igGetCurrentTable, libcimgui), Ptr{ImGuiTable}, ())
+end
+
+function igTableFindByID(id)
+    ccall((:igTableFindByID, libcimgui), Ptr{ImGuiTable}, (ImGuiID,), id)
+end
+
+function igBeginTableEx(name, id, columns_count, flags, outer_size, inner_width)
+    ccall((:igBeginTableEx, libcimgui), Bool, (Ptr{Cchar}, ImGuiID, Cint, ImGuiTableFlags, ImVec2, Cfloat), name, id, columns_count, flags, outer_size, inner_width)
+end
+
+function igTableBeginInitMemory(table, columns_count)
+    ccall((:igTableBeginInitMemory, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, columns_count)
+end
+
+function igTableApplyQueuedRequests(table)
+    ccall((:igTableApplyQueuedRequests, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableSetupDrawChannels(table)
+    ccall((:igTableSetupDrawChannels, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableReconcileColumns(table)
+    ccall((:igTableReconcileColumns, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableUpdateLayout(table)
+    ccall((:igTableUpdateLayout, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableUpdateBorders(table)
+    ccall((:igTableUpdateBorders, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableUpdateColumnsWeightFromWidth(table)
+    ccall((:igTableUpdateColumnsWeightFromWidth, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableApplyExternalUnclipRect(table, rect)
+    ccall((:igTableApplyExternalUnclipRect, libcimgui), Cvoid, (Ptr{ImGuiTable}, Ptr{ImRect}), table, rect)
+end
+
+function igTableDrawBorders(table)
+    ccall((:igTableDrawBorders, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableDrawDefaultContextMenu(table, flags_for_section_to_display)
+    ccall((:igTableDrawDefaultContextMenu, libcimgui), Cvoid, (Ptr{ImGuiTable}, ImGuiTableFlags), table, flags_for_section_to_display)
+end
+
+function igTableBeginContextMenuPopup(table)
+    ccall((:igTableBeginContextMenuPopup, libcimgui), Bool, (Ptr{ImGuiTable},), table)
+end
+
+function igTableMergeDrawChannels(table)
+    ccall((:igTableMergeDrawChannels, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableGetInstanceData(table, instance_no)
+    ccall((:igTableGetInstanceData, libcimgui), Ptr{ImGuiTableInstanceData}, (Ptr{ImGuiTable}, Cint), table, instance_no)
+end
+
+function igTableGetInstanceID(table, instance_no)
+    ccall((:igTableGetInstanceID, libcimgui), ImGuiID, (Ptr{ImGuiTable}, Cint), table, instance_no)
+end
+
+function igTableFixDisplayOrder(table)
+    ccall((:igTableFixDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableSortSpecsSanitize(table)
+    ccall((:igTableSortSpecsSanitize, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableSortSpecsBuild(table)
+    ccall((:igTableSortSpecsBuild, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableInitColumnDefaults(table, column, init_mask)
+    ccall((:igTableInitColumnDefaults, libcimgui), Cvoid, (Ptr{ImGuiTable}, Ptr{ImGuiTableColumn}, ImGuiTableColumnFlags), table, column, init_mask)
+end
+
+function igTableGetColumnNextSortDirection(column)
+    ccall((:igTableGetColumnNextSortDirection, libcimgui), ImGuiSortDirection, (Ptr{ImGuiTableColumn},), column)
+end
+
+function igTableFixColumnSortDirection(table, column)
+    ccall((:igTableFixColumnSortDirection, libcimgui), Cvoid, (Ptr{ImGuiTable}, Ptr{ImGuiTableColumn}), table, column)
+end
+
+function igTableGetColumnWidthAuto(table, column)
+    ccall((:igTableGetColumnWidthAuto, libcimgui), Cfloat, (Ptr{ImGuiTable}, Ptr{ImGuiTableColumn}), table, column)
+end
+
+function igTableBeginRow(table)
+    ccall((:igTableBeginRow, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableEndRow(table)
+    ccall((:igTableEndRow, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableBeginCell(table, column_n)
+    ccall((:igTableBeginCell, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, column_n)
+end
+
+function igTableEndCell(table)
+    ccall((:igTableEndCell, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableGetCellBgRect(table, column_n)
+    ccall((:igTableGetCellBgRect, libcimgui), ImRect, (Ptr{ImGuiTable}, Cint), table, column_n)
+end
+
+function igTableGetColumnName_TablePtr(table, column_n)
+    ccall((:igTableGetColumnName_TablePtr, libcimgui), Ptr{Cchar}, (Ptr{ImGuiTable}, Cint), table, column_n)
+end
+
+function igTableGetColumnResizeID(table, column_n, instance_no)
+    ccall((:igTableGetColumnResizeID, libcimgui), ImGuiID, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, instance_no)
+end
+
+function igTableCalcMaxColumnWidth(table, column_n)
+    ccall((:igTableCalcMaxColumnWidth, libcimgui), Cfloat, (Ptr{ImGuiTable}, Cint), table, column_n)
+end
+
+function igTableSetColumnWidthAutoSingle(table, column_n)
+    ccall((:igTableSetColumnWidthAutoSingle, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, column_n)
+end
+
+function igTableSetColumnWidthAutoAll(table)
+    ccall((:igTableSetColumnWidthAutoAll, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableSetColumnDisplayOrder(table, column_n, dst_order)
+    ccall((:igTableSetColumnDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, dst_order)
+end
+
+function igTableQueueSetColumnDisplayOrder(table, column_n, dst_order)
+    ccall((:igTableQueueSetColumnDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, dst_order)
+end
+
+function igTableRemove(table)
+    ccall((:igTableRemove, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableGcCompactTransientBuffers_TablePtr(table)
+    ccall((:igTableGcCompactTransientBuffers_TablePtr, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableGcCompactTransientBuffers_TableTempDataPtr(table)
+    ccall((:igTableGcCompactTransientBuffers_TableTempDataPtr, libcimgui), Cvoid, (Ptr{ImGuiTableTempData},), table)
+end
+
+function igTableGcCompactSettings()
+    ccall((:igTableGcCompactSettings, libcimgui), Cvoid, ())
+end
+
+function igTableLoadSettings(table)
+    ccall((:igTableLoadSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableLoadSettingsForColumns(table)
+    ccall((:igTableLoadSettingsForColumns, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableLoadSettingsForColumn(column, column_settings, load_flags)
+    ccall((:igTableLoadSettingsForColumn, libcimgui), Cvoid, (Ptr{ImGuiTableColumn}, Ptr{ImGuiTableColumnSettings}, ImGuiTableFlags), column, column_settings, load_flags)
+end
+
+function igTableSaveSettings(table)
+    ccall((:igTableSaveSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableResetSettings(table)
+    ccall((:igTableResetSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
+end
+
+function igTableGetBoundSettings(table)
+    ccall((:igTableGetBoundSettings, libcimgui), Ptr{ImGuiTableSettings}, (Ptr{ImGuiTable},), table)
+end
+
+function igTableSettingsAddSettingsHandler()
+    ccall((:igTableSettingsAddSettingsHandler, libcimgui), Cvoid, ())
+end
+
+function igTableSettingsCreate(id, columns_count)
+    ccall((:igTableSettingsCreate, libcimgui), Ptr{ImGuiTableSettings}, (ImGuiID, Cint), id, columns_count)
+end
+
+function igTableSettingsFindByID(id)
+    ccall((:igTableSettingsFindByID, libcimgui), Ptr{ImGuiTableSettings}, (ImGuiID,), id)
+end
+
+function igSetWindowClipRectBeforeSetChannel(window, clip_rect)
+    ccall((:igSetWindowClipRectBeforeSetChannel, libcimgui), Cvoid, (Ptr{ImGuiWindow}, ImRect), window, clip_rect)
+end
+
+function igBeginColumns(str_id, count, flags)
+    ccall((:igBeginColumns, libcimgui), Cvoid, (Ptr{Cchar}, Cint, ImGuiOldColumnFlags), str_id, count, flags)
+end
+
+function igEndColumns()
+    ccall((:igEndColumns, libcimgui), Cvoid, ())
+end
+
+function igPushColumnClipRect(column_index)
+    ccall((:igPushColumnClipRect, libcimgui), Cvoid, (Cint,), column_index)
+end
+
+function igPushColumnsBackground()
+    ccall((:igPushColumnsBackground, libcimgui), Cvoid, ())
+end
+
+function igPopColumnsBackground()
+    ccall((:igPopColumnsBackground, libcimgui), Cvoid, ())
+end
+
+function igGetColumnsID(str_id, count)
+    ccall((:igGetColumnsID, libcimgui), ImGuiID, (Ptr{Cchar}, Cint), str_id, count)
+end
+
+function igFindOrCreateColumns(window, id)
+    ccall((:igFindOrCreateColumns, libcimgui), Ptr{ImGuiOldColumns}, (Ptr{ImGuiWindow}, ImGuiID), window, id)
+end
+
+function igGetColumnOffsetFromNorm(columns, offset_norm)
+    ccall((:igGetColumnOffsetFromNorm, libcimgui), Cfloat, (Ptr{ImGuiOldColumns}, Cfloat), columns, offset_norm)
+end
+
+function igGetColumnNormFromOffset(columns, offset)
+    ccall((:igGetColumnNormFromOffset, libcimgui), Cfloat, (Ptr{ImGuiOldColumns}, Cfloat), columns, offset)
+end
+
 function igGetIO_ContextPtr(ctx)
     ccall((:igGetIO_ContextPtr, libcimgui), Ptr{ImGuiIO}, (Ptr{ImGuiContext},), ctx)
 end
@@ -9741,6 +10365,10 @@ function igClearIniSettings()
     ccall((:igClearIniSettings, libcimgui), Cvoid, ())
 end
 
+function igCleanupIniSettings(args)
+    ccall((:igCleanupIniSettings, libcimgui), Cvoid, (Ptr{ImGuiSettingsCleanupArgs},), args)
+end
+
 function igAddSettingsHandler(handler)
     ccall((:igAddSettingsHandler, libcimgui), Cvoid, (Ptr{ImGuiSettingsHandler},), handler)
 end
@@ -9954,7 +10582,7 @@ function igBeginPopupMenuEx(id, label, extra_window_flags)
 end
 
 function igOpenPopupEx(id, popup_flags)
-    ccall((:igOpenPopupEx, libcimgui), Cvoid, (ImGuiID, ImGuiPopupFlags), id, popup_flags)
+    ccall((:igOpenPopupEx, libcimgui), Bool, (ImGuiID, ImGuiPopupFlags), id, popup_flags)
 end
 
 function igClosePopupToLevel(remaining, restore_focus_to_window_under_popup)
@@ -10517,8 +11145,8 @@ function igMultiSelectItemHeader(id, p_selected, p_button_flags)
     ccall((:igMultiSelectItemHeader, libcimgui), Cvoid, (ImGuiID, Ptr{Bool}, Ptr{ImGuiButtonFlags}), id, p_selected, p_button_flags)
 end
 
-function igMultiSelectItemFooter(id, p_selected, p_pressed)
-    ccall((:igMultiSelectItemFooter, libcimgui), Cvoid, (ImGuiID, Ptr{Bool}, Ptr{Bool}), id, p_selected, p_pressed)
+function igMultiSelectItemFooter(id, p_selected, p_pressed, extra_flags)
+    ccall((:igMultiSelectItemFooter, libcimgui), Cvoid, (ImGuiID, Ptr{Bool}, Ptr{Bool}, ImGuiMultiSelectFlags), id, p_selected, p_pressed, extra_flags)
 end
 
 function igMultiSelectAddSetAll(ms, selected)
@@ -10535,270 +11163,6 @@ end
 
 function igGetMultiSelectState(id)
     ccall((:igGetMultiSelectState, libcimgui), Ptr{ImGuiMultiSelectState}, (ImGuiID,), id)
-end
-
-function igSetWindowClipRectBeforeSetChannel(window, clip_rect)
-    ccall((:igSetWindowClipRectBeforeSetChannel, libcimgui), Cvoid, (Ptr{ImGuiWindow}, ImRect), window, clip_rect)
-end
-
-function igBeginColumns(str_id, count, flags)
-    ccall((:igBeginColumns, libcimgui), Cvoid, (Ptr{Cchar}, Cint, ImGuiOldColumnFlags), str_id, count, flags)
-end
-
-function igEndColumns()
-    ccall((:igEndColumns, libcimgui), Cvoid, ())
-end
-
-function igPushColumnClipRect(column_index)
-    ccall((:igPushColumnClipRect, libcimgui), Cvoid, (Cint,), column_index)
-end
-
-function igPushColumnsBackground()
-    ccall((:igPushColumnsBackground, libcimgui), Cvoid, ())
-end
-
-function igPopColumnsBackground()
-    ccall((:igPopColumnsBackground, libcimgui), Cvoid, ())
-end
-
-function igGetColumnsID(str_id, count)
-    ccall((:igGetColumnsID, libcimgui), ImGuiID, (Ptr{Cchar}, Cint), str_id, count)
-end
-
-function igFindOrCreateColumns(window, id)
-    ccall((:igFindOrCreateColumns, libcimgui), Ptr{ImGuiOldColumns}, (Ptr{ImGuiWindow}, ImGuiID), window, id)
-end
-
-function igGetColumnOffsetFromNorm(columns, offset_norm)
-    ccall((:igGetColumnOffsetFromNorm, libcimgui), Cfloat, (Ptr{ImGuiOldColumns}, Cfloat), columns, offset_norm)
-end
-
-function igGetColumnNormFromOffset(columns, offset)
-    ccall((:igGetColumnNormFromOffset, libcimgui), Cfloat, (Ptr{ImGuiOldColumns}, Cfloat), columns, offset)
-end
-
-function igTableOpenContextMenu(column_n)
-    ccall((:igTableOpenContextMenu, libcimgui), Cvoid, (Cint,), column_n)
-end
-
-function igTableSetColumnWidth(column_n, width)
-    ccall((:igTableSetColumnWidth, libcimgui), Cvoid, (Cint, Cfloat), column_n, width)
-end
-
-function igTableSetColumnSortDirection(column_n, sort_direction, append_to_sort_specs)
-    ccall((:igTableSetColumnSortDirection, libcimgui), Cvoid, (Cint, ImGuiSortDirection, Bool), column_n, sort_direction, append_to_sort_specs)
-end
-
-function igTableGetHoveredRow()
-    ccall((:igTableGetHoveredRow, libcimgui), Cint, ())
-end
-
-function igTableGetHeaderRowHeight()
-    ccall((:igTableGetHeaderRowHeight, libcimgui), Cfloat, ())
-end
-
-function igTableGetHeaderAngledMaxLabelWidth()
-    ccall((:igTableGetHeaderAngledMaxLabelWidth, libcimgui), Cfloat, ())
-end
-
-function igTablePushBackgroundChannel()
-    ccall((:igTablePushBackgroundChannel, libcimgui), Cvoid, ())
-end
-
-function igTablePopBackgroundChannel()
-    ccall((:igTablePopBackgroundChannel, libcimgui), Cvoid, ())
-end
-
-function igTablePushColumnChannel(column_n)
-    ccall((:igTablePushColumnChannel, libcimgui), Cvoid, (Cint,), column_n)
-end
-
-function igTablePopColumnChannel()
-    ccall((:igTablePopColumnChannel, libcimgui), Cvoid, ())
-end
-
-function igTableAngledHeadersRowEx(row_id, angle, max_label_width, data, data_count)
-    ccall((:igTableAngledHeadersRowEx, libcimgui), Cvoid, (ImGuiID, Cfloat, Cfloat, Ptr{ImGuiTableHeaderData}, Cint), row_id, angle, max_label_width, data, data_count)
-end
-
-function igGetCurrentTable()
-    ccall((:igGetCurrentTable, libcimgui), Ptr{ImGuiTable}, ())
-end
-
-function igTableFindByID(id)
-    ccall((:igTableFindByID, libcimgui), Ptr{ImGuiTable}, (ImGuiID,), id)
-end
-
-function igBeginTableEx(name, id, columns_count, flags, outer_size, inner_width)
-    ccall((:igBeginTableEx, libcimgui), Bool, (Ptr{Cchar}, ImGuiID, Cint, ImGuiTableFlags, ImVec2, Cfloat), name, id, columns_count, flags, outer_size, inner_width)
-end
-
-function igTableBeginInitMemory(table, columns_count)
-    ccall((:igTableBeginInitMemory, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, columns_count)
-end
-
-function igTableBeginApplyRequests(table)
-    ccall((:igTableBeginApplyRequests, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSetupDrawChannels(table)
-    ccall((:igTableSetupDrawChannels, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableUpdateLayout(table)
-    ccall((:igTableUpdateLayout, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableUpdateBorders(table)
-    ccall((:igTableUpdateBorders, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableUpdateColumnsWeightFromWidth(table)
-    ccall((:igTableUpdateColumnsWeightFromWidth, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableApplyExternalUnclipRect(table, rect)
-    ccall((:igTableApplyExternalUnclipRect, libcimgui), Cvoid, (Ptr{ImGuiTable}, Ptr{ImRect}), table, rect)
-end
-
-function igTableDrawBorders(table)
-    ccall((:igTableDrawBorders, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableDrawDefaultContextMenu(table, flags_for_section_to_display)
-    ccall((:igTableDrawDefaultContextMenu, libcimgui), Cvoid, (Ptr{ImGuiTable}, ImGuiTableFlags), table, flags_for_section_to_display)
-end
-
-function igTableBeginContextMenuPopup(table)
-    ccall((:igTableBeginContextMenuPopup, libcimgui), Bool, (Ptr{ImGuiTable},), table)
-end
-
-function igTableMergeDrawChannels(table)
-    ccall((:igTableMergeDrawChannels, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGetInstanceData(table, instance_no)
-    ccall((:igTableGetInstanceData, libcimgui), Ptr{ImGuiTableInstanceData}, (Ptr{ImGuiTable}, Cint), table, instance_no)
-end
-
-function igTableGetInstanceID(table, instance_no)
-    ccall((:igTableGetInstanceID, libcimgui), ImGuiID, (Ptr{ImGuiTable}, Cint), table, instance_no)
-end
-
-function igTableFixDisplayOrder(table)
-    ccall((:igTableFixDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSortSpecsSanitize(table)
-    ccall((:igTableSortSpecsSanitize, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSortSpecsBuild(table)
-    ccall((:igTableSortSpecsBuild, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGetColumnNextSortDirection(column)
-    ccall((:igTableGetColumnNextSortDirection, libcimgui), ImGuiSortDirection, (Ptr{ImGuiTableColumn},), column)
-end
-
-function igTableFixColumnSortDirection(table, column)
-    ccall((:igTableFixColumnSortDirection, libcimgui), Cvoid, (Ptr{ImGuiTable}, Ptr{ImGuiTableColumn}), table, column)
-end
-
-function igTableGetColumnWidthAuto(table, column)
-    ccall((:igTableGetColumnWidthAuto, libcimgui), Cfloat, (Ptr{ImGuiTable}, Ptr{ImGuiTableColumn}), table, column)
-end
-
-function igTableBeginRow(table)
-    ccall((:igTableBeginRow, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableEndRow(table)
-    ccall((:igTableEndRow, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableBeginCell(table, column_n)
-    ccall((:igTableBeginCell, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, column_n)
-end
-
-function igTableEndCell(table)
-    ccall((:igTableEndCell, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGetCellBgRect(table, column_n)
-    ccall((:igTableGetCellBgRect, libcimgui), ImRect, (Ptr{ImGuiTable}, Cint), table, column_n)
-end
-
-function igTableGetColumnName_TablePtr(table, column_n)
-    ccall((:igTableGetColumnName_TablePtr, libcimgui), Ptr{Cchar}, (Ptr{ImGuiTable}, Cint), table, column_n)
-end
-
-function igTableGetColumnResizeID(table, column_n, instance_no)
-    ccall((:igTableGetColumnResizeID, libcimgui), ImGuiID, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, instance_no)
-end
-
-function igTableCalcMaxColumnWidth(table, column_n)
-    ccall((:igTableCalcMaxColumnWidth, libcimgui), Cfloat, (Ptr{ImGuiTable}, Cint), table, column_n)
-end
-
-function igTableSetColumnWidthAutoSingle(table, column_n)
-    ccall((:igTableSetColumnWidthAutoSingle, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint), table, column_n)
-end
-
-function igTableSetColumnWidthAutoAll(table)
-    ccall((:igTableSetColumnWidthAutoAll, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSetColumnDisplayOrder(table, column_n, dst_order)
-    ccall((:igTableSetColumnDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, dst_order)
-end
-
-function igTableQueueSetColumnDisplayOrder(table, column_n, dst_order)
-    ccall((:igTableQueueSetColumnDisplayOrder, libcimgui), Cvoid, (Ptr{ImGuiTable}, Cint, Cint), table, column_n, dst_order)
-end
-
-function igTableRemove(table)
-    ccall((:igTableRemove, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGcCompactTransientBuffers_TablePtr(table)
-    ccall((:igTableGcCompactTransientBuffers_TablePtr, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGcCompactTransientBuffers_TableTempDataPtr(table)
-    ccall((:igTableGcCompactTransientBuffers_TableTempDataPtr, libcimgui), Cvoid, (Ptr{ImGuiTableTempData},), table)
-end
-
-function igTableGcCompactSettings()
-    ccall((:igTableGcCompactSettings, libcimgui), Cvoid, ())
-end
-
-function igTableLoadSettings(table)
-    ccall((:igTableLoadSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSaveSettings(table)
-    ccall((:igTableSaveSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableResetSettings(table)
-    ccall((:igTableResetSettings, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
-end
-
-function igTableGetBoundSettings(table)
-    ccall((:igTableGetBoundSettings, libcimgui), Ptr{ImGuiTableSettings}, (Ptr{ImGuiTable},), table)
-end
-
-function igTableSettingsAddSettingsHandler()
-    ccall((:igTableSettingsAddSettingsHandler, libcimgui), Cvoid, ())
-end
-
-function igTableSettingsCreate(id, columns_count)
-    ccall((:igTableSettingsCreate, libcimgui), Ptr{ImGuiTableSettings}, (ImGuiID, Cint), id, columns_count)
-end
-
-function igTableSettingsFindByID(id)
-    ccall((:igTableSettingsFindByID, libcimgui), Ptr{ImGuiTableSettings}, (ImGuiID,), id)
 end
 
 function igGetCurrentTabBar()
@@ -10933,8 +11297,8 @@ function igRenderColorRectWithAlphaCheckerboard(draw_list, p_min, p_max, fill_co
     ccall((:igRenderColorRectWithAlphaCheckerboard, libcimgui), Cvoid, (Ptr{ImDrawList}, ImVec2, ImVec2, ImU32, Cfloat, ImVec2, Cfloat, ImDrawFlags), draw_list, p_min, p_max, fill_col, grid_step, grid_off, rounding, flags)
 end
 
-function igRenderNavCursor(bb, id, flags)
-    ccall((:igRenderNavCursor, libcimgui), Cvoid, (ImRect, ImGuiID, ImGuiNavRenderCursorFlags), bb, id, flags)
+function igRenderNavCursor(bb, id, flags, rounding)
+    ccall((:igRenderNavCursor, libcimgui), Cvoid, (ImRect, ImGuiID, ImGuiNavRenderCursorFlags, Cfloat), bb, id, flags, rounding)
 end
 
 function igFindRenderedTextEnd(text, text_end)
@@ -11330,8 +11694,8 @@ function igDebugNodeTable(table)
     ccall((:igDebugNodeTable, libcimgui), Cvoid, (Ptr{ImGuiTable},), table)
 end
 
-function igDebugNodeTableSettings(settings)
-    ccall((:igDebugNodeTableSettings, libcimgui), Cvoid, (Ptr{ImGuiTableSettings},), settings)
+function igDebugNodeTableSettings(settings, table)
+    ccall((:igDebugNodeTableSettings, libcimgui), Cvoid, (Ptr{ImGuiTableSettings}, Ptr{ImGuiTable}), settings, table)
 end
 
 function igDebugNodeInputTextState(state)
@@ -11610,6 +11974,10 @@ function igImFontAtlasTextureBlockQueueUpload(atlas, tex, x, y, w, h)
     ccall((:igImFontAtlasTextureBlockQueueUpload, libcimgui), Cvoid, (Ptr{ImFontAtlas}, Ptr{ImTextureData}, Cint, Cint, Cint, Cint), atlas, tex, x, y, w, h)
 end
 
+function igImTextureDataUpdateNewFrame(tex)
+    ccall((:igImTextureDataUpdateNewFrame, libcimgui), Bool, (Ptr{ImTextureData},), tex)
+end
+
 function igImTextureDataQueueUpload(tex, x, y, w, h)
     ccall((:igImTextureDataQueueUpload, libcimgui), Cvoid, (Ptr{ImTextureData}, Cint, Cint, Cint, Cint), tex, x, y, w, h)
 end
@@ -11670,12 +12038,6 @@ end
 function ImGuiPlatformIO_Set_Platform_GetWindowSize(platform_io, user_callback)
     ccall((:ImGuiPlatformIO_Set_Platform_GetWindowSize, libcimgui), Cvoid, (Ptr{ImGuiPlatformIO}, Ptr{Cvoid}), platform_io, user_callback)
 end
-
-const ImPlotFlags = Cint
-
-const ImPlotLocation = Cint
-
-const ImPlotMouseTextFlags = Cint
 
 const ImPlotAxisFlags = Cint
 
@@ -11778,6 +12140,73 @@ struct ImPlotAxis
     Held::Bool
 end
 
+const ImPlotAxis = ImPlotAxis
+
+const ImPlotDateFmt = Cint
+
+const ImPlotTimeFmt = Cint
+
+struct ImPlotDateTimeSpec
+    Date::ImPlotDateFmt
+    Time::ImPlotTimeFmt
+    UseISO8601::Bool
+    Use24HourClock::Bool
+end
+
+const ImPlotDateTimeSpec = ImPlotDateTimeSpec
+
+struct ImPlotPoint
+    x::Cdouble
+    y::Cdouble
+end
+
+const ImPlotPoint = ImPlotPoint
+
+const ImPlotRange = ImPlotRange
+
+struct ImPlotRect
+    X::ImPlotRange
+    Y::ImPlotRange
+end
+
+const ImPlotRect = ImPlotRect
+
+const ImPlotMarker = Cint
+
+const ImPlotItemFlags = Cint
+
+struct ImPlotSpec
+    LineColor::ImVec4
+    LineColors::Ptr{ImU32}
+    LineWeight::Cfloat
+    FillColor::ImVec4
+    FillColors::Ptr{ImU32}
+    FillAlpha::Cfloat
+    Marker::ImPlotMarker
+    MarkerSize::Cfloat
+    MarkerSizes::Ptr{Cfloat}
+    MarkerLineColor::ImVec4
+    MarkerLineColors::Ptr{ImU32}
+    MarkerFillColor::ImVec4
+    MarkerFillColors::Ptr{ImU32}
+    Size::Cfloat
+    Offset::Cint
+    Stride::Cint
+    Flags::ImPlotItemFlags
+end
+
+const ImPlotSpec = ImPlotSpec
+
+const ImPlotTick = ImPlotTick
+
+const ImPlotTime = ImPlotTime
+
+const ImPlotFlags = Cint
+
+const ImPlotLocation = Cint
+
+const ImPlotMouseTextFlags = Cint
+
 const ImPlotLegendFlags = Cint
 
 struct ImPlotLegend
@@ -11794,8 +12223,6 @@ struct ImPlotLegend
     Held::Bool
     CanGoInside::Bool
 end
-
-const ImPlotMarker = Cint
 
 struct ImPlotItem
     ID::ImGuiID
@@ -12040,28 +12467,6 @@ struct ImPlotNextPlotData
     Fit::NTuple{6, Bool}
     LinkedMin::NTuple{6, Ptr{Cdouble}}
     LinkedMax::NTuple{6, Ptr{Cdouble}}
-end
-
-const ImPlotItemFlags = Cint
-
-struct ImPlotSpec
-    LineColor::ImVec4
-    LineColors::Ptr{ImU32}
-    LineWeight::Cfloat
-    FillColor::ImVec4
-    FillColors::Ptr{ImU32}
-    FillAlpha::Cfloat
-    Marker::ImPlotMarker
-    MarkerSize::Cfloat
-    MarkerSizes::Ptr{Cfloat}
-    MarkerLineColor::ImVec4
-    MarkerLineColors::Ptr{ImU32}
-    MarkerFillColor::ImVec4
-    MarkerFillColors::Ptr{ImU32}
-    Size::Cfloat
-    Offset::Cint
-    Stride::Cint
-    Flags::ImPlotItemFlags
 end
 
 struct ImPlotNextItemData
@@ -12542,24 +12947,10 @@ end
     ImPlotBin_Scott = -4
 end
 
-struct ImPlotPoint
-    x::Cdouble
-    y::Cdouble
-end
-
-struct ImPlotRect
-    X::ImPlotRange
-    Y::ImPlotRange
-end
-
 # typedef ImPlotPoint_c ( * ImPlotGetter ) ( int idx , void * user_data )
 const ImPlotGetter = Ptr{Cvoid}
 
 const ImPlotTimeUnit = Cint
-
-const ImPlotDateFmt = Cint
-
-const ImPlotTimeFmt = Cint
 
 const ImPlotMarkerInternal = Cint
 
@@ -12601,13 +12992,6 @@ end
     ImPlotMarker_Invalid = -3
 end
 
-struct ImPlotDateTimeSpec
-    Date::ImPlotDateFmt
-    Time::ImPlotTimeFmt
-    UseISO8601::Bool
-    Use24HourClock::Bool
-end
-
 struct ImPlotPointError
     X::Cdouble
     Y::Cdouble
@@ -12621,22 +13005,6 @@ struct Formatter_Time_Data
     UserFormatter::ImPlotFormatter
     UserFormatterData::Ptr{Cvoid}
 end
-
-const ImPlotDateTimeSpec = ImPlotDateTimeSpec
-
-const ImPlotPoint = ImPlotPoint
-
-const ImPlotRange = ImPlotRange
-
-const ImPlotTime = ImPlotTime
-
-const ImPlotRect = ImPlotRect
-
-const ImPlotSpec = ImPlotSpec
-
-const ImPlotTick = ImPlotTick
-
-const ImPlotAxis = ImPlotAxis
 
 # typedef void * ( * ImPlotPoint_getter ) ( void * data , int idx , ImPlotPoint_c * point )
 const ImPlotPoint_getter = Ptr{Cvoid}
@@ -16375,12 +16743,23 @@ function ImGui_ImplGlfw_WindowFocusCallback(window, focused)
     ccall((:ImGui_ImplGlfw_WindowFocusCallback, libcimgui), Cvoid, (Ptr{GLFWwindow}, Cint), window, focused)
 end
 
+struct ImGui_ImplOpenGL3_RenderState
+    UseBindSampler::Bool
+    UseTexParameterFilter::Bool
+    CurrentSampler::Cuint
+    CurrentTexParameterFilter::Cuint
+end
+
 function ImGui_ImplOpenGL3_CreateDeviceObjects()
     ccall((:ImGui_ImplOpenGL3_CreateDeviceObjects, libcimgui), Bool, ())
 end
 
 function ImGui_ImplOpenGL3_DestroyDeviceObjects()
     ccall((:ImGui_ImplOpenGL3_DestroyDeviceObjects, libcimgui), Cvoid, ())
+end
+
+function ImGui_ImplOpenGL3_GetRenderState()
+    ccall((:ImGui_ImplOpenGL3_GetRenderState, libcimgui), Ptr{ImGui_ImplOpenGL3_RenderState}, ())
 end
 
 function ImGui_ImplOpenGL3_Init(glsl_version)
