@@ -28,12 +28,12 @@ end
 
 const g_ImageTexture = Dict{Int, GL.GLuint}()
 
-function ig._create_image_texture(::Val{:GlfwOpenGL3}, image_width, image_height; format=GL.GL_RGBA, type=GL.GL_UNSIGNED_BYTE)
+function ig._create_image_texture(::Val{:GlfwOpenGL3}, image_width, image_height; format=GL.GL_RGBA, type=GL.GL_UNSIGNED_BYTE, filter=GL.GL_LINEAR)
     id = GL.GLuint(0)
     @c GL.glGenTextures(1, &id)
     GL.glBindTexture(GL.GL_TEXTURE_2D, id)
-    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR)
-    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR)
+    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, filter)
+    GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, filter)
     GL.glPixelStorei(GL.GL_UNPACK_ROW_LENGTH, 0)
     GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, format, GL.GLsizei(image_width), GL.GLsizei(image_height), 0, format, type, C_NULL)
     g_ImageTexture[id] = id
@@ -64,6 +64,65 @@ end
 
 _window::Union{Nothing, GLFW.Window} = nothing
 ig._current_window(::Val{:GlfwOpenGL3}) = _window
+
+# test engine drives screenshots through a backend-provided `ImGuiScreenCaptureFunc`:
+# bool (*)(ImGuiID viewport_id, int x, int y, int w, int h, unsigned int* pixels, void* user_data)
+#
+# It must write the framebuffer region (x, y, w, h) into `pixels` as RGBA8
+# capture tool works in ImGui display coordinates (logical pixels), so on a HiDPI display
+# the actual framebuffer is larger and we downsample
+function _capture_framebuffer(viewport_id::lib.ImGuiID, x::Cint, y::Cint, w::Cint, h::Cint,
+                              pixels::Ptr{Cuint}, user_data::Ptr{Cvoid})::Bool
+    (w <= 0 || h <= 0) && return true
+
+    window = _window
+    window === nothing && return false
+
+    # derive the logical->framebuffer scale
+    fb_w, fb_h = GLFW.GetFramebufferSize(window)
+    io = ig.GetIO()
+    display = unsafe_load(io.DisplaySize)
+    sx = fb_w / display.x
+    sy = fb_h / display.y
+
+    # The framebuffer region corresponding to the requested logical rect.
+    fx = round(Int, x * sx)
+    fw = round(Int, w * sx)
+    fh = round(Int, h * sy)
+    # GL's origin is bottom-left, so flip the rect's y to GL coordinates.
+    gl_y = fb_h - round(Int, (y + h) * sy)
+
+    # Read the front buffer, restoring the previously-bound read buffer after.
+    prev_read_buffer = Ref{GL.GLint}(0)
+    GL.glGetIntegerv(GL.GL_READ_BUFFER, prev_read_buffer)
+    GL.glReadBuffer(GL.GL_FRONT)
+    GL.glPixelStorei(GL.GL_PACK_ALIGNMENT, 1)
+
+    # glReadPixels returns rows bottom-to-top, fw wide, fh tall.
+    scratch = Vector{Cuint}(undef, fw * fh)
+    GC.@preserve scratch begin
+        GL.glReadPixels(fx, gl_y, fw, fh, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pointer(scratch))
+    end
+    GL.glReadBuffer(prev_read_buffer[])
+
+    # Downsample (nearest) into the logical w×h output, flipping rows: GL rows are
+    # bottom-to-top, the tool wants top-to-bottom (the `fh -` does the flip).
+    S = reshape(scratch, fw, fh)
+    cols = clamp.(round.(Int, ((1:w) .- 0.5) .* sx), 0, fw - 1) .+ 1
+    rows = fh .- clamp.(round.(Int, ((1:h) .- 0.5) .* sy), 0, fh - 1)
+    out = unsafe_wrap(Array, pixels, (w, h))   # view the caller's buffer, no copy
+    out .= @view S[cols, rows]
+
+    return true
+end
+
+# @cfunction pointer should be built in __init__, not during precompilation
+_CAPTURE_CFN::Ptr{Cvoid} = C_NULL
+
+function __init__()
+    global _CAPTURE_CFN = @cfunction(_capture_framebuffer, Bool,
+                                     (lib.ImGuiID, Cint, Cint, Cint, Cint, Ptr{Cuint}, Ptr{Cvoid}))
+end
 
 function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     hotloading=true,
@@ -113,6 +172,12 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
     # Setup Platform/Renderer bindings
     lib.ImGui_ImplGlfw_InitForOpenGL(Ptr{lib.GLFWwindow}(window.handle), true)
     lib.ImGui_ImplOpenGL3_Init("#version $(glsl_version)")
+
+    # screen-capture function so the test engine can take screenshots
+    # here (not in ImGuiTestEngine) because the capture needs the GL context
+    if !isnothing(engine)
+        engine.IO.ScreenCaptureFunc = _CAPTURE_CFN
+    end
 
     try
         while !GLFW.WindowShouldClose(window)

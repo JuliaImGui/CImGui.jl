@@ -288,3 +288,99 @@ include(joinpath(@__DIR__, "../examples/makie_demo.jl"))
     makie_demo(; engine)
     te.DestroyContext(engine)
 end
+
+@testset "Screen capture" begin
+    # RGBA8 packing: byte 0 = R (low byte), matching IM_COL32(r,g,b,a) and
+    # glReadPixels(GL_RGBA, GL_UNSIGNED_BYTE).
+    rgba(r, g, b, a) = UInt32(r) | (UInt32(g) << 8) | (UInt32(b) << 16) | (UInt32(a) << 24)
+    RED   = rgba(255, 0, 0, 255)
+    GREEN = rgba(0, 255, 0, 255)
+    BLUE  = rgba(0, 0, 255, 255)
+    WHITE = rgba(255, 255, 255, 255)
+
+    window_size = (1280, 720)
+    ctx = ig.CreateContext()
+    engine = te.CreateContext(; exit_on_completion=true, show_test_window=false)
+
+    # Draw a fullscreen 4-quadrant solid-color pattern via the background draw
+    # list. Distinct colors per corner catch orientation/channel/DPI errors.
+    t = @register_test(engine, "Screen capture", "Quadrant pattern")
+    t.GuiFunc = () -> begin
+        dl = ig.GetBackgroundDrawList()
+        vp = ig.GetMainViewport()
+        pos = unsafe_load(vp.Pos)
+        sz = unsafe_load(vp.Size)
+        cx = pos.x + sz.x / 2
+        cy = pos.y + sz.y / 2
+        ig.AddRectFilled(dl, ig.ImVec2(pos.x, pos.y), ig.ImVec2(cx, cy), RED)                  # top-left
+        ig.AddRectFilled(dl, ig.ImVec2(cx, pos.y), ig.ImVec2(pos.x + sz.x, cy), GREEN)         # top-right
+        ig.AddRectFilled(dl, ig.ImVec2(pos.x, cy), ig.ImVec2(cx, pos.y + sz.y), BLUE)          # bottom-left
+        ig.AddRectFilled(dl, ig.ImVec2(cx, cy), ig.ImVec2(pos.x + sz.x, pos.y + sz.y), WHITE)  # bottom-right
+    end
+
+    # Results captured from inside the TestFunc coroutine.
+    result = Ref{Any}(nothing)
+
+    # The output image buffer; the capture tool fills Width/Height/Data.
+    imbuf = Ref(te.lib.ImGuiCaptureImageBuf(Cint(0), Cint(0), Ptr{Cuint}(C_NULL)))
+
+    t.TestFunc = () -> begin
+        GC.@preserve imbuf begin
+            # A known sub-rect of the screen, in logical (display) coordinates,
+            # centered on the screen center so its four quadrants land in the
+            # four screen-color quadrants.
+            rw, rh = 400f0, 300f0
+            cx, cy = window_size[1] / 2, window_size[2] / 2
+            rx, ry = cx - rw / 2, cy - rh / 2
+            rect = ig.ImRect(ig.ImVec2(rx, ry), ig.ImVec2(rx + rw, ry + rh))
+            args = Ref(te.lib.ImGuiCaptureArgs(
+                UInt32(te.lib.ImGuiCaptureFlags_Instant) | UInt32(te.lib.ImGuiCaptureFlags_NoSave),
+                te.lib.ImVector_ImGuiWindowPtr(Cint(0), Cint(0), Ptr{Ptr{ig.lib.ImGuiWindow}}(C_NULL)),
+                rect,
+                0f0,
+                ntuple(_ -> Cchar(0), 256),
+                Base.unsafe_convert(Ptr{te.lib.ImGuiCaptureImageBuf}, imbuf),
+                Cint(0), Cint(0),
+                ig.ImVec2(0f0, 0f0),
+            ))
+
+            # Drives PostSwap -> CaptureUpdate -> ScreenCaptureFunc. The render
+            # loop advances frames while this yields.
+            ok = te.CaptureScreenshot(engine, args)
+
+            b = imbuf[]
+            W, H = Int(b.Width), Int(b.Height)
+            # Sample the four quadrant centers of the captured sub-rect. The
+            # sub-rect is centered on the screen center, so each of its quadrants
+            # lands in one of the screen quadrants.
+            sample(px, py) = unsafe_load(b.Data, py * W + px + 1)
+            result[] = (;
+                ok, W, H,
+                tl = sample(W ÷ 4, H ÷ 4),
+                tr = sample(3W ÷ 4, H ÷ 4),
+                bl = sample(W ÷ 4, 3H ÷ 4),
+                br = sample(3W ÷ 4, 3H ÷ 4),
+            )
+        end
+    end
+
+    # The render loop's test-engine startup queues all registered tests.
+    ig.render(ctx; engine, window_title="CImGui capture test", window_size) do
+        return nothing
+    end
+
+    @test result[] !== nothing
+    r = result[]
+    # Capture must succeed
+    @test r.ok
+    # Buffer is sized to the requested rect (logical pixels).
+    @test r.W == 400
+    @test r.H == 300
+    # Orientation + channel order + DPI: each quadrant has the expected color.
+    @test r.tl == RED
+    @test r.tr == GREEN
+    @test r.bl == BLUE
+    @test r.br == WHITE
+
+    te.DestroyContext(engine)
+end
