@@ -205,6 +205,20 @@ Keyword arguments:
 - `opengl_version::VersionNumber=v"3.2"`: The OpenGL version to use.
 - `wait_events=false`: Set to `true` to call `GLFW.WaitEvents()` instead of
   `GLFW.PollEvents()` (only supported for the GLFW/OpenGL backend).
+- `vsync::Union{Bool, Symbol}=true`: Control vertical sync of the main window
+  (only supported for the GLFW/OpenGL backend). Possible values are:
+  - `true`: wait for the next vertical blank on every frame (swap interval 1).
+  - `false`: never wait (swap interval 0). The renderloop will run as fast as it
+    can, so you probably want to throttle it yourself in `ui()`.
+  - `:adaptive`: wait for the vertical blank only if the frame was rendered in
+    time, otherwise present it immediately (swap interval -1). This avoids a
+    late frame costing a whole extra refresh interval, which matters in
+    particular when using multiple viewports: some drivers (e.g. NVIDIA on X11
+    with a compositor) serialize the swaps of the main window and the viewport
+    windows such that regular vsync halves the frame rate as soon as a window is
+    dragged outside the main viewport. Requires the `GLX_EXT_swap_control_tear`
+    or `WGL_EXT_swap_control_tear` extension; falls back to `true` if it's
+    unavailable.
 - `spawn::Union{Bool, Integer, Symbol}=1`: How/where to spawn the
   renderloop. It defaults to thread 1 for safety, but note that currently Julia
   also uses thread 1 to run the libuv event loop:

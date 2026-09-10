@@ -65,6 +65,21 @@ end
 _window::Union{Nothing, GLFW.Window} = nothing
 ig._current_window(::Val{:GlfwOpenGL3}) = _window
 
+# Requires a current context. Adaptive vsync (a negative swap interval) is only
+# valid with the swap_control_tear extensions, otherwise fall back to vsync.
+function swap_interval(vsync::Union{Bool, Symbol})
+    if vsync === :adaptive
+        if GLFW.ExtensionSupported("GLX_EXT_swap_control_tear") || GLFW.ExtensionSupported("WGL_EXT_swap_control_tear")
+            return -1
+        else
+            @warn "Adaptive vsync is not supported by this driver, falling back to regular vsync" maxlog=1
+            return 1
+        end
+    else
+        return vsync ? 1 : 0
+    end
+end
+
 function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     hotloading=true,
                     on_exit=Returns(nothing),
@@ -73,7 +88,8 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
                     window_title="CImGui",
                     engine=nothing,
                     opengl_version=v"3.2",
-                    wait_events=false)
+                    wait_events=false,
+                    vsync::Union{Bool, Symbol}=true)
     if GLFW_VERSION >= v"3.4.4"
         # We leave thread-safety to the user
         GLFW.ENABLE_THREAD_ASSERTIONS[] = false
@@ -84,6 +100,8 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
         throw(ArgumentError("'clear_color' is a unassigned reference, it must be initialized properly."))
     elseif Sys.isapple() && opengl_version < v"3.2"
         throw(ArgumentError("Only OpenGL 3.2+ is supported on OSX, but $(opengl_version) was requested"))
+    elseif vsync isa Symbol && vsync !== :adaptive
+        throw(ArgumentError("Unrecognized `vsync` value: '$(vsync)', must be `true`, `false`, or `:adaptive`"))
     end
 
     # Configure GLFW
@@ -108,7 +126,7 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
     window = _window
     @assert window != C_NULL
     GLFW.MakeContextCurrent(window)
-    GLFW.SwapInterval(1)  # enable vsync
+    GLFW.SwapInterval(swap_interval(vsync))
 
     # Setup Platform/Renderer bindings
     lib.ImGui_ImplGlfw_InitForOpenGL(Ptr{lib.GLFWwindow}(window.handle), true)
