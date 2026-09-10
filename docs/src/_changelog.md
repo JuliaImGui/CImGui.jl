@@ -6,6 +6,14 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## Unreleased
+
+### Added
+- A `vsync` keyword argument to [`render()`](@ref) to control vertical sync in
+  the GLFW/OpenGL backend. Notably, `vsync=:adaptive` prevents the frame rate
+  from halving when a window is moved outside of the main viewport on some
+  drivers.
+
 ## [v9.0.0] - 2026-08-20
 
 ### Changed
