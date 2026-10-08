@@ -1,6 +1,6 @@
 name = "CImGui"
 uuid = "5d785b6c-b76f-510e-a07c-3070796c7e87"
-version = "9.0.0"
+version = "9.1.0"
 authors = ["Yupei Qi <qiyupei@gmail.com>"]
 
 [deps]

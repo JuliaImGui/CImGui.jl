@@ -67,6 +67,39 @@ ig.set_backend(:GlfwOpenGL3)
     wait(ret)
 end
 
+@testset "vsync" begin
+    # Adaptive vsync falls back to regular vsync when the extension is
+    # unavailable, so all values should run everywhere.
+    for vsync in (true, false, :adaptive)
+        ctx = ig.CreateContext()
+        frames = 0
+        ig.render(ctx; vsync) do
+            frames += 1
+            return frames >= 3 ? :imgui_exit_loop : nothing
+        end
+        @test frames == 3
+    end
+
+    ctx = ig.CreateContext()
+    @test_throws ArgumentError ig.render(Returns(:imgui_exit_loop), ctx; vsync=:bogus, spawn=false)
+    ig.DestroyContext(ctx)
+end
+
+@testset "fps_limit" begin
+    ctx = ig.CreateContext()
+    frame_times = Float64[]
+    ig.render(ctx; vsync=false, fps_limit=20) do
+        push!(frame_times, time())
+        return length(frame_times) >= 5 ? :imgui_exit_loop : nothing
+    end
+    # 4 frame intervals at 20 FPS, with some slack for timer granularity
+    @test frame_times[end] - frame_times[1] >= 0.15
+
+    ctx = ig.CreateContext()
+    @test_throws ArgumentError ig.render(Returns(:imgui_exit_loop), ctx; fps_limit=0, spawn=false)
+    ig.DestroyContext(ctx)
+end
+
 include(joinpath(@__DIR__, "../demo/demo.jl"))
 
 @testset "Official demo" begin

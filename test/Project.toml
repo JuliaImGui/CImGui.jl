@@ -1,5 +1,4 @@
 [deps]
-CImGui = "5d785b6c-b76f-510e-a07c-3070796c7e87"
 GLFW = "f7f18e0c-5ee9-5ccd-a5bf-e8befd85ed98"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 ImGuiTestEngine = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
