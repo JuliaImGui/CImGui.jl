@@ -6,13 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
-## Unreleased
+## [v9.1.0] - 2026-10-08
 
 ### Added
-- A `vsync` keyword argument to [`render()`](@ref) to control vertical sync in
-  the GLFW/OpenGL backend. Notably, `vsync=:adaptive` prevents the frame rate
-  from halving when a window is moved outside of the main viewport on some
-  drivers.
+- A `vsync` argument to [`render()`](@ref) to control vsync, and an `fps_limit`
+  argument to [`render()`](@ref) to cap the frame rate ([#207]).
 
 ## [v9.0.0] - 2026-08-20
 
@@ -276,4 +274,4 @@ or submit a pull request if something isn't working.
 ## [v1.89.1] - 2024-05-19
 
 ### Fixed
-- Fixed the implementations of [SetScrollX()](@ref) and [SetScrollY()](@ref) ([#115]).
+- Fixed the implementations of `SetScrollX()` and `SetScrollY()` ([#115]).

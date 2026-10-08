@@ -205,7 +205,7 @@ Keyword arguments:
 - `opengl_version::VersionNumber=v"3.2"`: The OpenGL version to use.
 - `wait_events=false`: Set to `true` to call `GLFW.WaitEvents()` instead of
   `GLFW.PollEvents()` (only supported for the GLFW/OpenGL backend).
-- `vsync::Union{Bool, Symbol}=true`: Control vertical sync of the main
+- `vsync::Union{Bool, Symbol}=true`: Control vertical sync of the
   window. Possible values are:
   - `true`: vsync enabled.
   - `false`: vsync disabled, so the renderloop will run as fast as it can.
@@ -213,6 +213,8 @@ Keyword arguments:
     vertical blank only if the frame was rendered in time, otherwise present it
     immediately. Requires the `GLX_EXT_swap_control_tear` or
     `WGL_EXT_swap_control_tear` extension, otherwise it'll fall back to `true`.
+- `fps_limit::Union{Nothing, Real}=nothing`: Limit the render loop to draw this
+  many frames per second.
 - `spawn::Union{Bool, Integer, Symbol}=1`: How/where to spawn the
   renderloop. It defaults to thread 1 for safety, but note that currently Julia
   also uses thread 1 to run the libuv event loop:
