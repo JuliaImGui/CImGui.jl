@@ -6,6 +6,12 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v9.1.1] - 2026-10-11
+
+### Fixed
+- Fixed the `ImWchar` type, which was wrapped with the incorrect size since
+  v9.0.0 ([#208]).
+
 ## [v9.1.0] - 2026-10-08
 
 ### Added

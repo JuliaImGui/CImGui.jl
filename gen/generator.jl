@@ -89,7 +89,7 @@ end
 """
 Convert an ImGui argument type to a Julia type annotation.
 """
-function imgui_to_jl_type(ig_type)
+function imgui_to_jl_type(ig_type, is_ptr)
     parsed_type = Meta.parse(ig_type)
     if !(parsed_type isa Symbol)
         # If it's a whole expression, just return
@@ -98,8 +98,10 @@ function imgui_to_jl_type(ig_type)
 
     # Figure out what other types should be allowed as arguments. Otherwise
     # users would have to be careful to only pass in e.g. Int32's for ImGuiID,
-    # which is quite annoying.
-    unions = if parsed_type === :ImVec2
+    # which is quite annoying. Pointers must point to the exact type though.
+    unions = if is_ptr
+        []
+    elseif parsed_type === :ImVec2
         # ImVec2 and ImVec4 have special support for NTuple's
         [:(NTuple{2})]
     elseif parsed_type === :ImVec4
@@ -230,7 +232,7 @@ function to_jl_type(func_name, func_idx, arg_idx, overloads)
     end
 
     unions = if startswith(unqualified_type, "Im")
-        imgui_to_jl_type(unqualified_type)
+        imgui_to_jl_type(unqualified_type, is_ptr)
     elseif unqualified_type == "bool"
         [:Bool]
     elseif unqualified_type == "int"
@@ -527,6 +529,11 @@ function generate()
             push!(args,
                   "-I$include_dir",
                   "-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS",
+
+                  # Must match the defines cimgui-pack compiles with, otherwise
+                  # ImWchar gets the wrong size.
+                  "-DIMGUI_USE_WCHAR32",
+                  "-DIMGUI_ENABLE_FREETYPE",
 
                   # Enable some defines to generate bindings for the backends
                   "-DCIMGUI_USE_GLFW",
