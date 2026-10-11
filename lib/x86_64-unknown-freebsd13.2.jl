@@ -600,9 +600,9 @@ const ImFontFlags = Cint
 
 const ImS8 = Int8
 
-const ImWchar16 = Cushort
+const ImWchar32 = Cuint
 
-const ImWchar = ImWchar16
+const ImWchar = ImWchar32
 
 struct ImFontLoader
     Name::Ptr{Cchar}
@@ -659,23 +659,23 @@ function Base.getproperty(x::Ptr{ImFontConfig}, f::Symbol)
     f === :PixelSnapH && return Ptr{Bool}(x + 54)
     f === :OversampleH && return Ptr{ImS8}(x + 55)
     f === :OversampleV && return Ptr{ImS8}(x + 56)
-    f === :EllipsisChar && return Ptr{ImWchar}(x + 58)
-    f === :SizePixels && return Ptr{Cfloat}(x + 60)
-    f === :GlyphRanges && return Ptr{Ptr{ImWchar}}(x + 64)
-    f === :GlyphExcludeRanges && return Ptr{Ptr{ImWchar}}(x + 72)
-    f === :GlyphOffset && return Ptr{ImVec2}(x + 80)
-    f === :GlyphMinAdvanceX && return Ptr{Cfloat}(x + 88)
-    f === :GlyphMaxAdvanceX && return Ptr{Cfloat}(x + 92)
-    f === :GlyphExtraAdvanceX && return Ptr{Cfloat}(x + 96)
-    f === :FontNo && return Ptr{ImU32}(x + 100)
-    f === :FontLoaderFlags && return Ptr{Cuint}(x + 104)
-    f === :RasterizerMultiply && return Ptr{Cfloat}(x + 108)
-    f === :RasterizerDensity && return Ptr{Cfloat}(x + 112)
-    f === :ExtraSizeScale && return Ptr{Cfloat}(x + 116)
-    f === :Flags && return Ptr{ImFontFlags}(x + 120)
-    f === :DstFont && return Ptr{Ptr{ImFont}}(x + 128)
-    f === :FontLoader && return Ptr{Ptr{ImFontLoader}}(x + 136)
-    f === :FontLoaderData && return Ptr{Ptr{Cvoid}}(x + 144)
+    f === :EllipsisChar && return Ptr{ImWchar}(x + 60)
+    f === :SizePixels && return Ptr{Cfloat}(x + 64)
+    f === :GlyphRanges && return Ptr{Ptr{ImWchar}}(x + 72)
+    f === :GlyphExcludeRanges && return Ptr{Ptr{ImWchar}}(x + 80)
+    f === :GlyphOffset && return Ptr{ImVec2}(x + 88)
+    f === :GlyphMinAdvanceX && return Ptr{Cfloat}(x + 96)
+    f === :GlyphMaxAdvanceX && return Ptr{Cfloat}(x + 100)
+    f === :GlyphExtraAdvanceX && return Ptr{Cfloat}(x + 104)
+    f === :FontNo && return Ptr{ImU32}(x + 108)
+    f === :FontLoaderFlags && return Ptr{Cuint}(x + 112)
+    f === :RasterizerMultiply && return Ptr{Cfloat}(x + 116)
+    f === :RasterizerDensity && return Ptr{Cfloat}(x + 120)
+    f === :ExtraSizeScale && return Ptr{Cfloat}(x + 124)
+    f === :Flags && return Ptr{ImFontFlags}(x + 128)
+    f === :DstFont && return Ptr{Ptr{ImFont}}(x + 136)
+    f === :FontLoader && return Ptr{Ptr{ImFontLoader}}(x + 144)
+    f === :FontLoaderData && return Ptr{Ptr{Cvoid}}(x + 152)
     return getfield(x, f)
 end
 
@@ -740,7 +740,7 @@ struct ImFont
     Sources::ImVector_ImFontConfigPtr
     EllipsisChar::ImWchar
     FallbackChar::ImWchar
-    Used8kPagesMap::NTuple{1, ImU8}
+    Used8kPagesMap::NTuple{17, ImU8}
     EllipsisAutoBake::Bool
     RemapPairs::ImGuiStorage
 end
@@ -1039,6 +1039,8 @@ struct ImGuiKeyData
     DownDurationPrev::Cfloat
     AnalogValue::Cfloat
 end
+
+const ImWchar16 = Cushort
 
 struct ImVector_ImWchar
     Size::Cint
@@ -4179,8 +4181,8 @@ function Base.getproperty(x::Ptr{ImGuiInputTextCallbackData}, f::Symbol)
     f === :ID && return Ptr{ImGuiID}(x + 24)
     f === :EventKey && return Ptr{ImGuiKey}(x + 28)
     f === :EventChar && return Ptr{ImWchar}(x + 32)
-    f === :EventActivated && return Ptr{Bool}(x + 34)
-    f === :BufDirty && return Ptr{Bool}(x + 35)
+    f === :EventActivated && return Ptr{Bool}(x + 36)
+    f === :BufDirty && return Ptr{Bool}(x + 37)
     f === :Buf && return Ptr{Ptr{Cchar}}(x + 40)
     f === :BufTextLen && return Ptr{Cint}(x + 48)
     f === :BufSize && return Ptr{Cint}(x + 52)
@@ -4528,8 +4530,6 @@ const ImGuiPopupFlags = Cint
 const ImGuiSelectableFlags = Cint
 
 const ImGuiSliderFlags = Cint
-
-const ImWchar32 = Cuint
 
 # typedef int ( * ImGuiInputTextCallback ) ( ImGuiInputTextCallbackData * data )
 const ImGuiInputTextCallback = Ptr{Cvoid}
@@ -5715,6 +5715,21 @@ struct StbTexteditRow
     ymin::Cfloat
     ymax::Cfloat
     num_chars::Cint
+end
+
+const ImGuiFreeTypeLoaderFlags = Cuint
+
+@cenum ImGuiFreeTypeLoaderFlags_::UInt32 begin
+    ImGuiFreeTypeLoaderFlags_NoHinting = 1
+    ImGuiFreeTypeLoaderFlags_NoAutoHint = 2
+    ImGuiFreeTypeLoaderFlags_ForceAutoHint = 4
+    ImGuiFreeTypeLoaderFlags_LightHinting = 8
+    ImGuiFreeTypeLoaderFlags_MonoHinting = 16
+    ImGuiFreeTypeLoaderFlags_Bold = 32
+    ImGuiFreeTypeLoaderFlags_Oblique = 64
+    ImGuiFreeTypeLoaderFlags_Monochrome = 128
+    ImGuiFreeTypeLoaderFlags_LoadColor = 256
+    ImGuiFreeTypeLoaderFlags_Bitmap = 512
 end
 
 function ImVec2_ImVec2_Nil()
@@ -12002,6 +12017,18 @@ function igImFontAtlasGetMouseCursorTexData(atlas, cursor_type, out_offset, out_
     ccall((:igImFontAtlasGetMouseCursorTexData, libcimgui), Bool, (Ptr{ImFontAtlas}, ImGuiMouseCursor, Ptr{ImVec2}, Ptr{ImVec2}, Ptr{ImVec2}, Ptr{ImVec2}), atlas, cursor_type, out_offset, out_size, out_uv_border, out_uv_fill)
 end
 
+function ImGuiFreeType_GetFontLoader()
+    ccall((:ImGuiFreeType_GetFontLoader, libcimgui), Ptr{ImFontLoader}, ())
+end
+
+function ImGuiFreeType_SetAllocatorFunctions(alloc_func, free_func, user_data)
+    ccall((:ImGuiFreeType_SetAllocatorFunctions, libcimgui), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}), alloc_func, free_func, user_data)
+end
+
+function ImGuiFreeType_DebugEditFontLoaderFlags(p_font_loader_flags)
+    ccall((:ImGuiFreeType_DebugEditFontLoaderFlags, libcimgui), Bool, (Ptr{ImGuiFreeTypeLoaderFlags},), p_font_loader_flags)
+end
+
 # automatic type deduction for variadic arguments may not be what you want, please use with caution
 @generated function ImGuiTextBuffer_appendf(self, fmt, va_list...)
         :(@ccall(libcimgui.ImGuiTextBuffer_appendf(self::Ptr{ImGuiTextBuffer}, fmt::Ptr{Cchar}; $(to_c_type_pairs(va_list)...))::Cvoid))
@@ -16782,7 +16809,7 @@ function ImGui_ImplOpenGL3_UpdateTexture(tex)
     ccall((:ImGui_ImplOpenGL3_UpdateTexture, libcimgui), Cvoid, (Ptr{Cint},), tex)
 end
 
-const IM_UNICODE_CODEPOINT_MAX = 0xffff
+const IM_UNICODE_CODEPOINT_MAX = 0x0010ffff
 
 const IMGUI_HAS_DOCK = 1
 

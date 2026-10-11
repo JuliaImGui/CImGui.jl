@@ -3806,8 +3806,7 @@ By convention we use (-FLT_MAX,-FLT_MAX) to denote that there is no mouse availa
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L1152).
 """
-IsMousePosValid(mouse_pos::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}} = C_NULL) =
-    igIsMousePosValid(mouse_pos)
+IsMousePosValid(mouse_pos::VoidablePtrOrRef{ImVec2} = C_NULL) = igIsMousePosValid(mouse_pos)
 
 """
 $(TYPEDSIGNATURES)
@@ -4923,11 +4922,8 @@ Iterate selection with 'void* it = NULL; ImGuiID id; while (selection.GetNextSel
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L3296).
 """
-GetNextSelectedItem(
-    self::Ptr{ImGuiSelectionBasicStorage},
-    opaque_it,
-    out_id::Union{VoidablePtrOrRef{ImGuiID},VoidablePtrOrRef{Integer}},
-) = ImGuiSelectionBasicStorage_GetNextSelectedItem(self, opaque_it, out_id)
+GetNextSelectedItem(self::Ptr{ImGuiSelectionBasicStorage}, opaque_it, out_id::VoidablePtrOrRef{ImGuiID}) =
+    ImGuiSelectionBasicStorage_GetNextSelectedItem(self, opaque_it, out_id)
 
 """
 $(TYPEDSIGNATURES)
@@ -5356,7 +5352,7 @@ AddText(
     text_begin::Union{String,Ptr{Cchar},Ptr{Cvoid}},
     text_end::Union{String,Ptr{Cchar},Ptr{Cvoid}} = C_NULL,
     wrap_width::Real = 0.0f0,
-    cpu_fine_clip_rect::Union{VoidablePtrOrRef{ImVec4},VoidablePtrOrRef{NTuple{4}}} = C_NULL,
+    cpu_fine_clip_rect::VoidablePtrOrRef{ImVec4} = C_NULL,
 ) = ImDrawList_AddText_FontPtr(self, font, font_size, pos, col, text_begin, text_end, wrap_width, cpu_fine_clip_rect)
 
 """
@@ -5405,7 +5401,7 @@ General polygon
 """
 AddPolyline(
     self::Ptr{ImDrawList},
-    points::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    points::VoidablePtrOrRef{ImVec2},
     num_points,
     col::Union{ImU32,Integer},
     thickness,
@@ -5417,24 +5413,16 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L3528).
 """
-AddConvexPolyFilled(
-    self::Ptr{ImDrawList},
-    points::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    num_points,
-    col::Union{ImU32,Integer},
-) = ImDrawList_AddConvexPolyFilled(self, points, num_points, col)
+AddConvexPolyFilled(self::Ptr{ImDrawList}, points::VoidablePtrOrRef{ImVec2}, num_points, col::Union{ImU32,Integer}) =
+    ImDrawList_AddConvexPolyFilled(self, points, num_points, col)
 
 """
 $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L3529).
 """
-AddConcavePolyFilled(
-    self::Ptr{ImDrawList},
-    points::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    num_points,
-    col::Union{ImU32,Integer},
-) = ImDrawList_AddConcavePolyFilled(self, points, num_points, col)
+AddConcavePolyFilled(self::Ptr{ImDrawList}, points::VoidablePtrOrRef{ImVec2}, num_points, col::Union{ImU32,Integer}) =
+    ImDrawList_AddConcavePolyFilled(self, points, num_points, col)
 
 """
 $(TYPEDSIGNATURES)
@@ -6073,7 +6061,7 @@ Add character.
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L3811).
 """
-AddChar(self::Ptr{ImFontGlyphRangesBuilder}, c::ImWchar) = ImFontGlyphRangesBuilder_AddChar(self, c)
+AddChar(self::Ptr{ImFontGlyphRangesBuilder}, c::Union{ImWchar,Integer}) = ImFontGlyphRangesBuilder_AddChar(self, c)
 
 """
 $(TYPEDSIGNATURES)
@@ -6388,7 +6376,7 @@ Return U+FFFD glyph if requested glyph doesn't exists.
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4042).
 """
-FindGlyph(self::Ptr{ImFontBaked}, c::ImWchar) = ImFontBaked_FindGlyph(self, c)
+FindGlyph(self::Ptr{ImFontBaked}, c::Union{ImWchar,Integer}) = ImFontBaked_FindGlyph(self, c)
 
 """
 $(TYPEDSIGNATURES)
@@ -6397,21 +6385,21 @@ Return NULL if glyph doesn't exist.
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4043).
 """
-FindGlyphNoFallback(self::Ptr{ImFontBaked}, c::ImWchar) = ImFontBaked_FindGlyphNoFallback(self, c)
+FindGlyphNoFallback(self::Ptr{ImFontBaked}, c::Union{ImWchar,Integer}) = ImFontBaked_FindGlyphNoFallback(self, c)
 
 """
 $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4044).
 """
-GetCharAdvance(self::Ptr{ImFontBaked}, c::ImWchar) = ImFontBaked_GetCharAdvance(self, c)
+GetCharAdvance(self::Ptr{ImFontBaked}, c::Union{ImWchar,Integer}) = ImFontBaked_GetCharAdvance(self, c)
 
 """
 $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4045).
 """
-IsGlyphLoaded(self::Ptr{ImFontBaked}, c::ImWchar) = ImFontBaked_IsGlyphLoaded(self, c)
+IsGlyphLoaded(self::Ptr{ImFontBaked}, c::Union{ImWchar,Integer}) = ImFontBaked_IsGlyphLoaded(self, c)
 
 """
 $(TYPEDSIGNATURES)
@@ -6432,7 +6420,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4089).
 """
-IsGlyphInFont(self::Ptr{ImFont}, c::ImWchar) = ImFont_IsGlyphInFont(self, c)
+IsGlyphInFont(self::Ptr{ImFont}, c::Union{ImWchar,Integer}) = ImFont_IsGlyphInFont(self, c)
 
 """
 $(TYPEDSIGNATURES)
@@ -6488,8 +6476,8 @@ RenderChar(
     size,
     pos::Union{ImVec2,NTuple{2}},
     col::Union{ImU32,Integer},
-    c::ImWchar,
-    cpu_fine_clip::Union{VoidablePtrOrRef{ImVec4},VoidablePtrOrRef{NTuple{4}}} = C_NULL,
+    c::Union{ImWchar,Integer},
+    cpu_fine_clip::VoidablePtrOrRef{ImVec4} = C_NULL,
 ) = ImFont_RenderChar(self, draw_list, size, pos, col, c, cpu_fine_clip)
 
 """
@@ -6526,7 +6514,7 @@ Makes 'from_codepoint' character points to 'to_codepoint' glyph.
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L4107).
 """
-AddRemapChar(self::Ptr{ImFont}, from_codepoint::ImWchar, to_codepoint::ImWchar) =
+AddRemapChar(self::Ptr{ImFont}, from_codepoint::Union{ImWchar,Integer}, to_codepoint::Union{ImWchar,Integer}) =
     ImFont_AddRemapChar(self, from_codepoint, to_codepoint)
 
 """
@@ -7142,7 +7130,7 @@ ImFontCalcTextSizeEx(
     text_end_display,
     text_end,
     out_remaining,
-    out_offset::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    out_offset::VoidablePtrOrRef{ImVec2},
     flags::Union{ImDrawTextFlags,ImDrawTextFlags_,Integer},
 ) = igImFontCalcTextSizeEx(
     font,
@@ -7205,12 +7193,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L468).
 """
-ImTextClassifierClear(
-    bits::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}},
-    codepoint_min,
-    codepoint_end,
-    char_class::ImWcharClass,
-) = igImTextClassifierClear(bits, codepoint_min, codepoint_end, char_class)
+ImTextClassifierClear(bits::VoidablePtrOrRef{ImU32}, codepoint_min, codepoint_end, char_class::ImWcharClass) =
+    igImTextClassifierClear(bits, codepoint_min, codepoint_end, char_class)
 
 """
 $(TYPEDSIGNATURES)
@@ -7220,13 +7204,8 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L469).
 """
-ImTextClassifierSetCharClass(
-    bits::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}},
-    codepoint_min,
-    codepoint_end,
-    char_class::ImWcharClass,
-    c,
-) = igImTextClassifierSetCharClass(bits, codepoint_min, codepoint_end, char_class, c)
+ImTextClassifierSetCharClass(bits::VoidablePtrOrRef{ImU32}, codepoint_min, codepoint_end, char_class::ImWcharClass, c) =
+    igImTextClassifierSetCharClass(bits, codepoint_min, codepoint_end, char_class, c)
 
 """
 $(TYPEDSIGNATURES)
@@ -7237,7 +7216,7 @@ $(TYPEDSIGNATURES)
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L470).
 """
 ImTextClassifierSetCharClassFromStr(
-    bits::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}},
+    bits::VoidablePtrOrRef{ImU32},
     codepoint_min,
     codepoint_end,
     char_class::ImWcharClass,
@@ -8101,8 +8080,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L645).
 """
-ImBitArrayClearAllBits(arr::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}}, bitcount) =
-    igImBitArrayClearAllBits(arr, bitcount)
+ImBitArrayClearAllBits(arr::VoidablePtrOrRef{ImU32}, bitcount) = igImBitArrayClearAllBits(arr, bitcount)
 
 """
 $(TYPEDSIGNATURES)
@@ -8112,7 +8090,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L646).
 """
-ImBitArrayTestBit(arr::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}}, n) = igImBitArrayTestBit(arr, n)
+ImBitArrayTestBit(arr::VoidablePtrOrRef{ImU32}, n) = igImBitArrayTestBit(arr, n)
 
 """
 $(TYPEDSIGNATURES)
@@ -8122,7 +8100,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L647).
 """
-ImBitArrayClearBit(arr::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}}, n) = igImBitArrayClearBit(arr, n)
+ImBitArrayClearBit(arr::VoidablePtrOrRef{ImU32}, n) = igImBitArrayClearBit(arr, n)
 
 """
 $(TYPEDSIGNATURES)
@@ -8132,7 +8110,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L648).
 """
-ImBitArraySetBit(arr::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}}, n) = igImBitArraySetBit(arr, n)
+ImBitArraySetBit(arr::VoidablePtrOrRef{ImU32}, n) = igImBitArraySetBit(arr, n)
 
 """
 $(TYPEDSIGNATURES)
@@ -8142,8 +8120,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L649).
 """
-ImBitArraySetBitRange(arr::Union{VoidablePtrOrRef{ImU32},VoidablePtrOrRef{Integer}}, n, n2) =
-    igImBitArraySetBitRange(arr, n, n2)
+ImBitArraySetBitRange(arr::VoidablePtrOrRef{ImU32}, n, n2) = igImBitArraySetBitRange(arr, n, n2)
 
 """
 $(TYPEDSIGNATURES)
@@ -11787,8 +11764,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_internal.h#L3735).
 """
-LogRenderedText(ref_pos::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}}, text, text_end = C_NULL) =
-    igLogRenderedText(ref_pos, text, text_end)
+LogRenderedText(ref_pos::VoidablePtrOrRef{ImVec2}, text, text_end = C_NULL) = igLogRenderedText(ref_pos, text, text_end)
 
 """
 $(TYPEDSIGNATURES)
@@ -12974,7 +12950,7 @@ DockContextCalcDropPosForDocking(
     payload_node::VoidablePtrOrRef{ImGuiDockNode},
     split_dir::ImGuiDir,
     split_outer,
-    out_pos::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    out_pos::VoidablePtrOrRef{ImVec2},
 ) = igDockContextCalcDropPosForDocking(
     target,
     target_node,
@@ -13259,8 +13235,8 @@ DockBuilderSplitNode(
     node_id::Union{ImGuiID,Integer},
     split_dir::ImGuiDir,
     size_ratio_for_node_at_dir,
-    out_id_at_dir::Union{VoidablePtrOrRef{ImGuiID},VoidablePtrOrRef{Integer}},
-    out_id_at_opposite_dir::Union{VoidablePtrOrRef{ImGuiID},VoidablePtrOrRef{Integer}},
+    out_id_at_dir::VoidablePtrOrRef{ImGuiID},
+    out_id_at_opposite_dir::VoidablePtrOrRef{ImGuiID},
 ) = igDockBuilderSplitNode(node_id, split_dir, size_ratio_for_node_at_dir, out_id_at_dir, out_id_at_opposite_dir)
 
 """
@@ -13540,11 +13516,7 @@ Multi-Select API.
 MultiSelectItemHeader(
     id::Union{ImGuiID,Integer},
     p_selected,
-    p_button_flags::Union{
-        VoidablePtrOrRef{ImGuiButtonFlags},
-        VoidablePtrOrRef{ImGuiButtonFlags_},
-        VoidablePtrOrRef{Integer},
-    },
+    p_button_flags::Union{VoidablePtrOrRef{ImGuiButtonFlags},VoidablePtrOrRef{ImGuiButtonFlags_}},
 ) = igMultiSelectItemHeader(id, p_selected, p_button_flags)
 
 """
@@ -13945,7 +13917,7 @@ RenderTextClipped(
     pos_max::Union{ImVec2,NTuple{2}},
     text,
     text_end,
-    text_size_if_known::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    text_size_if_known::VoidablePtrOrRef{ImVec2},
     align::Union{ImVec2,NTuple{2}} = ImVec2(0, 0),
     clip_rect::VoidablePtrOrRef{ImRect} = C_NULL,
 ) = igRenderTextClipped(pos_min, pos_max, text, text_end, text_size_if_known, align, clip_rect)
@@ -13964,7 +13936,7 @@ RenderTextClippedEx(
     pos_max::Union{ImVec2,NTuple{2}},
     text,
     text_end,
-    text_size_if_known::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    text_size_if_known::VoidablePtrOrRef{ImVec2},
     align::Union{ImVec2,NTuple{2}} = ImVec2(0, 0),
     clip_rect::VoidablePtrOrRef{ImRect} = C_NULL,
 ) = igRenderTextClippedEx(draw_list, pos_min, pos_max, text, text_end, text_size_if_known, align, clip_rect)
@@ -13984,7 +13956,7 @@ RenderTextEllipsis(
     ellipsis_max_x,
     text,
     text_end,
-    text_size_if_known::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    text_size_if_known::VoidablePtrOrRef{ImVec2},
 ) = igRenderTextEllipsis(draw_list, pos_min, pos_max, ellipsis_max_x, text, text_end, text_size_if_known)
 
 """
@@ -15880,7 +15852,7 @@ ImFontAtlasBakedAddFontGlyphAdvancedX(
     atlas::VoidablePtrOrRef{ImFontAtlas},
     baked::VoidablePtrOrRef{ImFontBaked},
     src::VoidablePtrOrRef{ImFontConfig},
-    codepoint::ImWchar,
+    codepoint::Union{ImWchar,Integer},
     advance_x,
 ) = igImFontAtlasBakedAddFontGlyphAdvancedX(atlas, baked, src, codepoint, advance_x)
 
@@ -16192,11 +16164,46 @@ $(TYPEDSIGNATURES)
 ImFontAtlasGetMouseCursorTexData(
     atlas::VoidablePtrOrRef{ImFontAtlas},
     cursor_type::Union{ImGuiMouseCursor,ImGuiMouseCursor_,Integer},
-    out_offset::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
-    out_size::Union{VoidablePtrOrRef{ImVec2},VoidablePtrOrRef{NTuple{2}}},
+    out_offset::VoidablePtrOrRef{ImVec2},
+    out_size::VoidablePtrOrRef{ImVec2},
     out_uv_border,
     out_uv_fill,
 ) = igImFontAtlasGetMouseCursorTexData(atlas, cursor_type, out_offset, out_size, out_uv_border, out_uv_fill)
+
+"""
+$(TYPEDSIGNATURES)
+
+
+This is automatically assigned when using '#define IMGUI_ENABLE_FREETYPE'.
+If you need to dynamically select between multiple builders:
+- you can manually assign this builder with 'atlas->SetFontLoader(ImGuiFreeType::GetFontLoader())'
+- prefer deep-copying this into your own ImFontLoader instance if you use hot-reloading that messes up static data.
+
+[Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_freetype.h#L67).
+"""
+GetFontLoader() = ImGuiFreeType_GetFontLoader()
+
+"""
+$(TYPEDSIGNATURES)
+
+Override allocators. By default ImGuiFreeType will use IM_ALLOC()/IM_FREE()
+However, as FreeType does lots of allocations we provide a way for the user to redirect it to a separate memory heap if desired.
+
+[Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_freetype.h#L71).
+"""
+SetAllocatorFunctions(alloc_func, free_func, user_data = nullptr) =
+    ImGuiFreeType_SetAllocatorFunctions(alloc_func, free_func, user_data)
+
+"""
+$(TYPEDSIGNATURES)
+
+Display UI to edit ImFontAtlas::FontLoaderFlags (shared) or ImFontConfig::FontLoaderFlags (single source).
+
+[Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui_freetype.h#L74).
+"""
+DebugEditFontLoaderFlags(
+    p_font_loader_flags::Union{VoidablePtrOrRef{ImGuiFreeTypeLoaderFlags},VoidablePtrOrRef{ImGuiFreeTypeLoaderFlags_}},
+) = ImGuiFreeType_DebugEditFontLoaderFlags(p_font_loader_flags)
 
 """
 $(TYPEDSIGNATURES)
@@ -16208,7 +16215,7 @@ Appendf(self::Ptr{ImGuiTextBuffer}, fmt) = ImGuiTextBuffer_appendf(self, fmt)
 @static if VERSION >= v"1.11"
     eval(
         Meta.parse(
-            "public Destroy, GetTexID, CreateContext, DestroyContext, GetCurrentContext, SetCurrentContext, GetIO, GetPlatformIO, GetStyle, NewFrame, EndFrame, Render, GetDrawData, ShowDemoWindow, ShowMetricsWindow, ShowDebugLogWindow, ShowIDStackToolWindow, ShowAboutWindow, ShowStyleEditor, ShowStyleSelector, ShowFontSelector, ShowUserGuide, GetVersion, StyleColorsDark, StyleColorsLight, StyleColorsClassic, Begin, End, BeginChild, EndChild, IsWindowAppearing, IsWindowCollapsed, IsWindowFocused, IsWindowHovered, GetWindowDrawList, GetWindowDpiScale, GetWindowPos, GetWindowSize, GetWindowWidth, GetWindowHeight, GetWindowViewport, SetNextWindowPos, SetNextWindowSize, SetNextWindowSizeConstraints, SetNextWindowContentSize, SetNextWindowCollapsed, SetNextWindowFocus, SetNextWindowScroll, SetNextWindowBgAlpha, SetNextWindowViewport, SetWindowPos, SetWindowSize, SetWindowCollapsed, SetWindowFocus, GetScrollX, GetScrollY, SetScrollX, SetScrollY, GetScrollMaxX, GetScrollMaxY, SetScrollHereX, SetScrollHereY, SetScrollFromPosX, SetScrollFromPosY, PushFont, PopFont, GetFont, GetFontSize, GetFontBaked, PushStyleColor, PopStyleColor, PushStyleVar, PushStyleVarX, PushStyleVarY, PopStyleVar, PushItemFlag, PopItemFlag, PushItemWidth, PopItemWidth, SetNextItemWidth, CalcItemWidth, PushTextWrapPos, PopTextWrapPos, GetFontTexUvWhitePixel, GetColorU32, GetStyleColorVec4, GetCursorScreenPos, SetCursorScreenPos, GetContentRegionAvail, GetCursorPos, GetCursorPosX, GetCursorPosY, SetCursorPos, SetCursorPosX, SetCursorPosY, GetCursorStartPos, Separator, SameLine, NewLine, Spacing, Dummy, Indent, Unindent, BeginGroup, EndGroup, AlignTextToFramePadding, GetTextLineHeight, GetTextLineHeightWithSpacing, GetFrameHeight, GetFrameHeightWithSpacing, PushID, PopID, GetID, TextUnformatted, Text, TextColored, TextDisabled, TextWrapped, LabelText, BulletText, SeparatorText, Button, SmallButton, InvisibleButton, ArrowButton, Checkbox, CheckboxFlags, RadioButton, ProgressBar, Bullet, TextLink, TextLinkOpenURL, Image, ImageWithBg, ImageButton, BeginCombo, EndCombo, Combo, DragFloat, DragFloat2, DragFloat3, DragFloat4, DragFloatRange2, DragInt, DragInt2, DragInt3, DragInt4, DragIntRange2, DragScalar, DragScalarN, SliderFloat, SliderFloat2, SliderFloat3, SliderFloat4, SliderAngle, SliderInt, SliderInt2, SliderInt3, SliderInt4, SliderScalar, SliderScalarN, VSliderFloat, VSliderInt, VSliderScalar, InputText, InputTextMultiline, InputTextWithHint, InputFloat, InputFloat2, InputFloat3, InputFloat4, InputInt, InputInt2, InputInt3, InputInt4, InputDouble, InputScalar, InputScalarN, ColorEdit3, ColorEdit4, ColorPicker3, ColorPicker4, ColorButton, TreeNode, TreeNodeEx, TreePush, TreePop, GetTreeNodeToLabelSpacing, CollapsingHeader, SetNextItemOpen, SetNextItemStorageID, TreeNodeGetOpen, Selectable, BeginMultiSelect, EndMultiSelect, SetNextItemSelectionUserData, IsItemToggledSelection, BeginListBox, EndListBox, ListBox, Value, BeginMenuBar, EndMenuBar, BeginMainMenuBar, EndMainMenuBar, BeginMenu, EndMenu, MenuItem, BeginTooltip, EndTooltip, SetTooltip, BeginItemTooltip, SetItemTooltip, BeginPopup, BeginPopupModal, EndPopup, OpenPopup, OpenPopupOnItemClick, CloseCurrentPopup, BeginPopupContextItem, BeginPopupContextWindow, BeginPopupContextVoid, IsPopupOpen, BeginTable, EndTable, TableNextRow, TableNextColumn, TableSetColumnIndex, TableSetupColumn, TableSetupScrollFreeze, TableHeader, TableHeadersRow, TableAngledHeadersRow, TableGetSortSpecs, TableGetColumnCount, TableGetColumnIndex, TableGetRowIndex, TableGetColumnName, TableGetColumnFlags, TableSetColumnEnabled, TableGetHoveredColumn, TableSetBgColor, Columns, NextColumn, GetColumnIndex, GetColumnWidth, SetColumnWidth, GetColumnOffset, SetColumnOffset, GetColumnsCount, BeginTabBar, EndTabBar, BeginTabItem, EndTabItem, TabItemButton, SetTabItemClosed, DockSpace, DockSpaceOverViewport, SetNextWindowDockID, SetNextWindowClass, GetWindowDockID, IsWindowDocked, LogToTTY, LogToFile, LogToClipboard, LogFinish, LogButtons, LogText, BeginDragDropSource, SetDragDropPayload, EndDragDropSource, BeginDragDropTarget, AcceptDragDropPayload, EndDragDropTarget, GetDragDropPayload, BeginDisabled, EndDisabled, PushClipRect, PopClipRect, SetItemDefaultFocus, SetKeyboardFocusHere, SetNavCursorVisible, SetNextItemAllowOverlap, IsItemHovered, IsItemActive, IsItemFocused, IsItemClicked, IsItemVisible, IsItemEdited, IsItemActivated, IsItemDeactivated, IsItemDeactivatedAfterEdit, IsItemToggledOpen, IsAnyItemHovered, IsAnyItemActive, IsAnyItemFocused, GetItemID, GetItemRectMin, GetItemRectMax, GetItemRectSize, GetItemFlags, GetItemClickedCountWithSingleClickDelay, GetMainViewport, GetBackgroundDrawList, GetForegroundDrawList, IsRectVisible, GetTime, GetFrameCount, GetDrawListSharedData, GetStyleColorName, SetStateStorage, GetStateStorage, CalcTextSize, ColorConvertU32ToFloat4, ColorConvertFloat4ToU32, ColorConvertRGBtoHSV, ColorConvertHSVtoRGB, IsKeyDown, IsKeyPressed, IsKeyReleased, IsKeyChordPressed, GetKeyPressedAmount, GetKeyName, SetNextFrameWantCaptureKeyboard, Shortcut, SetNextItemShortcut, SetItemKeyOwner, IsMouseDown, IsMouseClicked, IsMouseReleased, IsMouseDoubleClicked, IsMouseReleasedWithDelay, GetMouseClickedCount, IsMouseHoveringRect, IsMousePosValid, IsAnyMouseDown, GetMousePos, GetMousePosOnOpeningCurrentPopup, IsMouseDragging, GetMouseDragDelta, ResetMouseDragDelta, GetMouseCursor, SetMouseCursor, SetNextFrameWantCaptureMouse, GetClipboardText, SetClipboardText, LoadIniSettingsFromDisk, LoadIniSettingsFromMemory, SaveIniSettingsToDisk, SaveIniSettingsToMemory, DebugTextEncoding, DebugFlashStyleColor, DebugStartItemPicker, DebugCheckVersionAndDataLayout, DebugLog, SetAllocatorFunctions, GetAllocatorFunctions, MemAlloc, MemFree, UpdatePlatformWindows, RenderPlatformWindowsDefault, DestroyPlatformWindows, FindViewportByID, FindViewportByPlatformHandle, ScaleAllSizes, AddKeyEvent, AddKeyAnalogEvent, AddMousePosEvent, AddMouseButtonEvent, AddMouseWheelEvent, AddMouseSourceEvent, AddMouseViewportEvent, AddFocusEvent, AddInputCharacter, AddInputCharacterUTF16, AddInputCharactersUTF8, SetKeyEventNativeData, SetAppAcceptingEvents, ClearEventsQueue, ClearInputKeys, ClearInputMouse, DeleteChars, InsertChars, SelectAll, SetSelection, ClearSelection, HasSelection, Clear, IsDataType, IsPreview, IsDelivery, Draw, PassFilter, Build, IsActive, Empty, Split, Size, Resize, Reserve, C_str, Append, GetInt, SetInt, GetBool, SetBool, GetFloat, SetFloat, GetVoidPtr, SetVoidPtr, GetIntRef, GetBoolRef, GetFloatRef, GetVoidPtrRef, BuildSortByKey, SetAllInt, Step, IncludeItemByIndex, IncludeItemsByIndex, SeekCursorForItem, SetHSV, HSV, ApplyRequests, Contains, Swap, SetItemSelected, GetNextSelectedItem, GetStorageIdFromIndex, ClearFreeMemory, Merge, SetCurrentChannel, PushClipRectFullScreen, PushTexture, PopTexture, GetClipRectMin, GetClipRectMax, AddLine, AddLineH, AddLineV, AddRect, AddRectFilled, AddRectFilledMultiColor, AddQuad, AddQuadFilled, AddTriangle, AddTriangleFilled, AddCircle, AddCircleFilled, AddNgon, AddNgonFilled, AddEllipse, AddEllipseFilled, AddText, AddBezierCubic, AddBezierQuadratic, AddPolyline, AddConvexPolyFilled, AddConcavePolyFilled, AddImage, AddImageQuad, AddImageRounded, PathClear, PathLineTo, PathLineToMergeDuplicate, PathFillConvex, PathFillConcave, PathStroke, PathArcTo, PathArcToFast, PathEllipticalArcTo, PathBezierCubicCurveTo, PathBezierQuadraticCurveTo, PathRect, AddCallback, AddDrawCmd, CloneOutput, ChannelsSplit, ChannelsMerge, ChannelsSetCurrent, PrimReserve, PrimUnreserve, PrimRect, PrimRectUV, PrimQuadUV, PrimWriteVtx, PrimWriteIdx, PrimVtx, AddDrawList, DeIndexAllBuffers, ScaleClipRects, Create, DestroyPixels, GetPixels, GetPixelsAt, GetSizeInBytes, GetPitch, GetTexRef, SetTexID, SetStatus, GetBit, SetBit, AddChar, AddRanges, BuildRanges, AddFont, AddFontDefault, AddFontDefaultVector, AddFontDefaultBitmap, AddFontFromFileTTF, AddFontFromMemoryTTF, AddFontFromMemoryCompressedTTF, AddFontFromMemoryCompressedBase85TTF, RemoveFont, CompactCache, SetFontLoader, ClearFonts, ClearInputData, ClearTexData, GetGlyphRangesDefault, AddCustomRect, RemoveCustomRect, GetCustomRect, ClearOutputData, FindGlyph, FindGlyphNoFallback, GetCharAdvance, IsGlyphLoaded, IsGlyphInFont, IsLoaded, GetDebugName, CalcTextSizeA, CalcWordWrapPosition, RenderChar, RenderText, AddRemapChar, IsGlyphRangeUnused, GetCenter, GetWorkCenter, ClearPlatformHandlers, ClearRendererHandlers, Appendf",
+            "public Destroy, GetTexID, CreateContext, DestroyContext, GetCurrentContext, SetCurrentContext, GetIO, GetPlatformIO, GetStyle, NewFrame, EndFrame, Render, GetDrawData, ShowDemoWindow, ShowMetricsWindow, ShowDebugLogWindow, ShowIDStackToolWindow, ShowAboutWindow, ShowStyleEditor, ShowStyleSelector, ShowFontSelector, ShowUserGuide, GetVersion, StyleColorsDark, StyleColorsLight, StyleColorsClassic, Begin, End, BeginChild, EndChild, IsWindowAppearing, IsWindowCollapsed, IsWindowFocused, IsWindowHovered, GetWindowDrawList, GetWindowDpiScale, GetWindowPos, GetWindowSize, GetWindowWidth, GetWindowHeight, GetWindowViewport, SetNextWindowPos, SetNextWindowSize, SetNextWindowSizeConstraints, SetNextWindowContentSize, SetNextWindowCollapsed, SetNextWindowFocus, SetNextWindowScroll, SetNextWindowBgAlpha, SetNextWindowViewport, SetWindowPos, SetWindowSize, SetWindowCollapsed, SetWindowFocus, GetScrollX, GetScrollY, SetScrollX, SetScrollY, GetScrollMaxX, GetScrollMaxY, SetScrollHereX, SetScrollHereY, SetScrollFromPosX, SetScrollFromPosY, PushFont, PopFont, GetFont, GetFontSize, GetFontBaked, PushStyleColor, PopStyleColor, PushStyleVar, PushStyleVarX, PushStyleVarY, PopStyleVar, PushItemFlag, PopItemFlag, PushItemWidth, PopItemWidth, SetNextItemWidth, CalcItemWidth, PushTextWrapPos, PopTextWrapPos, GetFontTexUvWhitePixel, GetColorU32, GetStyleColorVec4, GetCursorScreenPos, SetCursorScreenPos, GetContentRegionAvail, GetCursorPos, GetCursorPosX, GetCursorPosY, SetCursorPos, SetCursorPosX, SetCursorPosY, GetCursorStartPos, Separator, SameLine, NewLine, Spacing, Dummy, Indent, Unindent, BeginGroup, EndGroup, AlignTextToFramePadding, GetTextLineHeight, GetTextLineHeightWithSpacing, GetFrameHeight, GetFrameHeightWithSpacing, PushID, PopID, GetID, TextUnformatted, Text, TextColored, TextDisabled, TextWrapped, LabelText, BulletText, SeparatorText, Button, SmallButton, InvisibleButton, ArrowButton, Checkbox, CheckboxFlags, RadioButton, ProgressBar, Bullet, TextLink, TextLinkOpenURL, Image, ImageWithBg, ImageButton, BeginCombo, EndCombo, Combo, DragFloat, DragFloat2, DragFloat3, DragFloat4, DragFloatRange2, DragInt, DragInt2, DragInt3, DragInt4, DragIntRange2, DragScalar, DragScalarN, SliderFloat, SliderFloat2, SliderFloat3, SliderFloat4, SliderAngle, SliderInt, SliderInt2, SliderInt3, SliderInt4, SliderScalar, SliderScalarN, VSliderFloat, VSliderInt, VSliderScalar, InputText, InputTextMultiline, InputTextWithHint, InputFloat, InputFloat2, InputFloat3, InputFloat4, InputInt, InputInt2, InputInt3, InputInt4, InputDouble, InputScalar, InputScalarN, ColorEdit3, ColorEdit4, ColorPicker3, ColorPicker4, ColorButton, TreeNode, TreeNodeEx, TreePush, TreePop, GetTreeNodeToLabelSpacing, CollapsingHeader, SetNextItemOpen, SetNextItemStorageID, TreeNodeGetOpen, Selectable, BeginMultiSelect, EndMultiSelect, SetNextItemSelectionUserData, IsItemToggledSelection, BeginListBox, EndListBox, ListBox, Value, BeginMenuBar, EndMenuBar, BeginMainMenuBar, EndMainMenuBar, BeginMenu, EndMenu, MenuItem, BeginTooltip, EndTooltip, SetTooltip, BeginItemTooltip, SetItemTooltip, BeginPopup, BeginPopupModal, EndPopup, OpenPopup, OpenPopupOnItemClick, CloseCurrentPopup, BeginPopupContextItem, BeginPopupContextWindow, BeginPopupContextVoid, IsPopupOpen, BeginTable, EndTable, TableNextRow, TableNextColumn, TableSetColumnIndex, TableSetupColumn, TableSetupScrollFreeze, TableHeader, TableHeadersRow, TableAngledHeadersRow, TableGetSortSpecs, TableGetColumnCount, TableGetColumnIndex, TableGetRowIndex, TableGetColumnName, TableGetColumnFlags, TableSetColumnEnabled, TableGetHoveredColumn, TableSetBgColor, Columns, NextColumn, GetColumnIndex, GetColumnWidth, SetColumnWidth, GetColumnOffset, SetColumnOffset, GetColumnsCount, BeginTabBar, EndTabBar, BeginTabItem, EndTabItem, TabItemButton, SetTabItemClosed, DockSpace, DockSpaceOverViewport, SetNextWindowDockID, SetNextWindowClass, GetWindowDockID, IsWindowDocked, LogToTTY, LogToFile, LogToClipboard, LogFinish, LogButtons, LogText, BeginDragDropSource, SetDragDropPayload, EndDragDropSource, BeginDragDropTarget, AcceptDragDropPayload, EndDragDropTarget, GetDragDropPayload, BeginDisabled, EndDisabled, PushClipRect, PopClipRect, SetItemDefaultFocus, SetKeyboardFocusHere, SetNavCursorVisible, SetNextItemAllowOverlap, IsItemHovered, IsItemActive, IsItemFocused, IsItemClicked, IsItemVisible, IsItemEdited, IsItemActivated, IsItemDeactivated, IsItemDeactivatedAfterEdit, IsItemToggledOpen, IsAnyItemHovered, IsAnyItemActive, IsAnyItemFocused, GetItemID, GetItemRectMin, GetItemRectMax, GetItemRectSize, GetItemFlags, GetItemClickedCountWithSingleClickDelay, GetMainViewport, GetBackgroundDrawList, GetForegroundDrawList, IsRectVisible, GetTime, GetFrameCount, GetDrawListSharedData, GetStyleColorName, SetStateStorage, GetStateStorage, CalcTextSize, ColorConvertU32ToFloat4, ColorConvertFloat4ToU32, ColorConvertRGBtoHSV, ColorConvertHSVtoRGB, IsKeyDown, IsKeyPressed, IsKeyReleased, IsKeyChordPressed, GetKeyPressedAmount, GetKeyName, SetNextFrameWantCaptureKeyboard, Shortcut, SetNextItemShortcut, SetItemKeyOwner, IsMouseDown, IsMouseClicked, IsMouseReleased, IsMouseDoubleClicked, IsMouseReleasedWithDelay, GetMouseClickedCount, IsMouseHoveringRect, IsMousePosValid, IsAnyMouseDown, GetMousePos, GetMousePosOnOpeningCurrentPopup, IsMouseDragging, GetMouseDragDelta, ResetMouseDragDelta, GetMouseCursor, SetMouseCursor, SetNextFrameWantCaptureMouse, GetClipboardText, SetClipboardText, LoadIniSettingsFromDisk, LoadIniSettingsFromMemory, SaveIniSettingsToDisk, SaveIniSettingsToMemory, DebugTextEncoding, DebugFlashStyleColor, DebugStartItemPicker, DebugCheckVersionAndDataLayout, DebugLog, SetAllocatorFunctions, GetAllocatorFunctions, MemAlloc, MemFree, UpdatePlatformWindows, RenderPlatformWindowsDefault, DestroyPlatformWindows, FindViewportByID, FindViewportByPlatformHandle, ScaleAllSizes, AddKeyEvent, AddKeyAnalogEvent, AddMousePosEvent, AddMouseButtonEvent, AddMouseWheelEvent, AddMouseSourceEvent, AddMouseViewportEvent, AddFocusEvent, AddInputCharacter, AddInputCharacterUTF16, AddInputCharactersUTF8, SetKeyEventNativeData, SetAppAcceptingEvents, ClearEventsQueue, ClearInputKeys, ClearInputMouse, DeleteChars, InsertChars, SelectAll, SetSelection, ClearSelection, HasSelection, Clear, IsDataType, IsPreview, IsDelivery, Draw, PassFilter, Build, IsActive, Empty, Split, Size, Resize, Reserve, C_str, Append, GetInt, SetInt, GetBool, SetBool, GetFloat, SetFloat, GetVoidPtr, SetVoidPtr, GetIntRef, GetBoolRef, GetFloatRef, GetVoidPtrRef, BuildSortByKey, SetAllInt, Step, IncludeItemByIndex, IncludeItemsByIndex, SeekCursorForItem, SetHSV, HSV, ApplyRequests, Contains, Swap, SetItemSelected, GetNextSelectedItem, GetStorageIdFromIndex, ClearFreeMemory, Merge, SetCurrentChannel, PushClipRectFullScreen, PushTexture, PopTexture, GetClipRectMin, GetClipRectMax, AddLine, AddLineH, AddLineV, AddRect, AddRectFilled, AddRectFilledMultiColor, AddQuad, AddQuadFilled, AddTriangle, AddTriangleFilled, AddCircle, AddCircleFilled, AddNgon, AddNgonFilled, AddEllipse, AddEllipseFilled, AddText, AddBezierCubic, AddBezierQuadratic, AddPolyline, AddConvexPolyFilled, AddConcavePolyFilled, AddImage, AddImageQuad, AddImageRounded, PathClear, PathLineTo, PathLineToMergeDuplicate, PathFillConvex, PathFillConcave, PathStroke, PathArcTo, PathArcToFast, PathEllipticalArcTo, PathBezierCubicCurveTo, PathBezierQuadraticCurveTo, PathRect, AddCallback, AddDrawCmd, CloneOutput, ChannelsSplit, ChannelsMerge, ChannelsSetCurrent, PrimReserve, PrimUnreserve, PrimRect, PrimRectUV, PrimQuadUV, PrimWriteVtx, PrimWriteIdx, PrimVtx, AddDrawList, DeIndexAllBuffers, ScaleClipRects, Create, DestroyPixels, GetPixels, GetPixelsAt, GetSizeInBytes, GetPitch, GetTexRef, SetTexID, SetStatus, GetBit, SetBit, AddChar, AddRanges, BuildRanges, AddFont, AddFontDefault, AddFontDefaultVector, AddFontDefaultBitmap, AddFontFromFileTTF, AddFontFromMemoryTTF, AddFontFromMemoryCompressedTTF, AddFontFromMemoryCompressedBase85TTF, RemoveFont, CompactCache, SetFontLoader, ClearFonts, ClearInputData, ClearTexData, GetGlyphRangesDefault, AddCustomRect, RemoveCustomRect, GetCustomRect, ClearOutputData, FindGlyph, FindGlyphNoFallback, GetCharAdvance, IsGlyphLoaded, IsGlyphInFont, IsLoaded, GetDebugName, CalcTextSizeA, CalcWordWrapPosition, RenderChar, RenderText, AddRemapChar, IsGlyphRangeUnused, GetCenter, GetWorkCenter, ClearPlatformHandlers, ClearRendererHandlers, GetFontLoader, DebugEditFontLoaderFlags, Appendf",
         ),
     )
 end
