@@ -1,4 +1,4 @@
-name: CI
+name: ImGuiTestEngine
 
 on:
   pull_request:
@@ -10,6 +10,10 @@ on:
 permissions:
   actions: write
   contents: read
+
+defaults:
+  run:
+    working-directory: ImGuiTestEngine.jl
 
 jobs:
   tests:
@@ -29,22 +33,26 @@ jobs:
           # For some reason GLFW won't let us create a window on 32 bit ubuntu
           # - x86
     steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
-
+      - uses: julia-actions/cache@v3
+      # Julia 1.10 doesn't support [sources], so dev the local CImGui manually
+      - if: matrix.version == '1.10'
+        run: julia --project -e 'using Pkg; Pkg.develop(path="..")'
       - uses: julia-actions/julia-runtest@v1
         with:
+          project: ImGuiTestEngine.jl
           prefix: xvfb-run -a -s '-screen 0 1024x768x24'
-
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
+        with:
+          directories: ImGuiTestEngine.jl/src
+      - uses: codecov/codecov-action@v7
         with:
           files: lcov.info
+          flags: ImGuiTestEngine
           token: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
@@ -55,16 +63,17 @@ jobs:
       statuses: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
         with:
           version: '1'
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
       - run: |
           julia --project=docs -e '
             using Pkg
-            Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.develop([PackageSpec(path=".."), PackageSpec(path=pwd())])
             Pkg.instantiate()'
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}

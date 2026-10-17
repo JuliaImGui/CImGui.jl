@@ -63,7 +63,7 @@ links = InterLinks(
 )
 
 makedocs(;
-         repo = Remotes.GitHub("JuliaImGui", "ImGuiTestEngine.jl"),
+         repo = Remotes.GitHub("JuliaImGui", "CImGui.jl"),
          sitename = "ImGuiTestEngine",
          format = HTML(; prettyurls=get(ENV, "CI", "false") == "true",
                        size_threshold=2_000_000,
@@ -79,4 +79,6 @@ makedocs(;
          plugins = [links]
          )
 
-deploydocs(; repo="github.com/JuliaImGui/ImGuiTestEngine.jl.git")
+deploydocs(; repo="github.com/JuliaImGui/CImGui.jl.git",
+           branch="gh-pages-imguitestengine",
+           tag_prefix="ImGuiTestEngine-")
