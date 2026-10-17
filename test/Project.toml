@@ -5,3 +5,6 @@ ImGuiTestEngine = "464e2eba-0a11-4ed3-b274-413caa1a1cca"
 ModernGL = "66fc600b-dfda-50eb-8b99-91cfa97b1301"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[sources]
+ImGuiTestEngine = {path="../ImGuiTestEngine.jl"}
