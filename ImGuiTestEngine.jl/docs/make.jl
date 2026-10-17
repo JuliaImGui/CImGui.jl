@@ -1,5 +1,5 @@
 import Revise
-import JSON3
+import JSON
 using Documenter.Builder: DocumentPipeline
 using Documenter: Remotes, HTML, makedocs, deploydocs, Selectors
 import MarkdownAST
@@ -16,7 +16,7 @@ abstract type ImGuiDocs <: DocumentPipeline end
 Selectors.order(::Type{ImGuiDocs}) = 2.0
 
 function Selectors.runner(::Type{ImGuiDocs}, doc)
-    metadata = open(f -> JSON3.read(f, Dict{String, Any}), joinpath(@__DIR__, "wrapper_metadata.json"))
+    metadata = JSON.parsefile(joinpath(@__DIR__, "wrapper_metadata.json"); dicttype=Dict{String, Any})
     documented_symbols = Set{String}()
 
     for page in values(doc.blueprint.pages)

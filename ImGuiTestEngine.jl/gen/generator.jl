@@ -1,4 +1,4 @@
-import JSON3
+import JSON
 import CEnum
 import Clang
 using Clang.Generators
@@ -397,8 +397,11 @@ function wrap_function!(methods, func_name, func_def, overloads; with_arg_types=
                 default = "C_NULL"
             end
 
-            # Replace all float literals of the form '1f' or '0.0f' etc with '1f0'/'0.0f0'
-            default = replace(default, r"\df" => x -> "$(x[1])f0")
+            # Replace all float literals of the form '1f' or '0.0f' etc with '1f0'/'0.0f0',
+            # but not in strings such as the format string "%.3f".
+            if !startswith(default, '"')
+                default = replace(default, r"\df" => x -> "$(x[1])f0")
+            end
 
             args[i] = Expr(:kw, args[i], Meta.parse(default))
         end
@@ -499,7 +502,7 @@ function get_wrappers(dag::ExprDAG)
     methods = WrapperMethod[]
     structs = String[]
     enums = Symbol[]
-    imgui_defs = JSON3.read(CImGuiPack_jll.cimgui_test_engine_definitions)
+    imgui_defs = JSON.parsefile(CImGuiPack_jll.cimgui_test_engine_definitions)
 
     for node in dag.nodes
         for (i, expr) in enumerate(node.exprs)
@@ -746,7 +749,7 @@ function generate()
             wrapper_metadata[name] = Dict("class" => m.class, "line" => m.line)
         end
         open(joinpath(@__DIR__, "../docs/wrapper_metadata.json"), "w") do f
-            JSON3.pretty(f, wrapper_metadata)
+            JSON.json(f, wrapper_metadata; pretty=4)
         end
     end
 

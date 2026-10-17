@@ -7,6 +7,11 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [v2.0.1] - 2026-10-17
+
+### Changed
+- Added compat with CEnum v1 and DocStringExtensions v0.10 ([#24]).
+
 ## [v2.0.0] - 2026-08-20
 
 ### Changed
