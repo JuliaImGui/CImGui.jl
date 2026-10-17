@@ -7,6 +7,13 @@ CurrentModule = ImGuiTestEngine
 This documents notable changes in ImGuiTestEngine.jl. The format is based on
 [Keep a Changelog](https://keepachangelog.com).
 
+## [v3.0.0] - 2026-10-17
+
+### Changed
+- **Breaking**: updated for ImGui 1.93.0, we now require CImGui.jl v10
+  ([#211]). In particular, `ItemDragWithDelta()` now takes the delta by
+  reference, e.g. `ItemDragWithDelta(ref, Ref(CImGui.ImVec2(10, 0)))`.
+
 ## [v2.0.1] - 2026-10-17
 
 ### Changed

@@ -292,6 +292,14 @@ include(joinpath(@__DIR__, "../examples/demo.jl"))
         end
     end
 
+    @register_test(engine, "Examples", "All example windows") do
+        SetRef("ImGui Demo")
+        te.MenuCheckAll("Examples")
+        Yield(5)
+        @imcheck GetWindowByRef("//Example: Custom rendering") != nothing
+        te.MenuUncheckAll("Examples")
+    end
+
     julia_demo(; engine)
 
     te.DestroyContext(engine)
