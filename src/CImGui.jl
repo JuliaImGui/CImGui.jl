@@ -3,7 +3,14 @@ module CImGui
 using CSyntax
 using CEnum
 using CEnum: Cenum, name_value_pairs
-import DocStringExtensions: TYPEDSIGNATURES
+import DocStringExtensions
+
+# Default values are only supported in DocStringExtensions 0.10 and later
+@static if pkgversion(DocStringExtensions) >= v"0.10"
+    const TYPEDSIGNATURES = DocStringExtensions.TypedMethodSignatures(defaults=true)
+else
+    import DocStringExtensions: TYPEDSIGNATURES
+end
 
 
 include("lib.jl")

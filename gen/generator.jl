@@ -347,8 +347,11 @@ function wrap_function!(methods, func_name, func_def, overloads; with_arg_types=
                 default = "C_NULL"
             end
 
-            # Replace all float literals of the form '1f' or '0.0f' etc with '1f0'/'0.0f0'
-            default = replace(default, r"\d\.?f" => x -> "$(x[1])f0")
+            # Replace all float literals of the form '1f' or '0.0f' etc with '1f0'/'0.0f0',
+            # but not in strings such as the format string "%.3f".
+            if !startswith(default, '"')
+                default = replace(default, r"\d\.?f" => x -> "$(x[1])f0")
+            end
 
             args[i] = Expr(:kw, args[i], Meta.parse(default))
         end

@@ -1547,7 +1547,7 @@ DragFloat(
     v_speed = 1.0f0,
     v_min = 0.0f0,
     v_max = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igDragFloat(label, v, v_speed, v_min, v_max, format, flags)
 
@@ -1562,7 +1562,7 @@ DragFloat2(
     v_speed = 1.0f0,
     v_min = 0.0f0,
     v_max = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igDragFloat2(label, v, v_speed, v_min, v_max, format, flags)
 
@@ -1577,7 +1577,7 @@ DragFloat3(
     v_speed = 1.0f0,
     v_min = 0.0f0,
     v_max = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igDragFloat3(label, v, v_speed, v_min, v_max, format, flags)
 
@@ -1592,7 +1592,7 @@ DragFloat4(
     v_speed = 1.0f0,
     v_min = 0.0f0,
     v_max = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igDragFloat4(label, v, v_speed, v_min, v_max, format, flags)
 
@@ -1608,7 +1608,7 @@ DragFloatRange2(
     v_speed = 1.0f0,
     v_min = 0.0f0,
     v_max = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     format_max = C_NULL,
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igDragFloatRange2(label, v_current_min, v_current_max, v_speed, v_min, v_max, format, format_max, flags)
@@ -1737,7 +1737,7 @@ Widgets: Regular Sliders
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L707).
 """
-SliderFloat(label, v, v_min, v_max, format = "%.3f0", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
+SliderFloat(label, v, v_min, v_max, format = "%.3f", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
     igSliderFloat(label, v, v_min, v_max, format, flags)
 
 """
@@ -1745,7 +1745,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L708).
 """
-SliderFloat2(label, v, v_min, v_max, format = "%.3f0", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
+SliderFloat2(label, v, v_min, v_max, format = "%.3f", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
     igSliderFloat2(label, v, v_min, v_max, format, flags)
 
 """
@@ -1753,7 +1753,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L709).
 """
-SliderFloat3(label, v, v_min, v_max, format = "%.3f0", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
+SliderFloat3(label, v, v_min, v_max, format = "%.3f", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
     igSliderFloat3(label, v, v_min, v_max, format, flags)
 
 """
@@ -1761,7 +1761,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L710).
 """
-SliderFloat4(label, v, v_min, v_max, format = "%.3f0", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
+SliderFloat4(label, v, v_min, v_max, format = "%.3f", flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0) =
     igSliderFloat4(label, v, v_min, v_max, format, flags)
 
 """
@@ -1774,7 +1774,7 @@ SliderAngle(
     v_rad,
     v_degrees_min = -360.0f0,
     v_degrees_max = 360.0f0,
-    format = "%.0f0 deg",
+    format = "%.0f deg",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igSliderAngle(label, v_rad, v_degrees_min, v_degrees_max, format, flags)
 
@@ -1852,7 +1852,7 @@ VSliderFloat(
     v,
     v_min,
     v_max,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiSliderFlags,ImGuiSliderFlags_,Integer} = 0,
 ) = igVSliderFloat(label, size, v, v_min, v_max, format, flags)
 
@@ -1945,7 +1945,7 @@ InputFloat(
     v,
     step = 0.0f0,
     step_fast = 0.0f0,
-    format = "%.3f0",
+    format = "%.3f",
     flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0,
 ) = igInputFloat(label, v, step, step_fast, format, flags)
 
@@ -1954,7 +1954,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L729).
 """
-InputFloat2(label, v, format = "%.3f0", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
+InputFloat2(label, v, format = "%.3f", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
     igInputFloat2(label, v, format, flags)
 
 """
@@ -1962,7 +1962,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L730).
 """
-InputFloat3(label, v, format = "%.3f0", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
+InputFloat3(label, v, format = "%.3f", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
     igInputFloat3(label, v, format, flags)
 
 """
@@ -1970,7 +1970,7 @@ $(TYPEDSIGNATURES)
 
 [Upstream link](https://github.com/ocornut/imgui/blob/v1.92.9b-docking/imgui.h#L731).
 """
-InputFloat4(label, v, format = "%.3f0", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
+InputFloat4(label, v, format = "%.3f", flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0) =
     igInputFloat4(label, v, format, flags)
 
 """
@@ -2012,7 +2012,7 @@ InputDouble(
     v,
     step = 0.0,
     step_fast = 0.0,
-    format = "%.6f0",
+    format = "%.6f",
     flags::Union{ImGuiInputTextFlags,ImGuiInputTextFlags_,Integer} = 0,
 ) = igInputDouble(label, v, step, step_fast, format, flags)
 
