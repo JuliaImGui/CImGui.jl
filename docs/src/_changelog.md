@@ -6,6 +6,16 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v10.0.0] - 2026-10-17
+
+### Changed
+- **Breaking**: updated to [Dear ImGui
+  1.93.0](https://github.com/ocornut/imgui/releases/tag/v1.93.0) ([#211]). Note
+  that the bundled version is a slightly newer commit from the docking branch,
+  so [`imgui_version()`](@ref) will return `v"1.93.1-WIP"`. The major breaking
+  changes in this release are related to `ImDrawList`, so have a look at the
+  upstream release notes if your app uses that.
+
 ## [v9.1.2] - 2026-10-17
 
 ### Changed

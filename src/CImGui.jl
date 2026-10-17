@@ -52,10 +52,11 @@ lib.ImTextureRef(id::lib.ImTextureID) = lib.ImTextureRef(C_NULL, id)
 """
     imgui_version()::VersionNumber
 
-Return the upstream ImGui version.
+Return the upstream ImGui version. Development versions like `"1.93.1 WIP"` are
+returned as prereleases, e.g. `v"1.93.1-WIP"`.
 """
 function imgui_version()
-    VersionNumber(unsafe_string(igGetVersion()))
+    VersionNumber(replace(unsafe_string(igGetVersion()), " " => "-"))
 end
 
 function ShowFlags(::Type{T}) where {T<:Cenum}
