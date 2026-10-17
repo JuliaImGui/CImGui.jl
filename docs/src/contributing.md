@@ -62,6 +62,11 @@ Here are the steps to update CImGui.jl and friends:
    the bindings with all needed metadata and to test that everything
    compiles. Commit and tag the changes.
 
+   !!! note
+       The submodules have their own nested submodules (e.g. `cimplot/implot`),
+       so after checking out a new commit in a submodule run `git submodule
+       update --init --recursive` inside it.
+
    !!! tip
        Before committing and tagging the changes, you can test them locally by
        building `CImGuiPack_jll`. See the next step for details.
@@ -74,7 +79,7 @@ Here are the steps to update CImGui.jl and friends:
        Before making the Yggdrasil PR, build it locally to test. e.g. on a 64bit
        Linux machine with BinaryBuilder installed in the `@bb` project:
        ```bash
-       julia --project=@bb build_tarballs.jl x86_64-linux-gnu --verbose --debug --deploy=local
+       julia --project=@bb build_tarballs.jl x86_64-linux-gnu --deploy=local --verbose --debug
        ```
 
        You can also test it with your local changes to `cimgui-pack` by tweaking
@@ -96,23 +101,23 @@ Here are the steps to update CImGui.jl and friends:
    project](https://github.com/JuliaImGui/CImGui.jl/tree/master/gen) for
    CImGui.jl to use the new JLL, and run the `generator.jl` script. If you've
    built the JLL locally then you can use it by running `] dev
-   CImGuiPack_jll`. Update the `CImGuiPack_jll` compat bounds for CImGui. Try
-   importing CImGui to check that it at least precompiles.
-1. Follow the same generation process for ImGuiTestEngine.jl and [its `gen/`
-   project](https://github.com/JuliaImGui/ImGuiTestEngine.jl/tree/master/gen). The
-   test engine is very stable so in most cases it's possible to preserve
-   backwards compatibility with older JLLs.
-1. In ImGuiTestEngine.jl, run `] dev CImGui` so that it can use the local CImGui
-   version with the new JLL. Now you can run `] test` to run the ImGuiTestEngine
-   tests.
-1. If the ImGuiTestEngine tests pass, then we can test CImGui itself. In
-   CImGui's `test/` project run `] dev ImGuiTestEngine` to use the local test
-   engine version with updated compat bounds for the JLL, then run the CImGui
-   tests.
+   CImGuiPack_jll`. Update the `CImGuiPack_jll` compat bounds for
+   CImGui. Try importing CImGui to check that it at least precompiles.
 
-   **At this point both the CImGui and ImGuiTestEngine tests should
-   pass**. Getting these to pass is a bit convoluted since their tests depend on
-   each other and so the `] dev` dance is needed.
+1. Follow the same generation process for ImGuiTestEngine.jl, which lives in
+   the
+   [`ImGuiTestEngine.jl/`](https://github.com/JuliaImGui/CImGui.jl/tree/master/ImGuiTestEngine.jl)
+   subdirectory and has its own [`gen/`
+   project](https://github.com/JuliaImGui/CImGui.jl/tree/master/ImGuiTestEngine.jl/gen).
+   Also update `te_version` in `gen/generator.jl` (used for the upstream links
+   in docstrings). The test engine is very stable so in most cases it's possible
+   to preserve backwards compatibility with older JLLs.
+1. Run the ImGuiTestEngine and CImGui tests. Their tests depend on each other,
+   but their `Project.toml`'s already have `[sources]` entries pointing to the
+   local copy of the other package, so the only thing you need to `] dev` is the
+   JLL (in both the ImGuiTestEngine and CImGui projects).
+
+   **At this point both the CImGui and ImGuiTestEngine tests should pass.**
 1. As before you will need to update [the `gen/`
    project](https://github.com/JuliaImGui/ImPlot.jl/tree/main/gen) to use the
    new JLL. Then call the `generate()` function in `generator.jl`. Update the
@@ -122,6 +127,8 @@ Here are the steps to update CImGui.jl and friends:
     used. Then run the ImPlot tests.
 1. If all pass, then it's time to make PRs and releases! In order:
    1. Yggdrasil PR for `CImGuiPack_jll`.
-   1. ImGuiTestEngine.
-   1. CImGui.
+   1. A CImGui.jl PR containing both the CImGui and ImGuiTestEngine
+      changes. After merging, register CImGui first and then ImGuiTestEngine
+      (with `@JuliaRegistrator register subdir=ImGuiTestEngine.jl`), since
+      ImGuiTestEngine may depend on the new CImGui version.
    1. ImPlot.
