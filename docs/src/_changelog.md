@@ -6,6 +6,15 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v9.1.2] - 2026-10-17
+
+### Changed
+- Added compat with DocStringExtensions 0.10 and CEnum v1 ([#209]).
+
+### Fixed
+- Fixed the default arguments for automatically wrapped imgui functions that
+  take in a format string, previously these were incorrectly parsed ([#209]).
+
 ## [v9.1.1] - 2026-10-11
 
 ### Fixed

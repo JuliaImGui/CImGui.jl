@@ -1,6 +1,6 @@
 name = "CImGui"
 uuid = "5d785b6c-b76f-510e-a07c-3070796c7e87"
-version = "9.1.1"
+version = "9.1.2"
 authors = ["Yupei Qi <qiyupei@gmail.com>"]
 
 [deps]
@@ -22,10 +22,10 @@ GlfwOpenGLBackend = ["GLFW", "ModernGL"]
 MakieIntegration = ["GLFW", "ModernGL", "GLMakie"]
 
 [compat]
-CEnum = "0.4, 0.5"
+CEnum = "0.5, 1"
 CImGuiPack_jll = "0.13"
 CSyntax = "0.4"
-DocStringExtensions = "0.9.3"
+DocStringExtensions = "0.9.3, 0.10"
 GLFW = "3"
 GLMakie = "0.13"
 ModernGL = "1"
