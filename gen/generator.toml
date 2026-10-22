@@ -27,6 +27,7 @@ field_access_method_list = [
     "ImGuiPlatformMonitor",
     "ImGuiStyle",
     "ImGuiListClipper",
+    "ImGuiWindowTempData",
 
     "ImNodesStyle"
 ]
