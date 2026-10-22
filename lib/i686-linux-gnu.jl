@@ -1880,6 +1880,57 @@ struct ImGuiWindowTempData
     ItemWidthStack::ImVector_float
     TextWrapPosStack::ImVector_float
 end
+function Base.getproperty(x::Ptr{ImGuiWindowTempData}, f::Symbol)
+    f === :CursorPos && return Ptr{ImVec2}(x + 0)
+    f === :CursorPosPrevLine && return Ptr{ImVec2}(x + 8)
+    f === :CursorStartPos && return Ptr{ImVec2}(x + 16)
+    f === :CursorMaxPos && return Ptr{ImVec2}(x + 24)
+    f === :IdealMaxPos && return Ptr{ImVec2}(x + 32)
+    f === :CurrLineSize && return Ptr{ImVec2}(x + 40)
+    f === :PrevLineSize && return Ptr{ImVec2}(x + 48)
+    f === :CurrLineTextBaseOffset && return Ptr{Cfloat}(x + 56)
+    f === :PrevLineTextBaseOffset && return Ptr{Cfloat}(x + 60)
+    f === :IsSameLine && return Ptr{Bool}(x + 64)
+    f === :IsSetPos && return Ptr{Bool}(x + 65)
+    f === :Indent && return Ptr{ImVec1}(x + 68)
+    f === :ColumnsOffset && return Ptr{ImVec1}(x + 72)
+    f === :GroupOffset && return Ptr{ImVec1}(x + 76)
+    f === :CursorStartPosLossyness && return Ptr{ImVec2}(x + 80)
+    f === :NavLayerCurrent && return Ptr{ImGuiNavLayer}(x + 88)
+    f === :NavLayersActiveMask && return Ptr{Cshort}(x + 92)
+    f === :NavLayersActiveMaskNext && return Ptr{Cshort}(x + 94)
+    f === :NavIsScrollPushableX && return Ptr{Bool}(x + 96)
+    f === :NavHideHighlightOneFrame && return Ptr{Bool}(x + 97)
+    f === :NavWindowHasScrollY && return Ptr{Bool}(x + 98)
+    f === :MenuBarAppending && return Ptr{Bool}(x + 99)
+    f === :MenuBarOffset && return Ptr{ImVec2}(x + 100)
+    f === :MenuColumns && return Ptr{ImGuiMenuColumns}(x + 108)
+    f === :TreeDepth && return Ptr{Cint}(x + 136)
+    f === :TreeHasStackDataDepthMask && return Ptr{ImU32}(x + 140)
+    f === :TreeRecordsClippedNodesY2Mask && return Ptr{ImU32}(x + 144)
+    f === :ChildWindows && return Ptr{ImVector_ImGuiWindowPtr}(x + 148)
+    f === :StateStorage && return Ptr{Ptr{ImGuiStorage}}(x + 160)
+    f === :CurrentColumns && return Ptr{Ptr{ImGuiOldColumns}}(x + 164)
+    f === :CurrentTableIdx && return Ptr{Cint}(x + 168)
+    f === :LayoutType && return Ptr{ImGuiLayoutType}(x + 172)
+    f === :ParentLayoutType && return Ptr{ImGuiLayoutType}(x + 176)
+    f === :ModalDimBgColor && return Ptr{ImU32}(x + 180)
+    f === :WindowItemStatusFlags && return Ptr{ImGuiItemStatusFlags}(x + 184)
+    f === :ChildItemStatusFlags && return Ptr{ImGuiItemStatusFlags}(x + 188)
+    f === :DockTabItemStatusFlags && return Ptr{ImGuiItemStatusFlags}(x + 192)
+    f === :DockTabItemRect && return Ptr{ImRect}(x + 196)
+    f === :ItemWidth && return Ptr{Cfloat}(x + 212)
+    f === :ItemWidthDefault && return Ptr{Cfloat}(x + 216)
+    f === :TextWrapPos && return Ptr{Cfloat}(x + 220)
+    f === :ItemWidthStack && return Ptr{ImVector_float}(x + 224)
+    f === :TextWrapPosStack && return Ptr{ImVector_float}(x + 236)
+    return getfield(x, f)
+end
+
+function Base.setproperty!(x::Ptr{ImGuiWindowTempData}, f::Symbol, v)
+    unsafe_store!(getproperty(x, f), v)
+end
+
 
 struct ImVec2ih
     x::Cshort

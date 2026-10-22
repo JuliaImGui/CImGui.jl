@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v10.1.0] - 2026-10-22
+
+### Added
+- Added accessor methods for `Ptr{ImGuiWindowTempData}`.
+
 ## [v10.0.0] - 2026-10-17
 
 ### Changed
