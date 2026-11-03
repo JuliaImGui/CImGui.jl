@@ -6,6 +6,11 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v10.1.1] - 2026-11-03
+
+### Changed
+- Added compat with GLFW.jl v4 ([#213]).
+
 ## [v10.1.0] - 2026-10-22
 
 ### Added
