@@ -6,6 +6,13 @@ CurrentModule = CImGui
 This documents notable changes in CImGui.jl. The format is based on [Keep a
 Changelog](https://keepachangelog.com).
 
+## [v10.1.2] - 2026-11-13
+
+### Fixed
+- Fixed heap corruption in the GLFW/OpenGL renderloop when other threads
+  allocate: `jl_gc_safe_leave()` was called without the saved GC state, leaving
+  the render thread marked GC-safe while running Julia code ([#215]).
+
 ## [v10.1.1] - 2026-11-03
 
 ### Changed

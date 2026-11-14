@@ -148,11 +148,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
             if have_callbacks
                 wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
             else
+                gc_state = @ccall jl_gc_safe_enter()::Int8
                 try
-                    @ccall jl_gc_safe_enter()::Int8
                     wait_events ? GLFW.WaitEvents() : GLFW.PollEvents()
                 finally
-                    @ccall jl_gc_safe_leave()::Int8
+                    @ccall jl_gc_safe_leave(gc_state::Int8)::Cvoid
                 end
             end
 
@@ -198,11 +198,11 @@ function renderloop(ui, ctx::Ptr{lib.ImGuiContext}, ::Val{:GlfwOpenGL3};
             # again enter a GC-safe region so as not to block the
             # GC. SwapBuffers() does not call any callbacks so this should
             # always be safe.
+            gc_state = @ccall jl_gc_safe_enter()::Int8
             try
-                @ccall jl_gc_safe_enter()::Int8
                 GLFW.SwapBuffers(window)
             finally
-                @ccall jl_gc_safe_leave()::Int8
+                @ccall jl_gc_safe_leave(gc_state::Int8)::Cvoid
             end
 
             # Advance test engine's screen-capture state.
